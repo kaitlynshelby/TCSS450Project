@@ -23,7 +23,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    // Disables the back button
+    /**
+     * Disables the back button function.
+     */
     @Override
     public void onBackPressed() {   }
 }
