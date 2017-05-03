@@ -1,33 +1,36 @@
 package ksorum.uw.tacoma.edu.a450project;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements MainFragment.OnFragmentInteractionListener, LoginFragment.OnFragmentInteractionListener,
+        SignUpFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FragmentManager manager = getSupportFragmentManager();
+        final FragmentTransaction transaction = manager.beginTransaction();
+
+        if (savedInstanceState == null) {
+            manager.beginTransaction()
+                    .add(R.id.fragment_container, new MainFragment())
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
-    /**
-     * The onClick method for opening the Login screen.
-     * @param view
-     */
-    public void openLoginActivity(View view) {
-        Intent login_intent = new Intent(this, LoginActivity.class);
-        startActivity(login_intent);
-    }
-
-    /**
-     * The onClick method for opening the Sign Up screen.
-     * @param view
-     */
-    public void openSignUpActivity(View view) {
-        Intent signup_intent = new Intent(this, SignUpActivity.class);
-        startActivity(signup_intent);
+    @Override
+    public void onFragmentInteraction(Uri uri) {
     }
 }
