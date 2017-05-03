@@ -66,6 +66,7 @@
         android:background="@android:color/holo_blue_light"
         android:text="Create Account" />
 
+    <!--TODO: change id to sign up-->
     <TextView
         android:id="@+id/login_from_signin"
         android:layout_width="wrap_content"
