@@ -71,7 +71,7 @@ public class LoginFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_login, container, false);
 
-        TextView view = (TextView) v.findViewById(R.id.signup_from_login);
+       /* TextView view = (TextView) v.findViewById(R.id.signup_from_login);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +82,7 @@ public class LoginFragment extends Fragment {
                         .commit();
             }
         });
+        */
 
         return v;
     }
