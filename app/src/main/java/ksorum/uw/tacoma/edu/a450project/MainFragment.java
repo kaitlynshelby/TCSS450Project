@@ -67,9 +67,9 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_main, container, false);
+        View v = inflater.inflate(R.layout.fragment_home, container, false);
 
-        Button loginButton = (Button) v.findViewById(R.id.login_button_main);
+      /*  Button loginButton = (Button) v.findViewById(R.id.login_button_main);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +81,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        Button signupButton = (Button) v.findViewById(R.id.signup_button_main);
+        Button signupButton = (Button) v.findViewById(R.id.signup_button_main);*/
 //
 //        signupButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
