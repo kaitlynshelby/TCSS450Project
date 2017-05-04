@@ -1,3 +1,7 @@
 /build
-.gradle
-.idea
+.gradle/
+.idea/
+
+gradle/
+app.iml
+proguard-rules.pro
