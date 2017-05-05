@@ -12,8 +12,6 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnF
 SignUpFragment.OnFragmentInteractionListener,
 MainFragment.OnFragmentInteractionListener {
 
-    private SectionsAdapter mSectionsAdapter;
-    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,14 +21,6 @@ MainFragment.OnFragmentInteractionListener {
                 .replace(R.id.fragment_container, new MainFragment())
                 .addToBackStack(null)
                 .commit();
-
-
-       /* mSectionsAdapter = new SectionsAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager)findViewById(R.id.container);
-
-        TabLayout tablayout = (TabLayout)findViewById(R.id.tabs);
-        tablayout.setupWithViewPager(mViewPager);*/
-
     }
 
     public boolean launchLogin(View v) {
@@ -58,14 +48,5 @@ MainFragment.OnFragmentInteractionListener {
     public void onFragmentInteraction(Uri uri) {
 
     }
-
-
- /*   private void setupViewPager(ViewPager viewPager) {
-        SectionsAdapter adapter = new SectionsAdapter(getSupportFragmentManager());
-        adapter.addFragment(new InventoryFragment(), "Inventory");
-        adapter.addFragment(new ShoppingListFragment(), "Shopping List");
-        viewPager.setAdapter(adapter);
-
-    }*/
 }
 

@@ -67,32 +67,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_home, container, false);
-
-      /*  Button loginButton = (Button) v.findViewById(R.id.login_button_main);
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new LoginFragment())
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-
-        Button signupButton = (Button) v.findViewById(R.id.signup_button_main);*/
-//
-//        signupButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getActivity().getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.fragment_container, new SignUpFragment())
-//                        .addToBackStack(null)
-//                        .commit();
-//            }
-//        });
-
+        View v = inflater.inflate(R.layout.fragment_main, container, false);
 
 
         return v;
