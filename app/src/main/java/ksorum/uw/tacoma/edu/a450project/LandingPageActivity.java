@@ -77,10 +77,11 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
 
     @Override
     public void addItem(String url) {
-
+        AddItemTask task = new AddItemTask();
+        task.execute(new String[]{url.toString()});
     }
 
-    private class AddCourseTask extends AsyncTask<String, Void, String> {
+    private class AddItemTask extends AsyncTask<String, Void, String> {
 
 
         @Override
