@@ -1,7 +1,6 @@
 package ksorum.uw.tacoma.edu.a450project;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,14 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.net.URLEncoder;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * The fragment from which a user can sign up to be a registered user of the app.
+ * <p>
  * Activities that contain this fragment must implement the
  * {@link SignUpFragment.OnAddUser} interface
  * to handle interaction events.
@@ -25,6 +24,7 @@ import java.net.URLEncoder;
  * create an instance of this fragment.
  */
 public class SignUpFragment extends Fragment {
+
     private final static String COURSE_ADD_URL
             = "http://cssgate.insttech.washington.edu/~ksorum/adduser.php?";
 
@@ -43,12 +43,9 @@ public class SignUpFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment SignUpFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static SignUpFragment newInstance(String param1, String param2) {
+    public static SignUpFragment newInstance() {
         SignUpFragment fragment = new SignUpFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -56,21 +53,16 @@ public class SignUpFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
+        // get user data from EditText views
         mUserEmail = (EditText) v.findViewById(R.id.email_signup);
         mUserPassword = (EditText) v.findViewById(R.id.password_signup);
         mUserConfirmPassword = (EditText) v.findViewById(R.id.password_confirm);
 
+        // add functionality to the create account button
         Button addUserButton = (Button) v.findViewById(R.id.create_account_button);
         addUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +84,7 @@ public class SignUpFragment extends Fragment {
             mListener = (OnAddUser) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnMainFragmentInteractionListener");
         }
     }
 
@@ -102,6 +94,12 @@ public class SignUpFragment extends Fragment {
         mListener = null;
     }
 
+    /**
+     * Builds the url which will be used by the webservice to register a user.
+     *
+     * @param v the View object
+     * @return the url to be used by the register user webservice
+     */
     private String buildCourseURL(View v) {
 
         StringBuilder sb = new StringBuilder(COURSE_ADD_URL);
@@ -124,14 +122,12 @@ public class SignUpFragment extends Fragment {
 
             Log.i("SignUpFragment", sb.toString());
 
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             Toast.makeText(v.getContext(), "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
                     .show();
         }
         return sb.toString();
     }
-
 
 
     /**
