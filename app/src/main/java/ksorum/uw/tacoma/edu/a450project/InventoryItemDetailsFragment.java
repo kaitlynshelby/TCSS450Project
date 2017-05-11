@@ -3,10 +3,16 @@ package ksorum.uw.tacoma.edu.a450project;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import ksorum.uw.tacoma.edu.a450project.inventoryitem.InventoryItem;
 
 
 /**
@@ -26,6 +32,11 @@ public class InventoryItemDetailsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private TextView mItemNameTextView;
+    private TextView mItemQuantityTextView;
+    private TextView mItemPriceTextView;
+    private TextView mItemExpirationTextView;
 
     private OnFragmentInteractionListener mListener;
 
@@ -64,8 +75,47 @@ public class InventoryItemDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_inventory_item_details, container, false);
+        View v = inflater.inflate(R.layout.fragment_inventory_item_details, container, false);
+
+        mItemNameTextView = (TextView) v.findViewById(R.id.name_info);
+        mItemQuantityTextView = (TextView) v.findViewById(R.id.quantity_info);
+        mItemPriceTextView = (TextView) v.findViewById(R.id.price_info);
+        mItemExpirationTextView = (TextView) v.findViewById(R.id.expiration_info);
+
+        FloatingActionButton floatingActionButton = (FloatingActionButton)
+                getActivity().findViewById(R.id.fab);
+        floatingActionButton.show();
+
+
+        return v;
     }
+
+    public void updateView(InventoryItem item) {
+        if (item != null) {
+            mItemNameTextView.setText(item.getItemName());
+            mItemQuantityTextView.setText(item.getQuantity());
+            mItemPriceTextView.setText(item.getPrice());
+            mItemExpirationTextView.setText(item.getExpiration());
+        }
+    }
+
+    public final static String INVENTORY_ITEM_SELECTED = "inventory_item_selected";
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // During startup, check if there are arguments passed to the fragment.
+        // onStart is a good place to do this because the layout has already been
+        // applied to the fragment at this point so we can safely call the method
+        // below that sets the article text.
+        Bundle args = getArguments();
+        if (args != null) {
+            // Set article based on argument passed in
+            updateView((InventoryItem) args.getSerializable(INVENTORY_ITEM_SELECTED));
+        }
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

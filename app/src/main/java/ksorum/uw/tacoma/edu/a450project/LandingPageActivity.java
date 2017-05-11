@@ -2,6 +2,7 @@ package ksorum.uw.tacoma.edu.a450project;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,7 +12,7 @@ import android.view.View;
 
 import ksorum.uw.tacoma.edu.a450project.inventoryitem.InventoryItem;
 
-public class LandingPageActivity extends AppCompatActivity implements InventoryFragment.OnListFragmentInteractionListener {
+public class LandingPageActivity extends AppCompatActivity implements InventoryFragment.OnListFragmentInteractionListener, InventoryItemDetailsFragment.OnFragmentInteractionListener, InventoryAddFragment.InventoryAddListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +25,14 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                InventoryAddFragment inventoryAddFragment = new InventoryAddFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, inventoryAddFragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
+
 
         fab.setBackgroundTintList(ColorStateList.valueOf(Color
                 .parseColor("#2196F3")));
@@ -43,6 +48,24 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
 
     @Override
     public void onListFragmentInteraction(InventoryItem item) {
+        InventoryItemDetailsFragment detailsFragment = new InventoryItemDetailsFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(InventoryItemDetailsFragment.INVENTORY_ITEM_SELECTED, item);
+        detailsFragment.setArguments(args);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, detailsFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void addItem(String url) {
 
     }
 }

@@ -1,0 +1,45 @@
+
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/fragment_add_course"
+android:name="edu.uw.tacoma.mmuppa.webservicepractice.CourseAddFragment"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:layout_margin="40dp"
+    tools:context=".InventoryAddFragment">
+
+<EditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="@string/inventory_item_name_hint"
+    android:id="@+id/add_item_name" />
+
+<EditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="@string/inventory_item_quan_hint"
+    android:id="@+id/add_item_quantity" />
+
+<EditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="@string/inventory_item_price_hint"
+    android:id="@+id/add_item_price" />
+
+<EditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="@string/inventory_item_expire_hint"
+    android:id="@+id/add_item_expiration" />
+
+<Button
+    android:id="@+id/add_item_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="right"
+    android:text="@string/add_item_text"
+    android:onClick="addItem" />
+</LinearLayout>

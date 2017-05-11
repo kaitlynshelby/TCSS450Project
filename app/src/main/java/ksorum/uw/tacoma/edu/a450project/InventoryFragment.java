@@ -3,6 +3,7 @@ package ksorum.uw.tacoma.edu.a450project;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -86,6 +87,11 @@ public class InventoryFragment extends Fragment {
 
         DownloadCoursesTask task = new DownloadCoursesTask();
         task.execute(new String[]{ITEM_URL});
+
+        FloatingActionButton floatingActionButton = (FloatingActionButton)
+                getActivity().findViewById(R.id.fab);
+        floatingActionButton.show();
+
 
         return view;
     }
