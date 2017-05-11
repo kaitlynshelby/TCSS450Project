@@ -79,7 +79,7 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onMainFragmentInteraction(Uri uri) {
     }
 
     /**
@@ -137,7 +137,7 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
                 JSONObject jsonObject = new JSONObject(result);
                 String status = (String) jsonObject.get("result");
                 if (status.equals("success")) {
-                    Intent intent = new Intent(HomeActivity.this, InventoryActivity.class);
+                    Intent intent = new Intent(HomeActivity.this, LandingPageActivity.class);
                     startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(), "Failed to complete user task: "
