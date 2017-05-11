@@ -11,7 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
+<<<<<<< HEAD
         android:textAppearance="?attr/textAppearanceListItem"
+=======
+>>>>>>> 4f77dd5aaa771b1bac3a442d362ac5be8bf65ff9
         />
 
 
