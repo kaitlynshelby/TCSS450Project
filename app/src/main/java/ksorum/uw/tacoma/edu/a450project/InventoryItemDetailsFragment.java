@@ -16,48 +16,41 @@ import ksorum.uw.tacoma.edu.a450project.inventoryitem.InventoryItem;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link InventoryItemDetailsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link InventoryItemDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * A fragment that displays the details of an item.
+ *
+ * @author Kaitlyn Kinerk, Jasmine Dacones
+ * @version 1.0
  */
 public class InventoryItemDetailsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    /** Inventory item selected */
+    public final static String INVENTORY_ITEM_SELECTED = "inventory_item_selected";
 
+    /** Item name */
     private TextView mItemNameTextView;
+    /** Item quantity */
     private TextView mItemQuantityTextView;
+    /** Item price */
     private TextView mItemPriceTextView;
+    /** Item expiration */
     private TextView mItemExpirationTextView;
 
+    /** Fragment listener */
     private OnFragmentInteractionListener mListener;
 
+    // Required empty public constructor
     public InventoryItemDetailsFragment() {
-        // Required empty public constructor
     }
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+
      * @return A new instance of fragment InventoryItemDetailsFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static InventoryItemDetailsFragment newInstance(String param1, String param2) {
+    public static InventoryItemDetailsFragment newInstance() {
         InventoryItemDetailsFragment fragment = new InventoryItemDetailsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,10 +58,6 @@ public class InventoryItemDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -90,6 +79,10 @@ public class InventoryItemDetailsFragment extends Fragment {
         return v;
     }
 
+    /**
+     * Updates the fragment with details of the item that is clicked on.
+     * @param item the item that is clicked on in the inventory list
+     */
     public void updateView(InventoryItem item) {
         if (item != null) {
             mItemNameTextView.setText(item.getItemName());
@@ -99,7 +92,6 @@ public class InventoryItemDetailsFragment extends Fragment {
         }
     }
 
-    public final static String INVENTORY_ITEM_SELECTED = "inventory_item_selected";
 
     @Override
     public void onStart() {
@@ -116,13 +108,6 @@ public class InventoryItemDetailsFragment extends Fragment {
         }
     }
 
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {

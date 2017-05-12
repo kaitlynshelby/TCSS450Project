@@ -31,14 +31,19 @@ import java.util.List;
  */
 public class InventoryFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
+    /** Number of columns */
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
+
+    /** Number of columns */
     private int mColumnCount = 1;
+
+    /** Listener for list items */
     private OnListFragmentInteractionListener mListener;
 
+    /** The recycler view of the items */
     private RecyclerView mRecyclerView;
 
+    /** URL for location of inventory items */
     private static final String ITEM_URL
             = "http://cssgate.insttech.washington.edu/~jazzyd25/Android/inventorylist.php?cmd=inventoryitems";
 
@@ -50,12 +55,14 @@ public class InventoryFragment extends Fragment {
     public InventoryFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
+    /**
+     * Creates a new instance of the inventory fragment.
+     * @param columnCount number of columns for the list
+     * @return a new instance of the inventory fragment.
+     */
     public static InventoryFragment newInstance(int columnCount) {
         InventoryFragment fragment = new InventoryFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,7 +92,7 @@ public class InventoryFragment extends Fragment {
             }
         }
 
-        DownloadCoursesTask task = new DownloadCoursesTask();
+        DownloadItemsTask task = new DownloadItemsTask();
         task.execute(new String[]{ITEM_URL});
 
         FloatingActionButton floatingActionButton = (FloatingActionButton)
@@ -129,7 +136,10 @@ public class InventoryFragment extends Fragment {
         void onListFragmentInteraction(InventoryItem item);
     }
 
-    private class DownloadCoursesTask extends AsyncTask<String, Void, String> {
+    /**
+     * Launches the web services to display the inventory items.
+     */
+    private class DownloadItemsTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
             String response = "";
@@ -158,6 +168,13 @@ public class InventoryFragment extends Fragment {
             return response;
         }
 
+        /**
+         * Checks to see if there was a problem with the URL(Network) which is when an
+         * exception is caught. Tries to call the parse Method and checks to see if it was successful.
+         * If not, displays the exception.
+         *
+         * @param result the returned JSON formatted as a String
+         */
         @Override
         protected void onPostExecute(String result) {
             // Something wrong with the network or the URL.
@@ -181,7 +198,5 @@ public class InventoryFragment extends Fragment {
                 mRecyclerView.setAdapter(new MyInventoryRecyclerViewAdapter(itemList, mListener));
             }
         }
-
-
     }
 }

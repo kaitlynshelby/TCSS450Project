@@ -26,10 +26,7 @@
     <string name="login_link">Already a member? Login here.</string>
     <string name="name">Name</string>
     <string name="create_account">Create Account</string>
-<<<<<<< HEAD
 
-=======
->>>>>>> 4f77dd5aaa771b1bac3a442d362ac5be8bf65ff9
     <string name="confirm_password">Confirm Password</string>
     <string name="title_activity_landing_page">Inventory</string>
 
