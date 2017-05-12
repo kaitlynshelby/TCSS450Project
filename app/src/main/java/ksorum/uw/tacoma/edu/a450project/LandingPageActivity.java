@@ -23,7 +23,16 @@ import java.net.URL;
 
 import ksorum.uw.tacoma.edu.a450project.inventoryitem.InventoryItem;
 
-public class LandingPageActivity extends AppCompatActivity implements InventoryFragment.OnListFragmentInteractionListener, InventoryItemDetailsFragment.OnFragmentInteractionListener, InventoryAddFragment.InventoryAddListener {
+/**
+ * The landing page activity which opens after a user logs in.
+ * It hosts the fragments which allow a use to view, add, and
+ * modify items in the inventory.
+ *
+ * @author Kaitlyn Kinerk, Jasmine Dacones
+ * @version 1.0
+ */
+public class LandingPageActivity extends AppCompatActivity implements InventoryFragment.OnListFragmentInteractionListener,
+        InventoryItemDetailsFragment.OnFragmentInteractionListener, InventoryAddFragment.InventoryAddListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +53,6 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
             }
         });
 
-
         fab.setBackgroundTintList(ColorStateList.valueOf(Color
                 .parseColor("#2196F3")));
 
@@ -57,6 +65,12 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
 
     }
 
+    /**
+     * Launches the item details fragment for the item
+     * that is clicked on.
+     *
+     * @param item the inventory item that is clicked on.
+     */
     @Override
     public void onListFragmentInteraction(InventoryItem item) {
         InventoryItemDetailsFragment detailsFragment = new InventoryItemDetailsFragment();
@@ -70,20 +84,29 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
                 .commit();
     }
 
+
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
 
+    /**
+     * Adds an item to the database.
+     * @param url url to add to the database.
+     */
     @Override
     public void addItem(String url) {
         AddItemTask task = new AddItemTask();
         task.execute(new String[]{url.toString()});
     }
 
+
+    /**
+     * Launches AsyncTask to execute the web service to add an item
+     * to the inventory.
+     */
     private class AddItemTask extends AsyncTask<String, Void, String> {
 
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -147,78 +170,4 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
             }
         }
     }
-
-<<<<<<< HEAD
-=======
-    private class AddCourseTask extends AsyncTask<String, Void, String> {
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... urls) {
-            String response = "";
-            HttpURLConnection urlConnection = null;
-            for (String url : urls) {
-                try {
-                    URL urlObject = new URL(url);
-                    urlConnection = (HttpURLConnection) urlObject.openConnection();
-
-                    InputStream content = urlConnection.getInputStream();
-
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s = "";
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
-                    }
-
-                } catch (Exception e) {
-                    response = "Unable to add course, Reason: "
-                            + e.getMessage();
-                } finally {
-                    if (urlConnection != null)
-                        urlConnection.disconnect();
-                }
-            }
-            return response;
-        }
-
-
-        /**
-         * It checks to see if there was a problem with the URL(Network) which is when an
-         * exception is caught. It tries to call the parse Method and checks to see if it was successful.
-         * If not, it displays the exception.
-         *
-         * @param result
-         */
-        @Override
-        protected void onPostExecute(String result) {
-            // Something wrong with the network or the URL.
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-                String status = (String) jsonObject.get("result");
-                if (status.equals("success")) {
-                    Toast.makeText(getApplicationContext(), "Item successfully added!"
-                            , Toast.LENGTH_LONG)
-                            .show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Failed to add: "
-                                    + jsonObject.get("error")
-                            , Toast.LENGTH_LONG)
-                            .show();
-                }
-            } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "Something wrong with the data" +
-                        e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
->>>>>>> 4f77dd5aaa771b1bac3a442d362ac5be8bf65ff9
-
-
-
 }

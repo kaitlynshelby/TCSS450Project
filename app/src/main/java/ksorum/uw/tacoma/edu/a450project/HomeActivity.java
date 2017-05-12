@@ -65,11 +65,6 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
                 .addToBackStack(null)
                 .commit();
     }
-<<<<<<< HEAD
-
-    @Override
-    public void addUser(String url) {
-=======
 
     @Override
     public void addUser(String url) {
@@ -79,21 +74,10 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
 
     @Override
     public void loginUser(String url) {
->>>>>>> 4f77dd5aaa771b1bac3a442d362ac5be8bf65ff9
         UserTask task = new UserTask();
         task.execute(new String[]{url.toString()});
     }
 
-
-    @Override
-<<<<<<< HEAD
-    public void loginUser(String url) {
-        UserTask task = new UserTask();
-        task.execute(new String[]{url.toString()});
-    }
-=======
-    public void onMainFragmentInteraction(Uri uri) {
->>>>>>> 4f77dd5aaa771b1bac3a442d362ac5be8bf65ff9
 
     @Override
     public void onMainFragmentInteraction(Uri uri) {
