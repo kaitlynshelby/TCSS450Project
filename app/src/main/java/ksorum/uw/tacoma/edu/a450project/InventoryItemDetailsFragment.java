@@ -73,7 +73,7 @@ public class InventoryItemDetailsFragment extends Fragment {
 
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
-        floatingActionButton.show();
+        floatingActionButton.hide();
 
 
         return v;
@@ -137,7 +137,6 @@ public class InventoryItemDetailsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

@@ -85,6 +85,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
     }
 
 
+
     @Override
     public void onFragmentInteraction(Uri uri) {
 
