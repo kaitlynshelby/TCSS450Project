@@ -95,9 +95,9 @@ public class InventoryFragment extends Fragment {
         DownloadItemsTask task = new DownloadItemsTask();
         task.execute(new String[]{ITEM_URL});
 
-        FloatingActionButton floatingActionButton = (FloatingActionButton)
-                getActivity().findViewById(R.id.fab);
-        floatingActionButton.show();
+//        FloatingActionButton floatingActionButton = (FloatingActionButton)
+//                getActivity().findViewById(R.id.fab);
+//        floatingActionButton.show();
 
 
         return view;
