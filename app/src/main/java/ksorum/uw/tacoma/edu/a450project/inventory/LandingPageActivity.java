@@ -1,4 +1,4 @@
-package ksorum.uw.tacoma.edu.a450project;
+package ksorum.uw.tacoma.edu.a450project.inventory;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -21,7 +20,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import ksorum.uw.tacoma.edu.a450project.inventoryitem.InventoryItem;
+import ksorum.uw.tacoma.edu.a450project.R;
+import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
 
 /**
  * The landing page activity which opens after a user logs in.
@@ -85,7 +85,6 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
     }
 
 
-
     @Override
     public void onFragmentInteraction(Uri uri) {
 
@@ -141,7 +140,6 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
             return response;
         }
 
-
         /**
          * It checks to see if there was a problem with the URL(Network) which is when an
          * exception is caught. It tries to call the parse Method and checks to see if it was successful.
@@ -159,6 +157,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
                     Toast.makeText(getApplicationContext(), "Item successfully added!"
                             , Toast.LENGTH_LONG)
                             .show();
+                    getSupportFragmentManager().popBackStackImmediate();
                 } else {
                     Toast.makeText(getApplicationContext(), "Failed to add: "
                                     + jsonObject.get("error")

@@ -1,9 +1,8 @@
-package ksorum.uw.tacoma.edu.a450project;
+package ksorum.uw.tacoma.edu.a450project.shoppinglist;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,8 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import ksorum.uw.tacoma.edu.a450project.inventoryitem.InventoryItem;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,46 +20,36 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import ksorum.uw.tacoma.edu.a450project.R;
+import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem;
+
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnShoppingListFragmentInteractionListener}
  * interface.
  */
-public class InventoryFragment extends Fragment {
+public class ShoppingListFragment extends Fragment {
 
-    /** Number of columns */
     private static final String ARG_COLUMN_COUNT = "column-count";
-
-    /** Number of columns */
     private int mColumnCount = 1;
-
-    /** Listener for list items */
-    private OnListFragmentInteractionListener mListener;
-
-    /** The recycler view of the items */
+    private OnShoppingListFragmentInteractionListener mListener;
+    private static final String COURSE_URL
+            = "http://cssgate.insttech.washington.edu/~ksorum/shoppinglist.php?cmd=items";
     private RecyclerView mRecyclerView;
-
-    /** URL for location of inventory items */
-    private static final String ITEM_URL
-            = "http://cssgate.insttech.washington.edu/~jazzyd25/Android/inventorylist.php?cmd=inventoryitems";
 
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public InventoryFragment() {
+    public ShoppingListFragment() {
     }
 
-    /**
-     * Creates a new instance of the inventory fragment.
-     * @param columnCount number of columns for the list
-     * @return a new instance of the inventory fragment.
-     */
-    public static InventoryFragment newInstance(int columnCount) {
-        InventoryFragment fragment = new InventoryFragment();
+    public static ShoppingListFragment newInstance(int columnCount) {
+        ShoppingListFragment fragment = new ShoppingListFragment();
         Bundle args = new Bundle();
+        args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
     }
@@ -79,7 +66,7 @@ public class InventoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_inventory_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_shoppinglistitem_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -90,16 +77,9 @@ public class InventoryFragment extends Fragment {
             } else {
                 mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
+            DownloadShoppingItemsTask task = new DownloadShoppingItemsTask();
+            task.execute(new String[]{COURSE_URL});
         }
-
-        DownloadItemsTask task = new DownloadItemsTask();
-        task.execute(new String[]{ITEM_URL});
-
-        FloatingActionButton floatingActionButton = (FloatingActionButton)
-                getActivity().findViewById(R.id.fab);
-        floatingActionButton.show();
-
-
         return view;
     }
 
@@ -107,11 +87,11 @@ public class InventoryFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if (context instanceof OnShoppingListFragmentInteractionListener) {
+            mListener = (OnShoppingListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement OnShoppingListFragmentInteractionListener");
         }
     }
 
@@ -131,14 +111,11 @@ public class InventoryFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(InventoryItem item);
+    public interface OnShoppingListFragmentInteractionListener {
+        void onShoppingListFragmentInteraction(ShoppingListItem item);
     }
 
-    /**
-     * Launches the web services to display the inventory items.
-     */
-    private class DownloadItemsTask extends AsyncTask<String, Void, String> {
+    private class DownloadShoppingItemsTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
             String response = "";
@@ -146,7 +123,8 @@ public class InventoryFragment extends Fragment {
             for (String url : urls) {
                 try {
                     URL urlObject = new URL(url);
-                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+                    urlConnection = (HttpURLConnection)
+                            urlObject.openConnection();
 
                     InputStream content = urlConnection.getInputStream();
 
@@ -157,9 +135,10 @@ public class InventoryFragment extends Fragment {
                     }
 
                 } catch (Exception e) {
-                    response = "Unable to download the list of items, Reason: "
+                    response = "Unable to download the list of courses, Reason: "
                             + e.getMessage();
-                } finally {
+                }
+                finally {
                     if (urlConnection != null)
                         urlConnection.disconnect();
                 }
@@ -167,13 +146,6 @@ public class InventoryFragment extends Fragment {
             return response;
         }
 
-        /**
-         * Checks to see if there was a problem with the URL(Network) which is when an
-         * exception is caught. Tries to call the parse Method and checks to see if it was successful.
-         * If not, displays the exception.
-         *
-         * @param result the returned JSON formatted as a String
-         */
         @Override
         protected void onPostExecute(String result) {
             // Something wrong with the network or the URL.
@@ -183,8 +155,8 @@ public class InventoryFragment extends Fragment {
                 return;
             }
 
-            List<InventoryItem> itemList = new ArrayList<InventoryItem>();
-            result = InventoryItem.parseCourseJSON(result, itemList);
+            List<ShoppingListItem> shoppingList = new ArrayList<ShoppingListItem>();
+            result = ShoppingListItem.parseListJSON(result, shoppingList);
             // Something wrong with the JSON returned.
             if (result != null) {
                 Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_LONG)
@@ -193,9 +165,9 @@ public class InventoryFragment extends Fragment {
             }
 
             // Everything is good, show the list of courses.
-            if (!itemList.isEmpty()) {
-                mRecyclerView.setAdapter(new MyInventoryRecyclerViewAdapter(itemList, mListener));
+            if (!shoppingList.isEmpty()) {
+                mRecyclerView.setAdapter(new MyShoppingListRecyclerViewAdapter(shoppingList, mListener));
             }
         }
-    }
+     }
 }

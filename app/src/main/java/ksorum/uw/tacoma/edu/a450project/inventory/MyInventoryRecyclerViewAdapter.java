@@ -1,4 +1,4 @@
-package ksorum.uw.tacoma.edu.a450project;
+package ksorum.uw.tacoma.edu.a450project.inventory;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,8 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import ksorum.uw.tacoma.edu.a450project.InventoryFragment.OnListFragmentInteractionListener;
-import ksorum.uw.tacoma.edu.a450project.inventoryitem.InventoryItem;
+import ksorum.uw.tacoma.edu.a450project.R;
+import ksorum.uw.tacoma.edu.a450project.inventory.InventoryFragment.OnListFragmentInteractionListener;
+import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package ksorum.uw.tacoma.edu.a450project.inventoryitem;
+package ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +17,7 @@ public class InventoryItem implements Serializable {
     private String mQuantity;
     private String mPrice;
     private String mExpiration;
+
 
     public static final String ITEM_NAME = "itemName", QUANTITY = "quantity",
             PRICE = "price", EXPIRATION = "expiration";
