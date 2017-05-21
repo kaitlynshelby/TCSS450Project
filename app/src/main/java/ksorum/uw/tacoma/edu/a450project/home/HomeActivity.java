@@ -1,4 +1,4 @@
-package ksorum.uw.tacoma.edu.a450project;
+package ksorum.uw.tacoma.edu.a450project.home;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -16,6 +16,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import ksorum.uw.tacoma.edu.a450project.R;
+import ksorum.uw.tacoma.edu.a450project.inventory.LandingPageActivity;
 
 
 /**
@@ -35,7 +38,6 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
         setContentView(R.layout.activity_home);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new MainFragment())
-                .addToBackStack(null)
                 .commit();
     }
 
@@ -140,6 +142,8 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
                 if (status.equals("success")) {
                     Intent intent = new Intent(HomeActivity.this, LandingPageActivity.class);
                     startActivity(intent);
+                    finish();
+
                 } else {
                     Toast.makeText(getApplicationContext(), "Failed to complete user task: "
                                     + jsonObject.get("error")
@@ -148,7 +152,7 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
                     getSupportFragmentManager().popBackStackImmediate();
                 }
             } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "Please enter valid data" +
+                Toast.makeText(getApplicationContext(), "Please enter valid data " +
                         e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }

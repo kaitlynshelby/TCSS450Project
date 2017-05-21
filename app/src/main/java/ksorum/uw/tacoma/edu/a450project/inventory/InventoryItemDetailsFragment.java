@@ -1,4 +1,4 @@
-package ksorum.uw.tacoma.edu.a450project;
+package ksorum.uw.tacoma.edu.a450project.inventory;
 
 import android.content.Context;
 import android.net.Uri;
@@ -10,9 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import ksorum.uw.tacoma.edu.a450project.inventoryitem.InventoryItem;
+import ksorum.uw.tacoma.edu.a450project.R;
+import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
 
 
 /**

@@ -1,4 +1,4 @@
-package ksorum.uw.tacoma.edu.a450project;
+package ksorum.uw.tacoma.edu.a450project.home;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import java.net.URLEncoder;
+
+import ksorum.uw.tacoma.edu.a450project.R;
 
 
 /**
