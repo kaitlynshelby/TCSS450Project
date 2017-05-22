@@ -14,5 +14,11 @@
         android:textAppearance="?attr/textAppearanceListItem"
         />
 
+    <ImageView
+        android:id="@+id/delete_item_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/cross"/>
+
 
 </LinearLayout>
