@@ -13,6 +13,8 @@ import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
 
 import java.util.List;
 
+import static ksorum.uw.tacoma.edu.a450project.R.drawable.delete_button;
+
 /**
  * {@link RecyclerView.Adapter} that can display a {@link InventoryItem} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
@@ -46,7 +48,7 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getItemName());
         holder.mDeleteView.setBackgroundResource(0);
-        holder.mDeleteView.setImageResource(R.id.delete_item_list);
+        holder.mDeleteView.setImageResource(delete_button);
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

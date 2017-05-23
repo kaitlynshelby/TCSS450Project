@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-<<<<<<< HEAD
-          package="ksorum.uw.tacoma.edu.a450project">
-
-    <uses-permission android:name="android.permission.INTERNET"/>
-=======
     package="ksorum.uw.tacoma.edu.a450project">
 
     <uses-permission android:name="android.permission.INTERNET" />
->>>>>>> eb89353f5e623f3c9b50254c3bcce0206fbf3dca
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+
+
 
     <application
         android:allowBackup="true"
@@ -17,29 +15,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
-<<<<<<< HEAD
             android:name=".home.HomeActivity"
-            android:label="Home">
+            android:label="What&apos;s in My Fridge?"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
         </activity>
         <activity
             android:name=".inventory.LandingPageActivity"
-=======
-            android:name=".HomeActivity"
-            android:label="What&apos;s in My Fridge?"
-            android:theme="@style/AppTheme">
-
-        </activity>
-        <activity
-            android:name=".LandingPageActivity"
->>>>>>> eb89353f5e623f3c9b50254c3bcce0206fbf3dca
             android:label="Inventory">
 
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
     </activity>
 
         <activity android:name=".TestTabActivity">
@@ -48,10 +38,6 @@
         <activity
             android:name=".shoppinglist.ShoppingListActivity"
             android:label="Shopping List">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
     </application>
 
