@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ksorum.uw.tacoma.edu.a450project.R;
-import ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingListFragment.OnShoppingListFragmentInteractionListener;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_shoppinglistitem, parent, false);
+                .inflate(R.layout.fragment_shopping, parent, false);
         return new ViewHolder(view);
     }
 

@@ -9,7 +9,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import ksorum.uw.tacoma.edu.a450project.inventoryitem.InventoryItem;
+import ksorum.uw.tacoma.edu.a450project.inventory.InventoryFragment;
+import ksorum.uw.tacoma.edu.a450project.inventory.InventoryItemDetailsFragment;
+import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
 
 public class TestTabActivity extends AppCompatActivity implements InventoryFragment.OnListFragmentInteractionListener, InventoryItemDetailsFragment.OnFragmentInteractionListener{
 
