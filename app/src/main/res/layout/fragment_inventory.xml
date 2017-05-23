@@ -4,21 +4,24 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@drawable/border_one_side"
-    android:paddingBottom="5dp">
+    android:paddingBottom="5dp"
+    android:descendantFocusability="blocksDescendants" >
 
     <TextView
         android:id="@+id/item_name"
-        android:layout_width="match_parent"
+        android:layout_width="325dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem"
-        />
+        android:textAppearance="?attr/textAppearanceListItem" />
 
-    <ImageView
-        android:id="@+id/delete_item_list"
+    <ImageButton
+        android:id="@+id/delete_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/cross"/>
-
+        android:src="@drawable/waste_bin"
+        android:clickable="true"
+        android:onClick="onClick"
+        android:layout_gravity="center_vertical"
+        android:layout_centerVertical="true"/>
 
 </LinearLayout>
