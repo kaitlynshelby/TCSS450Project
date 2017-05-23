@@ -1,61 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_height="match_parent"
              android:layout_width="match_parent"
-             android:orientation="horizontal"
+             android:orientation="vertical"
              android:fitsSystemWindows="true"
-             android:background="@color/colorBg"
-             tools:context="ksorum.uw.tacoma.edu.a450project.HomeActivity">
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="100dp"
-        android:text="@string/title"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="50sp"
-        android:textStyle="bold" />
+             android:background="@color/colorPrimary"
+             tools:context="ksorum.uw.tacoma.edu.a450project.home.HomeActivity">
 
 
     <LinearLayout
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="84dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:orientation="horizontal"
         android:layout_gravity="bottom"
 
         >
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/button_login"
-            style="@style/Widget.AppCompat.Button"
+            android:background="@color/colorBg"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:text="@string/login"
             android:textSize="24sp"
-            android:onClick="launchLogin"/>
+            android:onClick="launchLogin"
+            android:textColor="@color/colorPrimaryDark"/>
 
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/button_signup"
-            style="@style/Widget.AppCompat.Button"
+            android:background="@color/colorBg"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:text="@string/signup"
             android:textSize="24sp"
-            android:onClick="launchSignUp"/>
+            android:onClick="launchSignUp"
+            android:textColor="@color/colorPrimaryDark"/>
 
     </LinearLayout>
 
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:contentDescription="@string/title"
+        android:src="@drawable/title_logo"/>
 
 
 </FrameLayout>

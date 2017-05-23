@@ -5,20 +5,15 @@
               android:orientation="vertical"
               android:paddingLeft="24dp"
               android:paddingRight="24dp"
-              tools:context="ksorum.uw.tacoma.edu.a450project.SignUpFragment">
+              android:background="@color/colorPrimary"
+              tools:context="ksorum.uw.tacoma.edu.a450project.home.SignUpFragment">
 
-    <TextView
-        android:id="@+id/app_title_signup"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="@string/title"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large.Inverse"
-        android:textColor="@android:color/black"
-        android:textSize="50sp"
-        android:textStyle="bold"/>
+        android:src="@drawable/title"
+        android:contentDescription="@string/title"
+        android:layout_marginTop="70dp"/>
 
 
     <EditText
@@ -51,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:background="@android:color/holo_blue_light"
+        android:background="@color/colorBg"
         android:text="@string/create_account"/>
 
     <Button
@@ -63,6 +58,6 @@
         android:clickable="true"
         android:onClick="launchLogin"
         android:text="@string/login_link"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        android:textColor="@color/colorAccent"/>
 
 </LinearLayout>

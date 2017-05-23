@@ -9,7 +9,7 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical"
 android:layout_margin="40dp"
-    tools:context=".InventoryAddFragment">
+    tools:context=".inventory.InventoryAddFragment">
 
 <EditText
     android:layout_width="match_parent"

@@ -5,20 +5,15 @@
     android:layout_height="match_parent"
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
-    tools:context="ksorum.uw.tacoma.edu.a450project.LoginFragment">
+    android:background="@color/colorPrimary"
+    tools:context="ksorum.uw.tacoma.edu.a450project.home.LoginFragment">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="@string/title"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large.Inverse"
-        android:textColor="@android:color/black"
-        android:textSize="50sp"
-        android:textStyle="bold" />
+        android:src="@drawable/title"
+        android:contentDescription="@string/title"
+        android:layout_marginTop="70dp"/>
 
 
     <EditText
@@ -55,7 +50,8 @@
         android:layout_below="@+id/pwd_login"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:background="@android:color/holo_blue_light"
+        android:background="@color/colorBg"
+        android:textColor="@color/colorPrimaryDark"
         android:text="@string/login" />
 
     <Button
@@ -70,7 +66,7 @@
         android:clickable="true"
         android:gravity="center"
         android:text="@string/signup_link"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/colorAccent"
         android:onClick="launchSignUp"/>
 
 </RelativeLayout>

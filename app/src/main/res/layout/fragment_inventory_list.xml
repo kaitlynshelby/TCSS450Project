@@ -9,7 +9,7 @@
 
     app:layoutManager="LinearLayoutManager"
 
-    tools:context="ksorum.uw.tacoma.edu.a450project.InventoryFragment"
+    tools:context="ksorum.uw.tacoma.edu.a450project.inventory.InventoryFragment"
     tools:listitem="@layout/fragment_inventory" />
 
     <!--android:layout_marginLeft="16dp"-->
