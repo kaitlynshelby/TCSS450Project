@@ -90,8 +90,6 @@ public class InventoryAddFragment extends Fragment {
             }
         });
 
-
-
         return v;
     }
 
