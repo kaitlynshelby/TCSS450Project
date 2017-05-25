@@ -1,6 +1,7 @@
 package ksorum.uw.tacoma.edu.a450project.home;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -35,6 +36,7 @@ public class LoginFragment extends Fragment {
     private EditText mUserPassword;
 
     private OnLoginUser mListener;
+    private SharedPreferences mSharedPreferences;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -75,7 +77,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String url = buildCourseURL(v);
-                mListener.loginUser(url);
+                mListener.loginUser(url, mUserEmail.getText().toString());
             }
         });
 
@@ -99,6 +101,7 @@ public class LoginFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
 
     /**
      * Build the url which will be used by the webservice.
@@ -142,6 +145,6 @@ public class LoginFragment extends Fragment {
      *
      */
     public interface OnLoginUser {
-        void loginUser(String url);
+        void loginUser(String url, String email);
     }
 }

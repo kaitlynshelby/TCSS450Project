@@ -1,12 +1,15 @@
 package ksorum.uw.tacoma.edu.a450project.shoppinglist;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +20,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
 import ksorum.uw.tacoma.edu.a450project.R;
+import ksorum.uw.tacoma.edu.a450project.home.HomeActivity;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem;
 
 /**
@@ -34,10 +39,10 @@ public class ShoppingListFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnShoppingListFragmentInteractionListener mListener;
-    private static final String COURSE_URL
+    private static final String LIST_URL
             = "http://cssgate.insttech.washington.edu/~ksorum/shoppinglist.php?cmd=items";
     private RecyclerView mRecyclerView;
-
+    private SharedPreferences mSharedPreferences;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -78,7 +83,8 @@ public class ShoppingListFragment extends Fragment {
                 mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             DownloadShoppingItemsTask task = new DownloadShoppingItemsTask();
-            task.execute(new String[]{COURSE_URL});
+            String url = buildCourseURL(view);
+            task.execute(new String[]{url});
         }
         return view;
     }
@@ -99,6 +105,36 @@ public class ShoppingListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    /**
+     * Build the url which will be used by the webservice.
+     *
+     * @param v the View object
+     * @return the url to be used by the webservice
+     */
+    private String buildCourseURL(View v) {
+
+        StringBuilder sb = new StringBuilder(LIST_URL);
+
+        try {
+
+            mSharedPreferences = getActivity().getApplicationContext().
+                    getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
+
+            String user = mSharedPreferences.getString("user", "");
+
+            sb.append("&user=");
+            sb.append(URLEncoder.encode(user, "UTF-8"));
+
+            Log.i("ShoppingListFragment", sb.toString());
+
+        }
+        catch(Exception e) {
+            Toast.makeText(v.getContext(), "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
+                    .show();
+        }
+        return sb.toString();
     }
 
     /**

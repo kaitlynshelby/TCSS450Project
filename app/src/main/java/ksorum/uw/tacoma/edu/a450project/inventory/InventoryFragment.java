@@ -1,6 +1,7 @@
 package ksorum.uw.tacoma.edu.a450project.inventory;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,8 +49,10 @@ public class InventoryFragment extends Fragment {
 
     /** URL for location of inventory items */
     private static final String ITEM_URL
-            = "http://cssgate.insttech.washington.edu/~jazzyd25/Android/inventorylist.php?cmd=inventoryitems";
+            = "http://cssgate.insttech.washington.edu/~ksorum/inventorylist.php?cmd=inventoryitems";
 
+    private String mUserEmail;
+    private SharedPreferences mSharedPreferences;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -94,11 +99,8 @@ public class InventoryFragment extends Fragment {
         }
 
         DownloadItemsTask task = new DownloadItemsTask();
-        task.execute(new String[]{ITEM_URL});
-
-//        FloatingActionButton floatingActionButton = (FloatingActionButton)
-//                getActivity().findViewById(R.id.fab);
-//        floatingActionButton.show();
+        String url = buildCourseURL(view);
+        task.execute(new String[]{url});
 
 
         return view;
@@ -116,10 +118,43 @@ public class InventoryFragment extends Fragment {
         }
     }
 
+
+
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    /**
+     * Build the url which will be used by the webservice.
+     *
+     * @param v the View object
+     * @return the url to be used by the webservice
+     */
+    private String buildCourseURL(View v) {
+
+        StringBuilder sb = new StringBuilder(ITEM_URL);
+
+        try {
+
+            mSharedPreferences = getActivity().getApplicationContext().
+                    getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
+
+            mUserEmail = mSharedPreferences.getString("user", "");
+
+            String user = mUserEmail;
+            sb.append("&user=");
+            sb.append(URLEncoder.encode(user, "UTF-8"));
+
+            Log.i("InventoryFragment", sb.toString());
+
+        }
+        catch(Exception e) {
+            Toast.makeText(v.getContext(), "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
+                    .show();
+        }
+        return sb.toString();
     }
 
     /**

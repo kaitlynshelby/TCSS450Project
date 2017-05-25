@@ -19,8 +19,8 @@ public class InventoryItem implements Serializable {
     private String mExpiration;
 
 
-    public static final String ITEM_NAME = "itemName", QUANTITY = "quantity",
-            PRICE = "price", EXPIRATION = "expiration";
+    public static final String ITEM_NAME = "name", QUANTITY = "quantity",
+            PRICE = "price", EXPIRATION = "expirationdate";
 
     public InventoryItem(String itemName, String quantity, String price, String expiration) {
         this.mItemName = itemName;

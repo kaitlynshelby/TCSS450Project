@@ -10,7 +10,7 @@ import java.util.List;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingListFragment;
 
 /**
- * Created by Jasmine D on 5/9/2017.
+ * Created by Kaitlyn K on 5/9/2017.
  */
 
 public class ShoppingListItem implements Serializable {
@@ -68,8 +68,8 @@ public class ShoppingListItem implements Serializable {
 
                 for (int i = 0; i < arr.length(); i++) {
                     JSONObject obj = arr.getJSONObject(i);
-                    ShoppingListItem item = new ShoppingListItem(obj.getString(ShoppingListItem.ITEM_NAME), obj.getString(ShoppingListItem.QUANTITY)
-                            , obj.getString(ShoppingListItem.PRICE));
+                    ShoppingListItem item = new ShoppingListItem(obj.getString(ShoppingListItem.ITEM_NAME), obj.getString(ShoppingListItem.PRICE)
+                            , obj.getString(ShoppingListItem.QUANTITY));
                     shoppingList.add(item);
                 }
             } catch (JSONException e) {

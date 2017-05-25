@@ -1,5 +1,6 @@
 package ksorum.uw.tacoma.edu.a450project.inventory;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.Uri;
@@ -8,7 +9,10 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -53,8 +57,6 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
             }
         });
 
-        fab.setBackgroundTintList(ColorStateList.valueOf(Color
-                .parseColor("#2196F3")));
 
         if (savedInstanceState == null || getSupportFragmentManager().findFragmentById(R.id.list) == null) {
             InventoryFragment inventoryFragment = new InventoryFragment();
@@ -64,6 +66,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         }
 
     }
+
 
     /**
      * Launches the item details fragment for the item

@@ -1,6 +1,7 @@
 package ksorum.uw.tacoma.edu.a450project.inventory;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -36,9 +37,11 @@ public class InventoryAddFragment extends Fragment {
     /** Expiration of new item */
     private EditText mItemExpirationEditText;
 
+    private SharedPreferences mSharedPreferences;
+
     /** URL of the location to add an item to the inventory */
     private final static String INVENTORY_ITEM_ADD_URL
-            = "http://cssgate.insttech.washington.edu/~jazzyd25/Android/addInventoryItem.php?";
+            = "http://cssgate.insttech.washington.edu/~ksorum/addInventoryItem.php?";
 
 
     public InventoryAddFragment() {
@@ -106,6 +109,14 @@ public class InventoryAddFragment extends Fragment {
 
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        FloatingActionButton floatingActionButton = (FloatingActionButton)
+                getActivity().findViewById(R.id.fab);
+        floatingActionButton.show();
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
@@ -131,9 +142,12 @@ public class InventoryAddFragment extends Fragment {
 
         try {
 
+            mSharedPreferences = getActivity().getApplicationContext().
+                    getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
+
             String itemName = mItemNameEditText.getText().toString();
-            sb.append("itemName=");
-            sb.append(itemName);
+            sb.append("&name=");
+            sb.append(URLEncoder.encode(itemName, "UTF-8"));
 
 
             String itemQuantity = mItemQuantityEditText.getText().toString();
@@ -146,8 +160,13 @@ public class InventoryAddFragment extends Fragment {
             sb.append(URLEncoder.encode(itemPrice, "UTF-8"));
 
             String itemExpiration = mItemExpirationEditText.getText().toString();
-            sb.append("&expiration=");
+            sb.append("&expirationdate=");
             sb.append(URLEncoder.encode(itemExpiration, "UTF-8"));
+
+            String user = mSharedPreferences.getString("user", "");
+            sb.append("&user=");
+            sb.append(URLEncoder.encode(user, "UTF-8"));
+
 
             Log.i("InventoryAddFragment", sb.toString());
 
