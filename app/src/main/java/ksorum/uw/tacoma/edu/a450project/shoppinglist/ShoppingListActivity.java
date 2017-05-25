@@ -26,6 +26,14 @@ public class ShoppingListActivity extends AppCompatActivity implements
 
     @Override
     public void onShoppingListFragmentInteraction(ShoppingListItem item) {
+        /*ShoppingItemDetailsFragment detailsFragment = new ShoppingItemDetailsFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ShoppingItemDetailsFragment.INVENTORY_ITEM_SELECTED, item);
+        detailsFragment.setArguments(args);
 
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.shop_fragment_container, detailsFragment)
+                .addToBackStack(null)
+                .commit();*/
     }
 }

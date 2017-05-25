@@ -73,7 +73,7 @@ public class ShoppingListItem implements Serializable {
                     shoppingList.add(item);
                 }
             } catch (JSONException e) {
-                reason =  "Unable to parse data, Reason: " + e.getMessage();
+                reason =  "Use the round button to add some items!";
             }
 
         }

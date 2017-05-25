@@ -6,11 +6,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import java.net.URLEncoder;
 
 import ksorum.uw.tacoma.edu.a450project.R;
 
@@ -23,6 +27,10 @@ import ksorum.uw.tacoma.edu.a450project.R;
  * create an instance of this fragment.
  */
 public class ShoppingListAddFragment extends Fragment {
+
+    /** URL of the location to add an item to the inventory */
+    private final static String SHOPPING_ITEM_ADD_URL
+            = "http://cssgate.insttech.washington.edu/~ksorum/addShoppingItem.php?";
 
     /** Name of new item */
     private EditText mNameEditText;
@@ -47,7 +55,6 @@ public class ShoppingListAddFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment ShoppingListAddFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static ShoppingListAddFragment newInstance(String param1, String param2) {
         ShoppingListAddFragment fragment = new ShoppingListAddFragment();
         Bundle args = new Bundle();
@@ -79,15 +86,60 @@ public class ShoppingListAddFragment extends Fragment {
         addItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //String url = buildCourseURL(v);
-                // mListener.addShoppingItem(url);
+                String url = buildURL(v);
+                mListener.addShoppingItem(url);
             }
         });
 
         return v;
     }
 
-    //private String buildURL
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        FloatingActionButton floatingActionButton = (FloatingActionButton)
+                getActivity().findViewById(R.id.fab);
+        floatingActionButton.show();
+    }
+
+    private String buildURL(View v) {
+
+        StringBuilder sb = new StringBuilder(SHOPPING_ITEM_ADD_URL);
+
+        try {
+
+            mSharedPreferences = getActivity().getApplicationContext().
+                    getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
+
+            String itemName = mNameEditText.getText().toString();
+            sb.append("&name=");
+            sb.append(URLEncoder.encode(itemName, "UTF-8"));
+
+
+            String itemQuantity = mQuantityEditText.getText().toString();
+            sb.append("&quantity=");
+            sb.append(URLEncoder.encode(itemQuantity, "UTF-8"));
+
+
+            String itemPrice = mPriceEditText.getText().toString();
+            sb.append("&price=");
+            sb.append(URLEncoder.encode(itemPrice, "UTF-8"));
+
+            String user = mSharedPreferences.getString("user", "");
+            sb.append("&user=");
+            sb.append(URLEncoder.encode(user, "UTF-8"));
+
+
+            Log.i("ShoppingListAddFragment", sb.toString());
+
+        }
+        catch(Exception e) {
+            Toast.makeText(v.getContext(), "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
+                    .show();
+        }
+        return sb.toString();
+    }
+
 
 
     @Override

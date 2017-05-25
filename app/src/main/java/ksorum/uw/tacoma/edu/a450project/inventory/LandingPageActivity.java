@@ -36,8 +36,7 @@ import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
  * @version 1.0
  */
 public class LandingPageActivity extends AppCompatActivity implements InventoryFragment.OnListFragmentInteractionListener,
-        InventoryItemDetailsFragment.OnFragmentInteractionListener, InventoryAddFragment.InventoryAddListener,
-        MyInventoryRecyclerViewAdapter.InventoryDeleteListener {
+        InventoryItemDetailsFragment.OnFragmentInteractionListener, InventoryAddFragment.InventoryAddListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,11 +103,6 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         task.execute(new String[]{url.toString()});
     }
 
-    @Override
-    public void deleteItem(String url) {
-        DeleteItemTask task = new DeleteItemTask();
-        task.execute(new String[]{url.toString()});
-    }
 
 
     /**
@@ -181,19 +175,6 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         }
     }
 
-    private class DeleteItemTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            return null;
-        }
-    }
 
 
-    /**
-     * Interface for deleting an item to the inventory.
-     */
-    public interface InventoryDeleteListener {
-        public void deleteItem(String url);
-    }
 }

@@ -230,7 +230,7 @@ public class InventoryFragment extends Fragment {
 
             // Everything is good, show the list of courses.
             if (!itemList.isEmpty()) {
-                mRecyclerView.setAdapter(new MyInventoryRecyclerViewAdapter(itemList, mListener));
+                mRecyclerView.setAdapter(new MyInventoryRecyclerViewAdapter(getActivity(), itemList, mListener));
             }
         }
     }
