@@ -202,7 +202,7 @@ public class ShoppingListFragment extends Fragment {
 
             // Everything is good, show the list of courses.
             if (!shoppingList.isEmpty()) {
-                mRecyclerView.setAdapter(new MyShoppingListRecyclerViewAdapter(shoppingList, mListener));
+                mRecyclerView.setAdapter(new MyShoppingListRecyclerViewAdapter(getActivity(), shoppingList, mListener));
             }
         }
      }

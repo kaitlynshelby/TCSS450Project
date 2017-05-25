@@ -51,7 +51,7 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
                     .add(R.id.fragment_container, new MainFragment())
                     .commit();
         } else {
-            Intent i = new Intent(this, LandingPageActivity.class);
+            Intent i = new Intent(this, ShoppingListActivity.class);
             startActivity(i);
             finish();
         }
