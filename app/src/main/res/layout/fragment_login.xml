@@ -6,6 +6,7 @@
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
     android:background="@color/colorPrimary"
+    android:id="@+id/fragment_login"
     tools:context="ksorum.uw.tacoma.edu.a450project.home.LoginFragment">
 
     <ImageView

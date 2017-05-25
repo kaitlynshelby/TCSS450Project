@@ -3,8 +3,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/fragment_add_course"
-android:name="edu.uw.tacoma.mmuppa.webservicepractice.CourseAddFragment"
+android:id="@+id/fragment_add_inventory_item"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical"
@@ -39,7 +38,7 @@ android:layout_margin="40dp"
     android:id="@+id/add_item_button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="right"
+    android:layout_gravity="end"
     android:text="@string/add_item_text"
     android:onClick="addItem" />
 </LinearLayout>
