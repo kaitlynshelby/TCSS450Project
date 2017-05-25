@@ -23,6 +23,7 @@ import java.net.URL;
 
 import ksorum.uw.tacoma.edu.a450project.R;
 import ksorum.uw.tacoma.edu.a450project.inventory.LandingPageActivity;
+import ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingListActivity;
 
 
 /**
@@ -42,8 +43,9 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        mSharedPreferences = getSharedPreferences(getString(R.string.LOGIN_PREFS)
+        mSharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.LOGIN_PREFS)
                 , Context.MODE_PRIVATE);
+
         if (!mSharedPreferences.getBoolean(getString(R.string.LOGGEDIN), false)) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, new MainFragment())
@@ -90,7 +92,7 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
     }
 
     @Override
-    public void loginUser(String url) {
+    public void loginUser(String url, String email) {
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -104,10 +106,10 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
             return;
         }
 
-        mSharedPreferences
-                .edit()
-                .putBoolean(getString(R.string.LOGGEDIN), true)
-                .commit();
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putBoolean(getString(R.string.LOGGEDIN), true);
+        editor.putString("user", email);
+        editor.commit();
     }
 
 
