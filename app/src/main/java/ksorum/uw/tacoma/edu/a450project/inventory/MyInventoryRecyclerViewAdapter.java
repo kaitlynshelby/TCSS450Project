@@ -2,6 +2,7 @@ package ksorum.uw.tacoma.edu.a450project.inventory;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -21,6 +23,7 @@ import org.json.JSONObject;
 import ksorum.uw.tacoma.edu.a450project.R;
 import ksorum.uw.tacoma.edu.a450project.inventory.InventoryFragment.OnListFragmentInteractionListener;
 import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
+import ksorum.uw.tacoma.edu.a450project.shoppinglist.MyShoppingListRecyclerViewAdapter;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -28,9 +31,16 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static java.security.AccessController.getContext;
+import static java.util.concurrent.TimeUnit.DAYS;
 import static ksorum.uw.tacoma.edu.a450project.R.drawable.delete_button;
 import static ksorum.uw.tacoma.edu.a450project.R.drawable.waste_bin;
 
@@ -40,9 +50,13 @@ import static ksorum.uw.tacoma.edu.a450project.R.drawable.waste_bin;
  */
 public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInventoryRecyclerViewAdapter.ViewHolder> {
 
-    /** The list of inventory items */
+    /**
+     * The list of inventory items
+     */
     private final List<InventoryItem> mValues;
-    /** Fragment listener in the list */
+    /**
+     * Fragment listener in the list
+     */
     private final OnListFragmentInteractionListener mListener;
 
     private static final String URL =
@@ -54,7 +68,8 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
 
     /**
      * Adapter constructor.
-     * @param items the list of inventory items
+     *
+     * @param items    the list of inventory items
      * @param listener the fragment listener for the list
      */
     public MyInventoryRecyclerViewAdapter(Context context, List<InventoryItem> items, OnListFragmentInteractionListener listener) {
@@ -101,7 +116,52 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
 
             }
         });
+
+
+        String itemExpiration = mValues.get(pos).getExpiration();
+        System.out.println("Item's Expiration Date: " + itemExpiration);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date itemDate;
+        Date compareDate;
+
+        // Today's date
+        Date todaysDate = new Date();
+        DateFormat todaysDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String today = todaysDateFormat.format(todaysDate);
+
+        // TODO: Remove date, only used for testing purposes
+        String date2 = "2017-06-13";
+
+        try {
+            itemDate = df.parse(itemExpiration);
+            compareDate = df.parse(date2);
+            String newDateString = df.format(itemDate);
+            String compareNewDateString = df.format(compareDate);
+            Log.i("CHECK", "Date parsed and formatted");
+
+            long diff = Math.round((itemDate.getTime() - compareDate.getTime()) / (double) 86400000);
+
+            if (diff < 0) {
+                diff *= -1;
+            } else {
+                diff *= 1;
+            }
+            int difference = (int) diff;
+            System.out.println("Days difference: " + difference);
+
+            if (difference <= 1) {
+                holder.mView.setBackgroundColor(Color.RED);
+                holder.mView.getBackground().setAlpha(100);
+            } else if (difference >= 2 && difference <= 3) {
+                holder.mView.setBackgroundColor(Color.YELLOW);
+                holder.mView.getBackground().setAlpha(100);
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
+
 
     public String buildURL(String name) {
         StringBuilder sb = new StringBuilder(URL);
@@ -120,13 +180,11 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
 
             Log.i("InventoryFragment", sb.toString());
 
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
 
         }
         return sb.toString();
     }
-
 
 
     @Override
