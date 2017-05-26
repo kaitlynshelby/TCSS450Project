@@ -10,10 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +20,6 @@ import org.json.JSONObject;
 import ksorum.uw.tacoma.edu.a450project.R;
 import ksorum.uw.tacoma.edu.a450project.inventory.InventoryFragment.OnListFragmentInteractionListener;
 import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
-import ksorum.uw.tacoma.edu.a450project.shoppinglist.MyShoppingListRecyclerViewAdapter;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -34,14 +30,9 @@ import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import static java.security.AccessController.getContext;
-import static java.util.concurrent.TimeUnit.DAYS;
-import static ksorum.uw.tacoma.edu.a450project.R.drawable.delete_button;
 import static ksorum.uw.tacoma.edu.a450project.R.drawable.waste_bin;
 
 /**
@@ -116,8 +107,7 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
 
             }
         });
-
-
+        
         String itemExpiration = mValues.get(pos).getExpiration();
         System.out.println("Item's Expiration Date: " + itemExpiration);
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -135,8 +125,6 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
         try {
             itemDate = df.parse(itemExpiration);
             compareDate = df.parse(date2);
-            String newDateString = df.format(itemDate);
-            String compareNewDateString = df.format(compareDate);
             Log.i("CHECK", "Date parsed and formatted");
 
             long diff = Math.round((itemDate.getTime() - compareDate.getTime()) / (double) 86400000);
@@ -146,6 +134,7 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
             } else {
                 diff *= 1;
             }
+
             int difference = (int) diff;
             System.out.println("Days difference: " + difference);
 
