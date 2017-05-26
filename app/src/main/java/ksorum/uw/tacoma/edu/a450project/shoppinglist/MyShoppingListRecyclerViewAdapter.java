@@ -45,10 +45,6 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
 
     private final OnDeleteItem mDeleteListener;
 
-
-    private static final String URL =
-            "http://cssgate.insttech.washington.edu/~ksorum/deleteShoppingItem.php?";
-
     private SharedPreferences mSharedPreferences;
 
     private FragmentActivity mContext;
@@ -98,8 +94,7 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
 
             @Override
             public void onClick(View v) {
-                String url = buildURL(holder.mItem.getName());
-                boolean deleted = mDeleteListener.deleteItem(url, holder.mItem.getName(),
+                boolean deleted = mDeleteListener.deleteItem(holder.mItem.getName(),
                         holder.mItem.getQuantity(), holder.mItem.getPrice());
 
                 if (deleted) {
@@ -112,29 +107,6 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
         });
     }
 
-    public String buildURL(String name) {
-        StringBuilder sb = new StringBuilder(URL);
-
-        try {
-
-            mSharedPreferences = mContext.getSharedPreferences
-                    (mContext.getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
-
-            sb.append("name=");
-            sb.append(URLEncoder.encode(name, "UTF-8"));
-
-            String user = mSharedPreferences.getString("user", "");
-            sb.append("&user=");
-            sb.append(URLEncoder.encode(user, "UTF-8"));
-
-            Log.i("InventoryFragment", sb.toString());
-
-        }
-        catch(Exception e) {
-
-        }
-        return sb.toString();
-    }
 
     @Override
     public int getItemCount() {
@@ -162,6 +134,6 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
 
 
     public interface OnDeleteItem {
-        boolean deleteItem(String url, String name, String quantity, String price);
+        boolean deleteItem(String name, String quantity, String price);
     }
 }

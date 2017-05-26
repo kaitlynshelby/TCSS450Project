@@ -45,6 +45,8 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
     /** Fragment listener in the list */
     private final OnListFragmentInteractionListener mListener;
 
+    private final OnDeleteItem mDeleteListener;
+
     private static final String URL =
             "http://cssgate.insttech.washington.edu/~ksorum/deleteInventoryItem.php?";
 
@@ -61,6 +63,13 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
         mValues = items;
         mListener = listener;
         mContext = context;
+
+        if (context instanceof OnDeleteItem) {
+            mDeleteListener = (OnDeleteItem) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnDeleteListener");
+        }
     }
 
     @Override
@@ -91,42 +100,18 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
 
             @Override
             public void onClick(View v) {
-                mValues.remove(pos);
-                notifyItemRemoved(pos);
-                notifyItemRangeChanged(pos, mValues.size());
-                Log.i("DELETE", "Click working");
-                String url = buildURL(holder.mItem.getItemName());
-                DeleteItemTask task = new DeleteItemTask();
-                task.execute(new String[]{url});
+                boolean deleted = mDeleteListener.deleteItem(holder.mItem.getItemName(),
+                        holder.mItem.getQuantity(), holder.mItem.getPrice());
+
+                if (deleted) {
+                    mValues.remove(pos);
+                    notifyItemRemoved(pos);
+                    notifyItemRangeChanged(pos, mValues.size());
+                }
 
             }
         });
     }
-
-    public String buildURL(String name) {
-        StringBuilder sb = new StringBuilder(URL);
-
-        try {
-
-            mSharedPreferences = mContext.getSharedPreferences
-                    (mContext.getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
-
-            sb.append("name=");
-            sb.append(URLEncoder.encode(name, "UTF-8"));
-
-            String user = mSharedPreferences.getString("user", "");
-            sb.append("&user=");
-            sb.append(URLEncoder.encode(user, "UTF-8"));
-
-            Log.i("InventoryFragment", sb.toString());
-
-        }
-        catch(Exception e) {
-
-        }
-        return sb.toString();
-    }
-
 
 
     @Override
@@ -153,73 +138,9 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
         }
     }
 
-    /**
-     * Launches AsyncTask to execute the web service to delete an item
-     * from the inventory.
-     */
-    private class DeleteItemTask extends AsyncTask<String, Void, String> {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... urls) {
-            String response = "";
-            HttpURLConnection urlConnection = null;
-            for (String url : urls) {
-                try {
-                    java.net.URL urlObject = new URL(url);
-                    urlConnection = (HttpURLConnection) urlObject.openConnection();
-
-                    InputStream content = urlConnection.getInputStream();
-
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s = "";
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
-                    }
-
-                } catch (Exception e) {
-                    response = "Unable to delete course, Reason: "
-                            + e.getMessage();
-                } finally {
-                    if (urlConnection != null)
-                        urlConnection.disconnect();
-                }
-            }
-            return response;
-        }
-
-        /**
-         * It checks to see if there was a problem with the URL(Network) which is when an
-         * exception is caught. It tries to call the parse Method and checks to see if it was successful.
-         * If not, it displays the exception.
-         *
-         * @param result
-         */
-        @Override
-        protected void onPostExecute(String result) {
-            // Something wrong with the network or the URL.
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-                String status = (String) jsonObject.get("result");
-                if (status.equals("success")) {
-                    Toast.makeText(mContext, "Item successfully deleted"
-                            , Toast.LENGTH_LONG)
-                            .show();
-                } else {
-                    Toast.makeText(mContext, "Failed to delete: "
-                                    + jsonObject.get("error")
-                            , Toast.LENGTH_LONG)
-                            .show();
-                }
-            } catch (JSONException e) {
-                Toast.makeText(mContext, "Something wrong with the data" +
-                        e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }
+    public interface OnDeleteItem {
+        boolean deleteItem(String name, String quantity, String price);
     }
 
 }
