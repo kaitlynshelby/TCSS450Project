@@ -33,7 +33,7 @@
 
         <activity
             android:name=".shoppinglist.ShoppingListActivity"
-            android:label="Shopping List">
+            android:label="Shopping List" >
         </activity>
 
         <activity android:name=".TestTabActivity">

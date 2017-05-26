@@ -83,7 +83,7 @@ public class ShoppingListFragment extends Fragment {
                 mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             DownloadShoppingItemsTask task = new DownloadShoppingItemsTask();
-            String url = buildCourseURL(view);
+            String url = buildURL(view);
             task.execute(new String[]{url});
         }
         return view;
@@ -113,7 +113,7 @@ public class ShoppingListFragment extends Fragment {
      * @param v the View object
      * @return the url to be used by the webservice
      */
-    private String buildCourseURL(View v) {
+    private String buildURL(View v) {
 
         StringBuilder sb = new StringBuilder(LIST_URL);
 
