@@ -72,17 +72,17 @@ public class ShoppingListAddFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_inventory_add, container, false);
+        View v = inflater.inflate(R.layout.fragment_shopping_list_add, container, false);
 
-        mNameEditText = (EditText) v.findViewById(R.id.add_item_name);
-        mQuantityEditText = (EditText) v.findViewById(R.id.add_item_quantity);
-        mPriceEditText = (EditText) v.findViewById(R.id.add_item_price);
+        mNameEditText = (EditText) v.findViewById(R.id.add_shop_item_name);
+        mQuantityEditText = (EditText) v.findViewById(R.id.add_shop_item_quantity);
+        mPriceEditText = (EditText) v.findViewById(R.id.add_shop_item_price);
 
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.hide();
 
-        Button addItemButton = (Button) v.findViewById(R.id.add_item_button);
+        Button addItemButton = (Button) v.findViewById(R.id.shop_add_item_button);
         addItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,7 +112,7 @@ public class ShoppingListAddFragment extends Fragment {
                     getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
 
             String itemName = mNameEditText.getText().toString();
-            sb.append("&name=");
+            sb.append("name=");
             sb.append(URLEncoder.encode(itemName, "UTF-8"));
 
 

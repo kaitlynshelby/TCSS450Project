@@ -74,7 +74,8 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final int pos = position;
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getItemName());
+        String text = mValues.get(position).getItemName() + " (" + mValues.get(position).getQuantity() + ")";
+        holder.mIdView.setText(text);
         holder.mDeleteView.setBackgroundResource(0);
         holder.mDeleteView.setImageResource(waste_bin);
         holder.mView.setOnClickListener(new View.OnClickListener() {
