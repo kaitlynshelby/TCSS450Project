@@ -70,7 +70,7 @@ public class SignUpFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String url = buildCourseURL(v);
-                mListener.addUser(url);
+                mListener.addUser(url, mUserEmail.getText().toString());
             }
         });
 
@@ -143,6 +143,6 @@ public class SignUpFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnAddUser {
-        void addUser(String url);
+        void addUser(String url, String email);
     }
 }

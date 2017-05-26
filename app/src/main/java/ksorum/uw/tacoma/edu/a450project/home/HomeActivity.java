@@ -23,6 +23,7 @@ import java.net.URL;
 
 import ksorum.uw.tacoma.edu.a450project.R;
 import ksorum.uw.tacoma.edu.a450project.inventory.LandingPageActivity;
+import ksorum.uw.tacoma.edu.a450project.shoppinglist.MyShoppingListRecyclerViewAdapter;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingListActivity;
 
 
@@ -86,9 +87,23 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
     }
 
     @Override
-    public void addUser(String url) {
-        UserTask task = new UserTask();
-        task.execute(new String[]{url.toString()});
+    public void addUser(String url, String email) {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            UserTask task = new UserTask();
+            task.execute(new String[]{url.toString()});
+        }
+        else {
+            Toast.makeText(this, "No network connection available. Cannot authenticate user",
+                    Toast.LENGTH_SHORT) .show();
+            return;
+        }
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putBoolean(getString(R.string.LOGGEDIN), true);
+        editor.putString("user", email);
+        editor.commit();
     }
 
     @Override
@@ -116,6 +131,7 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
     @Override
     public void onMainFragmentInteraction(Uri uri) {
     }
+
 
     /**
      * Launches AsyncTask to execute the webservice to add a user or log in a user.

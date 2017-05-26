@@ -1,8 +1,11 @@
 package ksorum.uw.tacoma.edu.a450project.shoppinglist;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,8 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ksorum.uw.tacoma.edu.a450project.R;
-import ksorum.uw.tacoma.edu.a450project.inventory.InventoryFragment;
-import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem;
 
 import java.io.BufferedReader;
@@ -42,17 +43,29 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
     /** Fragment listener in the list */
     private final ShoppingListFragment.OnShoppingListFragmentInteractionListener mListener;
 
+    private final OnDeleteItem mDeleteListener;
+
+
     private static final String URL =
             "http://cssgate.insttech.washington.edu/~ksorum/deleteShoppingItem.php?";
 
     private SharedPreferences mSharedPreferences;
 
-    private Context mContext;
+    private FragmentActivity mContext;
 
-    public MyShoppingListRecyclerViewAdapter(Context context, List<ShoppingListItem> items, ShoppingListFragment.OnShoppingListFragmentInteractionListener listener) {
+    public MyShoppingListRecyclerViewAdapter(FragmentActivity context, List<ShoppingListItem> items,
+                                             ShoppingListFragment.OnShoppingListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
         mContext = context;
+
+        if (context instanceof OnDeleteItem) {
+            mDeleteListener = (OnDeleteItem) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnDeleteListener");
+        }
+
     }
 
     @Override
@@ -61,6 +74,8 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
                 .inflate(R.layout.fragment_shopping, parent, false);
         return new ViewHolder(view);
     }
+
+
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
@@ -83,13 +98,15 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
 
             @Override
             public void onClick(View v) {
-                mValues.remove(pos);
-                notifyItemRemoved(pos);
-                notifyItemRangeChanged(pos, mValues.size());
-                Log.i("DELETE", "Click working");
                 String url = buildURL(holder.mItem.getName());
-                DeleteItemTask task = new DeleteItemTask();
-                task.execute(new String[]{url});
+                boolean deleted = mDeleteListener.deleteItem(url, holder.mItem.getName(),
+                        holder.mItem.getQuantity(), holder.mItem.getPrice());
+
+                if (deleted) {
+                    mValues.remove(pos);
+                    notifyItemRemoved(pos);
+                    notifyItemRangeChanged(pos, mValues.size());
+                }
 
             }
         });
@@ -143,72 +160,8 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
         }
     }
 
-    /**
-     * Launches AsyncTask to execute the web service to add an item
-     * to the inventory.
-     */
-    private class DeleteItemTask extends AsyncTask<String, Void, String> {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... urls) {
-            String response = "";
-            HttpURLConnection urlConnection = null;
-            for (String url : urls) {
-                try {
-                    java.net.URL urlObject = new URL(url);
-                    urlConnection = (HttpURLConnection) urlObject.openConnection();
-
-                    InputStream content = urlConnection.getInputStream();
-
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s = "";
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
-                    }
-
-                } catch (Exception e) {
-                    response = "Unable to delete course, Reason: "
-                            + e.getMessage();
-                } finally {
-                    if (urlConnection != null)
-                        urlConnection.disconnect();
-                }
-            }
-            return response;
-        }
-
-        /**
-         * It checks to see if there was a problem with the URL(Network) which is when an
-         * exception is caught. It tries to call the parse Method and checks to see if it was successful.
-         * If not, it displays the exception.
-         *
-         * @param result
-         */
-        @Override
-        protected void onPostExecute(String result) {
-            // Something wrong with the network or the URL.
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-                String status = (String) jsonObject.get("result");
-                if (status.equals("success")) {
-                    Toast.makeText(mContext, "Item successfully deleted"
-                            , Toast.LENGTH_LONG)
-                            .show();
-                } else {
-                    Toast.makeText(mContext, "Failed to delete: "
-                                    + jsonObject.get("error")
-                            , Toast.LENGTH_LONG)
-                            .show();
-                }
-            } catch (JSONException e) {
-                Toast.makeText(mContext, "Something wrong with the data" +
-                        e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }
+    public interface OnDeleteItem {
+        boolean deleteItem(String url, String name, String quantity, String price);
     }
 }

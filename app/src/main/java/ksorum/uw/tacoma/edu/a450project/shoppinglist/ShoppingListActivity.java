@@ -1,9 +1,10 @@
 package ksorum.uw.tacoma.edu.a450project.shoppinglist;
 
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,15 +20,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import ksorum.uw.tacoma.edu.a450project.R;
-import ksorum.uw.tacoma.edu.a450project.inventory.InventoryAddFragment;
-import ksorum.uw.tacoma.edu.a450project.inventory.LandingPageActivity;
-import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem;
 
 public class ShoppingListActivity extends AppCompatActivity implements
         ShoppingListFragment.OnShoppingListFragmentInteractionListener,
         ShoppingListAddFragment.ShoppingListAddListener,
-        ShoppingItemDetailsFragment.ShoppingDetailsFragmentInteractionListener {
+        ShoppingItemDetailsFragment.ShoppingDetailsFragmentInteractionListener,
+        MyShoppingListRecyclerViewAdapter.OnDeleteItem {
+
+    private boolean mDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,108 @@ public class ShoppingListActivity extends AppCompatActivity implements
 
     }
 
+    @Override
+    public boolean deleteItem(final String url, String name, String quantity, String price) {
+       mDelete = false;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String message = "You are about to delete " + name + ". Would you like to add this item to your Inventory?";
+        builder.setMessage(message)
+                .setPositiveButton("Yes, add to Inventory", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // FIRE ZE MISSILES!
+                        mDelete = true;
+                    }
+                })
+                .setNegativeButton("No, just delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        DeleteItemTask task = new DeleteItemTask();
+                        task.execute(new String[]{url});
+                        mDelete = true;
+                        finish();
+                        startActivity(getIntent());
+                    }
+                })
+                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        return mDelete;
+    }
+
+
+    /**
+     * Launches AsyncTask to execute the web service to add an item
+     * to the inventory.
+     */
+    public class DeleteItemTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for (String url : urls) {
+                try {
+                    java.net.URL urlObject = new URL(url);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+
+                    InputStream content = urlConnection.getInputStream();
+
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+
+                } catch (Exception e) {
+                    response = "Unable to delete course, Reason: "
+                            + e.getMessage();
+                } finally {
+                    if (urlConnection != null)
+                        urlConnection.disconnect();
+                }
+            }
+            return response;
+        }
+
+        /**
+         * It checks to see if there was a problem with the URL(Network) which is when an
+         * exception is caught. It tries to call the parse Method and checks to see if it was successful.
+         * If not, it displays the exception.
+         *
+         * @param result
+         */
+        @Override
+        protected void onPostExecute(String result) {
+            // Something wrong with the network or the URL.
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                String status = (String) jsonObject.get("result");
+                if (status.equals("success")) {
+                    Toast.makeText(getApplicationContext(), "Item successfully deleted"
+                            , Toast.LENGTH_LONG)
+                            .show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Failed to delete: "
+                                    + jsonObject.get("error")
+                            , Toast.LENGTH_LONG)
+                            .show();
+                }
+            } catch (JSONException e) {
+                Toast.makeText(getApplicationContext(), "Something wrong with the data" +
+                        e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
     /**
      * Launches AsyncTask to execute the web service to add an item
