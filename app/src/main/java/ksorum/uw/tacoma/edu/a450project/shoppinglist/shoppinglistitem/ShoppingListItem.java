@@ -68,8 +68,8 @@ public class ShoppingListItem implements Serializable {
 
                 for (int i = 0; i < arr.length(); i++) {
                     JSONObject obj = arr.getJSONObject(i);
-                    ShoppingListItem item = new ShoppingListItem(obj.getString(ShoppingListItem.ITEM_NAME), obj.getString(ShoppingListItem.PRICE)
-                            , obj.getString(ShoppingListItem.QUANTITY));
+                    ShoppingListItem item = new ShoppingListItem(obj.getString(ShoppingListItem.ITEM_NAME), obj.getString(ShoppingListItem.QUANTITY)
+                            , obj.getString(ShoppingListItem.PRICE));
                     shoppingList.add(item);
                 }
             } catch (JSONException e) {

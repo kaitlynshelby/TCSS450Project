@@ -29,15 +29,17 @@
             android:name=".inventory.LandingPageActivity"
             android:label="Inventory">
 
-    </activity>
-
-        <activity android:name=".TestTabActivity">
-
         </activity>
+
         <activity
             android:name=".shoppinglist.ShoppingListActivity"
             android:label="Shopping List">
         </activity>
+
+        <activity android:name=".TestTabActivity">
+
+        </activity>
+
     </application>
 
 </manifest>
