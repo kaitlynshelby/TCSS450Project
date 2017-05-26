@@ -1,12 +1,15 @@
 package ksorum.uw.tacoma.edu.a450project.shoppinglist;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -18,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import ksorum.uw.tacoma.edu.a450project.R;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem;
@@ -27,6 +31,9 @@ public class ShoppingListActivity extends AppCompatActivity implements
         ShoppingListAddFragment.ShoppingListAddListener,
         ShoppingItemDetailsFragment.ShoppingDetailsFragmentInteractionListener,
         MyShoppingListRecyclerViewAdapter.OnDeleteItem {
+
+    private static final String URL =
+            "http://cssgate.insttech.washington.edu/~ksorum/";
 
     private boolean mDelete;
 
@@ -85,20 +92,32 @@ public class ShoppingListActivity extends AppCompatActivity implements
     }
 
     @Override
-    public boolean deleteItem(final String url, String name, String quantity, String price) {
+    public boolean deleteItem(String itemName, final String quan, String itemPrice) {
        mDelete = false;
+       final String name = itemName;
+       final String quantity = quan;
+       final String price = itemPrice;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         String message = "You are about to delete " + name + ". Would you like to add this item to your Inventory?";
         builder.setMessage(message)
                 .setPositiveButton("Yes, add to Inventory", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // FIRE ZE MISSILES!
+                        String deleteURL = buildDeleteURL(name);
+                        DeleteItemTask task1 = new DeleteItemTask();
+                        task1.execute(new String[]{deleteURL});
+
+                        String addURL = buildAddURL(name, price, quantity);
+                        AddShopItemTask task2 = new AddShopItemTask();
+                        task2.execute(new String[]{addURL});
                         mDelete = true;
+                        finish();
+                        startActivity(getIntent());
                     }
                 })
                 .setNegativeButton("No, just delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        String url = buildDeleteURL(name);
                         DeleteItemTask task = new DeleteItemTask();
                         task.execute(new String[]{url});
                         mDelete = true;
@@ -116,6 +135,65 @@ public class ShoppingListActivity extends AppCompatActivity implements
         alertDialog.show();
         return mDelete;
     }
+
+    private String buildDeleteURL(String name) {
+        StringBuilder sb = new StringBuilder(URL);
+
+        try {
+
+            SharedPreferences sharedPreferences = getSharedPreferences
+                    (getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
+
+            sb.append("deleteShoppingItem.php?");
+
+            sb.append("name=");
+            sb.append(URLEncoder.encode(name, "UTF-8"));
+
+            String user = sharedPreferences.getString("user", "");
+            sb.append("&user=");
+            sb.append(URLEncoder.encode(user, "UTF-8"));
+
+            Log.i("ShoppingListActivity", sb.toString());
+
+        }
+        catch(Exception e) {
+
+        }
+        return sb.toString();
+    }
+
+    private String buildAddURL(String name, String price, String quantity) {
+        StringBuilder sb = new StringBuilder(URL);
+
+        try {
+
+            SharedPreferences sharedPreferences = getSharedPreferences
+                    (getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
+
+            sb.append("addInventoryItem.php?");
+
+            sb.append("name=");
+            sb.append(URLEncoder.encode(name, "UTF-8"));
+
+            sb.append("&price=");
+            sb.append(URLEncoder.encode(price, "UTF-8"));
+
+            sb.append("&quantity=");
+            sb.append(URLEncoder.encode(quantity, "UTF-8"));
+
+            String user = sharedPreferences.getString("user", "");
+            sb.append("&user=");
+            sb.append(URLEncoder.encode(user, "UTF-8"));
+
+            Log.i("ShoppingListActivity", sb.toString());
+
+        }
+        catch(Exception e) {
+
+        }
+        return sb.toString();
+    }
+
 
 
     /**
