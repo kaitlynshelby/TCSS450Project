@@ -5,6 +5,7 @@
              android:orientation="horizontal"
              android:background="@drawable/border_one_side"
              android:paddingBottom="5dp"
+             android:id="@+id/shopping_fragment"
              android:descendantFocusability="blocksDescendants" >
 
     <TextView

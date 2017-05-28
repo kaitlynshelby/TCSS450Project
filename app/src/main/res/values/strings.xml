@@ -36,6 +36,8 @@
 
     <string name="edit_item_text">Edit Item</string>
     <string name="shop_edit_item_text">Edit Item</string>
+    <string name="logout">Logout</string>
+    <string name="share_shopping_list">Share Shopping List</string>
 
 
 </resources>
