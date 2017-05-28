@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
 import java.net.URLEncoder;
 
 import ksorum.uw.tacoma.edu.a450project.R;
@@ -29,7 +29,7 @@ import ksorum.uw.tacoma.edu.a450project.R;
  */
 public class LoginFragment extends Fragment {
 
-    private final static String COURSE_ADD_URL
+    public final static String LOGIN_URL
             = "http://cssgate.insttech.washington.edu/~ksorum/login.php?";
 
     private EditText mUserEmail;
@@ -111,7 +111,7 @@ public class LoginFragment extends Fragment {
      */
     private String buildCourseURL(View v) {
 
-        StringBuilder sb = new StringBuilder(COURSE_ADD_URL);
+        StringBuilder sb = new StringBuilder(LOGIN_URL);
 
         try {
 
@@ -131,8 +131,7 @@ public class LoginFragment extends Fragment {
 
         }
         catch(Exception e) {
-            Toast.makeText(v.getContext(), "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
-                    .show();
+
         }
         return sb.toString();
     }

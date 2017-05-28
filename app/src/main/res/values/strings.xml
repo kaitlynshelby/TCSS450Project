@@ -34,8 +34,8 @@
     <string name="shop_quantity_hint">Quantity of items to purchase</string>
     <string name="price_shop_hint">Last purchase price</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edit_item_text">Edit Item</string>
+    <string name="shop_edit_item_text">Edit Item</string>
 
 
 </resources>

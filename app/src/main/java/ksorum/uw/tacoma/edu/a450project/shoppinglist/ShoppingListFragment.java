@@ -131,8 +131,6 @@ public class ShoppingListFragment extends Fragment {
 
         }
         catch(Exception e) {
-            Toast.makeText(v.getContext(), "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
-                    .show();
         }
         return sb.toString();
     }
@@ -186,7 +184,8 @@ public class ShoppingListFragment extends Fragment {
         protected void onPostExecute(String result) {
             // Something wrong with the network or the URL.
             if (result.startsWith("Unable to")) {
-                Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_LONG)
+                Toast.makeText(getActivity().getApplicationContext(), "Unable to retrieve your items." +
+                        " Please check your connection and try again.", Toast.LENGTH_LONG)
                         .show();
                 return;
             }

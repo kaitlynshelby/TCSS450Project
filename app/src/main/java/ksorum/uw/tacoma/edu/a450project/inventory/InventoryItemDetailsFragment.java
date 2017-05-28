@@ -5,9 +5,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import ksorum.uw.tacoma.edu.a450project.R;
@@ -74,9 +76,28 @@ public class InventoryItemDetailsFragment extends Fragment {
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.hide();
 
+        ImageButton editButton = (ImageButton) v.findViewById(R.id.inventory_detail_edit_button);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InventoryEditFragment fragment = new InventoryEditFragment();
+                Bundle thisArgs = getArguments();
+                InventoryItem item = (InventoryItem) thisArgs.getSerializable(INVENTORY_ITEM_SELECTED);
+
+                Bundle editArgs = new Bundle();
+                editArgs.putSerializable(INVENTORY_ITEM_SELECTED, item);
+                fragment.setArguments(editArgs);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.inventory_list_container, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         return v;
     }
+
+
 
     /**
      * Updates the fragment with details of the item that is clicked on.
@@ -132,6 +153,7 @@ public class InventoryItemDetailsFragment extends Fragment {
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.show();
     }
+
 
     /**
      * This interface must be implemented by activities that contain this

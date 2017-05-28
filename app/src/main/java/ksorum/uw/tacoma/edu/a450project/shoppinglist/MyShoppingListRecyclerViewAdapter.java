@@ -21,12 +21,6 @@ import org.json.JSONObject;
 import ksorum.uw.tacoma.edu.a450project.R;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.List;
 
 import static ksorum.uw.tacoma.edu.a450project.R.drawable.waste_bin;
@@ -34,7 +28,6 @@ import static ksorum.uw.tacoma.edu.a450project.R.drawable.waste_bin;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem} and makes a call to the
  * specified {@link ShoppingListFragment.OnShoppingListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MyShoppingListRecyclerViewAdapter.ViewHolder> {
 
@@ -45,15 +38,11 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
 
     private final OnDeleteItem mDeleteListener;
 
-    private SharedPreferences mSharedPreferences;
-
-    private FragmentActivity mContext;
-
     public MyShoppingListRecyclerViewAdapter(FragmentActivity context, List<ShoppingListItem> items,
                                              ShoppingListFragment.OnShoppingListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
-        mContext = context;
+
 
         if (context instanceof OnDeleteItem) {
             mDeleteListener = (OnDeleteItem) context;
