@@ -50,6 +50,8 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
      */
     private final OnListFragmentInteractionListener mListener;
 
+    private final OnDeleteItem mDeleteListener;
+
     private static final String URL =
             "http://cssgate.insttech.washington.edu/~ksorum/deleteInventoryItem.php?";
 
@@ -67,6 +69,13 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
         mValues = items;
         mListener = listener;
         mContext = context;
+
+        if (context instanceof OnDeleteItem) {
+            mDeleteListener = (OnDeleteItem) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnDeleteListener");
+        }
     }
 
     @Override
@@ -97,17 +106,20 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
 
             @Override
             public void onClick(View v) {
-                mValues.remove(pos);
-                notifyItemRemoved(pos);
-                notifyItemRangeChanged(pos, mValues.size());
-                Log.i("DELETE", "Click working");
-                String url = buildURL(holder.mItem.getItemName());
-                DeleteItemTask task = new DeleteItemTask();
-                task.execute(new String[]{url});
+                boolean deleted = mDeleteListener.deleteItem(holder.mItem.getItemName(),
+                        holder.mItem.getQuantity(), holder.mItem.getPrice());
+
+                if (deleted) {
+                    mValues.remove(pos);
+                    notifyItemRemoved(pos);
+                    notifyItemRangeChanged(pos, mValues.size());
+                }
 
             }
         });
-        
+
+
+        // Color-coding system for expiration dates
         String itemExpiration = mValues.get(pos).getExpiration();
         System.out.println("Item's Expiration Date: " + itemExpiration);
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -149,30 +161,6 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
         } catch (ParseException e) {
             e.printStackTrace();
         }
-    }
-
-
-    public String buildURL(String name) {
-        StringBuilder sb = new StringBuilder(URL);
-
-        try {
-
-            mSharedPreferences = mContext.getSharedPreferences
-                    (mContext.getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
-
-            sb.append("name=");
-            sb.append(URLEncoder.encode(name, "UTF-8"));
-
-            String user = mSharedPreferences.getString("user", "");
-            sb.append("&user=");
-            sb.append(URLEncoder.encode(user, "UTF-8"));
-
-            Log.i("InventoryFragment", sb.toString());
-
-        } catch (Exception e) {
-
-        }
-        return sb.toString();
     }
 
 
@@ -267,6 +255,10 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
                         e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    public interface OnDeleteItem {
+        boolean deleteItem(String name, String quantity, String price);
     }
 
 }

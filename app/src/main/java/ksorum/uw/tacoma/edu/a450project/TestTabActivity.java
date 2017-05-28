@@ -16,11 +16,14 @@ import android.view.MenuInflater;
 
 import ksorum.uw.tacoma.edu.a450project.inventory.InventoryFragment;
 import ksorum.uw.tacoma.edu.a450project.inventory.InventoryItemDetailsFragment;
+import ksorum.uw.tacoma.edu.a450project.inventory.MyInventoryRecyclerViewAdapter;
 import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
+import ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingListFragment;
+import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem;
 
 public class TestTabActivity extends AppCompatActivity
         implements InventoryFragment.OnListFragmentInteractionListener,
-        InventoryItemDetailsFragment.OnFragmentInteractionListener, SearchView.OnQueryTextListener {
+        InventoryItemDetailsFragment.OnFragmentInteractionListener, SearchView.OnQueryTextListener, ShoppingListFragment.OnShoppingListFragmentInteractionListener, MyInventoryRecyclerViewAdapter.OnDeleteItem {
 
     private CustomFragmentPagerAdapter adapter;
 
@@ -86,6 +89,16 @@ public class TestTabActivity extends AppCompatActivity
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+
+    @Override
+    public void onShoppingListFragmentInteraction(ShoppingListItem item) {
+
+    }
+
+    @Override
+    public boolean deleteItem(String name, String quantity, String price) {
         return false;
     }
 }

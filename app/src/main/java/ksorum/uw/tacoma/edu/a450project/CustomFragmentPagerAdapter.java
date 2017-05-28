@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import ksorum.uw.tacoma.edu.a450project.inventory.InventoryFragment;
+import ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingListFragment;
 
 public class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 2;
@@ -24,7 +25,15 @@ public class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return InventoryFragment.newInstance(position + 1);
+        switch (position) {
+            case 0:
+                return new InventoryFragment();
+            case 1:
+                return new ShoppingListFragment();
+            default:
+                return null;
+        }
+//        return InventoryFragment.newInstance(position + 1);
     }
 
     @Override

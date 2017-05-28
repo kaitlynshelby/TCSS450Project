@@ -62,6 +62,11 @@ public class InventoryItemDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        getActivity().setTitle("Item Details");
+
+        getActivity().findViewById(R.id.sliding_tabs_landing).setVisibility(View.GONE);
+
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_inventory_item_details, container, false);
 
@@ -119,6 +124,7 @@ public class InventoryItemDetailsFragment extends Fragment {
         }
     }
 
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -131,6 +137,10 @@ public class InventoryItemDetailsFragment extends Fragment {
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.show();
+
+        getActivity().findViewById(R.id.sliding_tabs_landing).setVisibility(View.VISIBLE);
+        getActivity().setTitle("Home");
+
     }
 
     /**

@@ -114,7 +114,7 @@ public class InventoryFragment extends Fragment {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnShoppingListFragmentInteractionListener");
+                    + " must implement OnListFragmentInteractionListener");
         }
     }
 
