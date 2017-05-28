@@ -42,7 +42,7 @@ import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
  */
 public class LandingPageActivity extends AppCompatActivity implements InventoryFragment.OnListFragmentInteractionListener,
         InventoryItemDetailsFragment.OnFragmentInteractionListener, InventoryAddFragment.InventoryAddListener,
-        MyInventoryRecyclerViewAdapter.OnDeleteItem {
+        MyInventoryRecyclerViewAdapter.OnDeleteItem, InventoryEditFragment.OnInventoryEditInteractionListener {
 
     private static final String URL =
             "http://cssgate.insttech.washington.edu/~ksorum/";
@@ -62,7 +62,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
             public void onClick(View view) {
                 InventoryAddFragment inventoryAddFragment = new InventoryAddFragment();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, inventoryAddFragment)
+                        .replace(R.id.inventory_list_container, inventoryAddFragment)
                         .addToBackStack(null)
                         .commit();
             }
@@ -72,7 +72,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         if (savedInstanceState == null || getSupportFragmentManager().findFragmentById(R.id.list) == null) {
             InventoryFragment inventoryFragment = new InventoryFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, inventoryFragment)
+                    .add(R.id.inventory_list_container, inventoryFragment)
                     .commit();
         }
 
@@ -93,7 +93,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         detailsFragment.setArguments(args);
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, detailsFragment)
+                .replace(R.id.inventory_list_container, detailsFragment)
                 .addToBackStack(null)
                 .commit();
     }
@@ -217,6 +217,11 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         return sb.toString();
     }
 
+    @Override
+    public void editInventoryItem(String url) {
+
+    }
+
     /**
      * Launches AsyncTask to execute the web service to add an item
      * to the inventory.
@@ -270,18 +275,16 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
                 JSONObject jsonObject = new JSONObject(result);
                 String status = (String) jsonObject.get("result");
                 if (status.equals("success")) {
-                    Toast.makeText(getApplicationContext(), "Item successfully deleted"
+                    Toast.makeText(getApplicationContext(), "Item deleted from list"
                             , Toast.LENGTH_LONG)
                             .show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Failed to delete: "
-                                    + jsonObject.get("error")
+                    Toast.makeText(getApplicationContext(), "Failed to delete item. Check your connection and try again."
                             , Toast.LENGTH_LONG)
                             .show();
                 }
             } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "Something wrong with the data" +
-                        e.getMessage(), Toast.LENGTH_LONG).show();
+
             }
         }
     }
@@ -339,23 +342,18 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
                 JSONObject jsonObject = new JSONObject(result);
                 String status = (String) jsonObject.get("result");
                 if (status.equals("success")) {
-                    Toast.makeText(getApplicationContext(), "Item successfully added!"
+                    Toast.makeText(getApplicationContext(), "Item added to list"
                             , Toast.LENGTH_LONG)
                             .show();
                     getSupportFragmentManager().popBackStackImmediate();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Failed to add: "
-                                    + jsonObject.get("error")
+                    Toast.makeText(getApplicationContext(), "Item failed to add. Check your connection and try again."
                             , Toast.LENGTH_LONG)
                             .show();
                 }
             } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "Something wrong with the data" +
-                        e.getMessage(), Toast.LENGTH_LONG).show();
+
             }
         }
     }
-
-
-
 }

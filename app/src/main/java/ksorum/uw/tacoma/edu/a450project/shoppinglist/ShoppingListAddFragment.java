@@ -134,8 +134,7 @@ public class ShoppingListAddFragment extends Fragment {
 
         }
         catch(Exception e) {
-            Toast.makeText(v.getContext(), "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
-                    .show();
+
         }
         return sb.toString();
     }

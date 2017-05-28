@@ -8,9 +8,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import ksorum.uw.tacoma.edu.a450project.R;
+import ksorum.uw.tacoma.edu.a450project.inventory.ShoppingListEditFragment;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem;
 
 /**
@@ -70,6 +72,24 @@ public class ShoppingItemDetailsFragment extends Fragment {
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.hide();
+
+        ImageButton editButton = (ImageButton) v.findViewById(R.id.shop_detail_edit_button);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShoppingListEditFragment fragment = new ShoppingListEditFragment();
+                Bundle thisArgs = getArguments();
+                ShoppingListItem item = (ShoppingListItem) thisArgs.getSerializable(SHOPPING_ITEM_SELECTED);
+
+                Bundle editArgs = new Bundle();
+                editArgs.putSerializable(SHOPPING_ITEM_SELECTED, item);
+                fragment.setArguments(editArgs);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.shopping_list_container, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
 
         return v;
