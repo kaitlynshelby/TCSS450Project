@@ -60,9 +60,6 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
 
     private final OnDeleteItem mDeleteListener;
 
-    private static final String URL =
-            "http://cssgate.insttech.washington.edu/~ksorum/deleteInventoryItem.php?";
-
     private List<InventoryItem> mValuesCopy;
 
     private Activity mContext;
@@ -120,7 +117,7 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
 
             @Override
             public void onClick(View v) {
-                boolean deleted = mDeleteListener.deleteItem(holder.mItem.getItemName(),
+                boolean deleted = mDeleteListener.deleteInventoryItem(holder.mItem.getItemName(),
                         holder.mItem.getQuantity(), holder.mItem.getPrice());
 
                 if (deleted) {
@@ -132,83 +129,39 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
             }
         });
 
-
-        holder.mSearchView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String s = editable.toString();
-                filter(s);
-            }
-        });
-
-        // Color-coding system for expiration dates
-
-        holder.mSearchView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String s = editable.toString();
-                filter(s);
-            }
-        });
-        
-        String itemExpiration = mValues.get(pos).getExpiration();
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Date itemDate;
-        Date compareDate;
-
-        // Today's date
-        Date todaysDate = new Date();
-        DateFormat todaysDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String today = todaysDateFormat.format(todaysDate);
-
-
-        try {
-            itemDate = df.parse(itemExpiration);
-            compareDate = df.parse(today);
-
-            long diff = Math.round((itemDate.getTime() - compareDate.getTime()) / (double) 86400000);
-
-
-            int difference = (int) diff;
-
-            Log.i("item", holder.mItem.getItemName());
-
-            if (difference <= 1) {
-                holder.mView.setBackgroundColor(Color.RED);
-                holder.mView.getBackground().setAlpha(100);
-            } else if (difference >= 2 && difference <= 3) {
-                holder.mView.setBackgroundColor(Color.YELLOW);
-                holder.mView.getBackground().setAlpha(100);
-            }
-
-        } catch (ParseException e) {
-            e.printStackTrace();
+        int color = holder.mItem.getColor();
+        if (color != 0) {
+            holder.mView.setBackgroundColor(color);
+            holder.mView.getBackground().setAlpha(100);
+        } else {
+            holder.mView.setBackgroundColor(Color.TRANSPARENT);
         }
+
+
+        holder.mSearchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                String s = charSequence.toString();
+                filter(holder, s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                notifyDataSetChanged();
+            }
+        });
+
     }
 
 
-    public void filter(String text) {
+
+    public void filter(ViewHolder holder, String text) {
+        int color;
         mValues.clear();
         if(text.isEmpty()){
             mValues.addAll(mValuesCopy);
@@ -253,7 +206,7 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
 
 
     public interface OnDeleteItem {
-        boolean deleteItem(String name, String quantity, String price);
+        boolean deleteInventoryItem(String name, String quantity, String price);
     }
 
 }

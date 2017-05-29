@@ -129,7 +129,7 @@ public class InventoryAddFragment extends Fragment {
         floatingActionButton.show();
 
         getActivity().findViewById(R.id.sliding_tabs_landing).setVisibility(View.VISIBLE);
-        getActivity().setTitle("Home");
+        getActivity().setTitle("What's in My Fridge?");
 
 
         EditText search = (EditText) getActivity().findViewById(R.id.searchView);

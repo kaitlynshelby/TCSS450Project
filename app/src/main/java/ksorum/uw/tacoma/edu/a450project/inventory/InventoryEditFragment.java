@@ -75,6 +75,11 @@ public class InventoryEditFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        getActivity().findViewById(R.id.sliding_tabs_landing).setVisibility(View.GONE);
+
+        getActivity().setTitle("Edit Item");
+
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_inventory_edit, container, false);
 
@@ -177,6 +182,9 @@ public class InventoryEditFragment extends Fragment {
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.show();
+
+        getActivity().findViewById(R.id.sliding_tabs_landing).setVisibility(View.VISIBLE);
+        getActivity().setTitle("What's in My Fridge?");
 
         EditText search = (EditText) getActivity().findViewById(R.id.searchView);
         search.setVisibility(View.VISIBLE);

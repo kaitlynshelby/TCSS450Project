@@ -63,6 +63,11 @@ public class ShoppingItemDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        getActivity().setTitle("Item Details");
+
+        getActivity().findViewById(R.id.sliding_tabs_landing).setVisibility(View.GONE);
+
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_shopping_item_details, container, false);
 
@@ -74,7 +79,7 @@ public class ShoppingItemDetailsFragment extends Fragment {
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.hide();
 
-        EditText search = (EditText) getActivity().findViewById(R.id.shopSearchView);
+        EditText search = (EditText) getActivity().findViewById(R.id.searchView);
         search.setVisibility(View.GONE);
 
         ImageButton editButton = (ImageButton) v.findViewById(R.id.shop_detail_edit_button);
@@ -89,7 +94,7 @@ public class ShoppingItemDetailsFragment extends Fragment {
                 editArgs.putSerializable(SHOPPING_ITEM_SELECTED, item);
                 fragment.setArguments(editArgs);
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.shopping_list_container, fragment)
+                        .replace(R.id.fragment_container_landing, fragment)
                         .addToBackStack(null)
                         .commit();
             }
@@ -150,7 +155,10 @@ public class ShoppingItemDetailsFragment extends Fragment {
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.show();
 
-        EditText search = (EditText) getActivity().findViewById(R.id.shopSearchView);
+        getActivity().findViewById(R.id.sliding_tabs_landing).setVisibility(View.VISIBLE);
+        getActivity().setTitle("What's in My Fridge?");
+
+        EditText search = (EditText) getActivity().findViewById(R.id.searchView);
         search.setVisibility(View.VISIBLE);
     }
 
