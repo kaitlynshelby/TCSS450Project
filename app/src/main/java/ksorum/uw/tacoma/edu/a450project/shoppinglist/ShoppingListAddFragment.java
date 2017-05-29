@@ -82,6 +82,9 @@ public class ShoppingListAddFragment extends Fragment {
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.hide();
 
+        EditText search = (EditText) getActivity().findViewById(R.id.shopSearchView);
+        search.setVisibility(View.GONE);
+
         Button addItemButton = (Button) v.findViewById(R.id.shop_add_item_button);
         addItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +103,9 @@ public class ShoppingListAddFragment extends Fragment {
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.show();
+
+        EditText search = (EditText) getActivity().findViewById(R.id.shopSearchView);
+        search.setVisibility(View.VISIBLE);
     }
 
     private String buildURL(View v) {

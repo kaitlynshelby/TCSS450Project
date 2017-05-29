@@ -7,8 +7,7 @@
     android:name="ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_marginTop="40dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingListFragment"
     tools:listitem="@layout/fragment_shopping"/>

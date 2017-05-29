@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -75,6 +76,9 @@ public class InventoryItemDetailsFragment extends Fragment {
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.hide();
+
+        EditText search = (EditText) getActivity().findViewById(R.id.searchView);
+        search.setVisibility(View.GONE);
 
         ImageButton editButton = (ImageButton) v.findViewById(R.id.inventory_detail_edit_button);
         editButton.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +156,9 @@ public class InventoryItemDetailsFragment extends Fragment {
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.show();
+
+        EditText search = (EditText) getActivity().findViewById(R.id.searchView);
+        search.setVisibility(View.VISIBLE);
     }
 
 

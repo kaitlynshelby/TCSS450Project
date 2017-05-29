@@ -9,4 +9,13 @@
     tools:context="ksorum.uw.tacoma.edu.a450project.inventory.LandingPageActivity"
     tools:showIn="@layout/activity_landing_page">
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/searchView"
+        android:drawableLeft="@drawable/ic_search_black_24dp"/>
+
 </FrameLayout>
