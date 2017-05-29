@@ -28,6 +28,7 @@ import java.net.URLEncoder;
 
 import ksorum.uw.tacoma.edu.a450project.R;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingListEditFragment;
+
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem;
 
 public class ShoppingListActivity extends AppCompatActivity implements

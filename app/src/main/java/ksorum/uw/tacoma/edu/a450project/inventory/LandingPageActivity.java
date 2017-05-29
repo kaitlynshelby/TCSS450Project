@@ -48,7 +48,6 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         MyInventoryRecyclerViewAdapter.OnDeleteItem, ShoppingListFragment.OnShoppingListFragmentInteractionListener,
         InventoryEditFragment.OnInventoryEditInteractionListener {
 
-
     private static final String URL =
             "http://cssgate.insttech.washington.edu/~ksorum/";
 
@@ -248,10 +247,12 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
     public void editInventoryItem(String url) {
     }
 
-        /**
-         * Launches AsyncTask to execute the web service to add an item
-         * to the inventory.
-         */
+
+
+    /**
+     * Launches AsyncTask to execute the web service to add an item
+     * to the inventory.
+     */
     public class DeleteItemTask extends AsyncTask<String, Void, String> {
 
         @Override

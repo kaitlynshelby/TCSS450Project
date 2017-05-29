@@ -69,7 +69,6 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
 
 
 
-
     /**
      * Adapter constructor.
      *
@@ -133,7 +132,6 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
         });
 
 
-
         holder.mSearchView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -153,6 +151,7 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
         });
 
         // Color-coding system for expiration dates
+
         String itemExpiration = mValues.get(pos).getExpiration();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date itemDate;
@@ -187,6 +186,7 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
             e.printStackTrace();
         }
     }
+
 
     public void filter(String text) {
         mValues.clear();
