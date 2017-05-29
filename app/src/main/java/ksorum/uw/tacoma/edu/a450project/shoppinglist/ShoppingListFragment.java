@@ -106,7 +106,7 @@ public class ShoppingListFragment extends Fragment {
         }
     }
 
-    @Override
+ /*   @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
@@ -128,7 +128,7 @@ public class ShoppingListFragment extends Fragment {
 
         return super.onOptionsItemSelected(item);
     }
-
+*/
 
     @Override
     public void onDetach() {
@@ -136,7 +136,7 @@ public class ShoppingListFragment extends Fragment {
         mListener = null;
     }
 
-    private String shoppingListItemsToString() {
+   /* private String shoppingListItemsToString() {
         StringBuilder sb = new StringBuilder();
 
         // format: Name xQuantity
@@ -154,7 +154,7 @@ public class ShoppingListFragment extends Fragment {
 
         return sb.toString();
     }
-
+*/
     /**
      * Build the url which will be used by the webservice.
      *
@@ -197,7 +197,7 @@ public class ShoppingListFragment extends Fragment {
         void onShoppingListFragmentInteraction(ShoppingListItem item);
     }
 
-    private class DownloadShoppingItemsTask extends AsyncTask<String, Void, String> {
+    public class DownloadShoppingItemsTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
             String response = "";

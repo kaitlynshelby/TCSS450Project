@@ -15,18 +15,28 @@ import ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingListFragment;
 
 public class ShoppingListItem implements Serializable {
 
+    private String mId;
     private String mName;
     private String mQuantity;
     private String mPrice;
 
 
-    public static final String ITEM_NAME = "name", QUANTITY = "quantity",
+    public static final String ITEM_ID = "id", ITEM_NAME = "name", QUANTITY = "quantity",
             PRICE = "price";
 
-    public ShoppingListItem(String name, String quantity, String price) {
+    public ShoppingListItem(String id, String name, String quantity, String price) {
+        this.mId = id;
         this.mName = name;
         this.mQuantity = quantity;
         this.mPrice = price;
+    }
+
+    public String getId() {
+        return mId;
+    }
+
+    public void setId(String id) {
+        mId = id;
     }
 
     public String getName() {
@@ -68,7 +78,8 @@ public class ShoppingListItem implements Serializable {
 
                 for (int i = 0; i < arr.length(); i++) {
                     JSONObject obj = arr.getJSONObject(i);
-                    ShoppingListItem item = new ShoppingListItem(obj.getString(ShoppingListItem.ITEM_NAME), obj.getString(ShoppingListItem.QUANTITY)
+                    ShoppingListItem item = new ShoppingListItem(obj.getString(ShoppingListItem.ITEM_ID),
+                            obj.getString(ShoppingListItem.ITEM_NAME), obj.getString(ShoppingListItem.QUANTITY)
                             , obj.getString(ShoppingListItem.PRICE));
                     shoppingList.add(item);
                 }

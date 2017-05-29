@@ -98,7 +98,7 @@ public class TestTabActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean deleteInventoryItem(String name, String quantity, String price) {
+    public boolean deleteInventoryItem(String id, String name, String quantity, String price) {
         return false;
     }
 }

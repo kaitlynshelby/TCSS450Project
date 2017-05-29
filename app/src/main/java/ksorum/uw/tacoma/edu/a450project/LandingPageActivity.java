@@ -1,4 +1,4 @@
-package ksorum.uw.tacoma.edu.a450project.inventory;
+package ksorum.uw.tacoma.edu.a450project;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -30,8 +29,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import ksorum.uw.tacoma.edu.a450project.CustomFragmentPagerAdapter;
-import ksorum.uw.tacoma.edu.a450project.R;
+import ksorum.uw.tacoma.edu.a450project.home.HomeActivity;
+import ksorum.uw.tacoma.edu.a450project.inventory.InventoryAddFragment;
+import ksorum.uw.tacoma.edu.a450project.inventory.InventoryEditFragment;
+import ksorum.uw.tacoma.edu.a450project.inventory.InventoryFragment;
+import ksorum.uw.tacoma.edu.a450project.inventory.InventoryItemDetailsFragment;
+import ksorum.uw.tacoma.edu.a450project.inventory.MyInventoryRecyclerViewAdapter;
 import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.MyShoppingListRecyclerViewAdapter;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingItemDetailsFragment;
@@ -178,6 +181,57 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
     }
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        if (id == R.id.action_logout) {
+            SharedPreferences sharedPreferences =
+                    getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
+            sharedPreferences.edit().putBoolean(getString(R.string.LOGGEDIN), false)
+                    .commit();
+
+            Intent i = new Intent(this, HomeActivity.class);
+            startActivity(i);
+            finish();
+        } else if (id == R.id.action_share) {
+           /* Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            String text = shoppingListItemsToString();
+            sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);*/
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+ /*   private String shoppingListItemsToString() {
+        StringBuilder sb = new StringBuilder();
+
+        // format: Name xQuantity
+        String name;
+        String quantity;
+
+        for (int i = 0; i < mShoppingListItems.size(); i++) {
+            name = mShoppingListItems.get(i).getName();
+            quantity = mShoppingListItems.get(i).getQuantity();
+            sb.append(name);
+            sb.append(" x");
+            sb.append(quantity);
+            sb.append("\n");
+        }
+
+        return sb.toString();
+    } */
+
+
+
 
     /**
      * Adds an item to the database.
@@ -190,8 +244,9 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
     }
 
     @Override
-    public boolean deleteInventoryItem(String itemName, final String quan, String itemPrice) {
+    public boolean deleteInventoryItem(String itemid, String itemName, final String quan, String itemPrice) {
         mDelete = false;
+        final String itemId = itemid;
         final String name = itemName;
         final String quantity = quan;
         final String price = itemPrice;
@@ -201,7 +256,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         builder.setMessage(message)
                 .setPositiveButton("Yes, add to Shopping List", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        String deleteURL = buildDeleteURL(name);
+                        String deleteURL = buildDeleteURL(itemId);
                         DeleteItemTask task1 = new DeleteItemTask();
                         task1.execute(new String[]{deleteURL});
 
@@ -215,7 +270,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
                 })
                 .setNegativeButton("No, just delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        String url = buildDeleteURL(name);
+                        String url = buildDeleteURL(itemId);
                         DeleteItemTask task = new DeleteItemTask();
                         task.execute(new String[]{url});
                         mDelete = true;
@@ -235,8 +290,9 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
     }
 
     @Override
-    public boolean deleteShopItem(String itemName, final String quan, String itemPrice) {
+    public boolean deleteShopItem(String itemid, String itemName, final String quan, String itemPrice) {
         mDelete = false;
+        final String itemId = itemid;
         final String name = itemName;
         final String quantity = quan;
         final String price = itemPrice;
@@ -246,7 +302,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         builder.setMessage(message)
                 .setPositiveButton("Yes, add to Inventory", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        String deleteURL = buildShopDeleteURL(name);
+                        String deleteURL = buildShopDeleteURL(itemId);
                         DeleteItemTask task1 = new DeleteItemTask();
                         task1.execute(new String[]{deleteURL});
 
@@ -260,7 +316,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
                 })
                 .setNegativeButton("No, just delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        String url = buildShopDeleteURL(name);
+                        String url = buildShopDeleteURL(itemId);
                         DeleteItemTask task = new DeleteItemTask();
                         task.execute(new String[]{url});
                         mDelete = true;
@@ -311,7 +367,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         return sb.toString();
     }
 
-    private String buildShopDeleteURL(String name) {
+    private String buildShopDeleteURL(String id) {
         StringBuilder sb = new StringBuilder(URL);
 
         try {
@@ -321,12 +377,8 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
 
             sb.append("deleteShoppingItem.php?");
 
-            sb.append("name=");
-            sb.append(URLEncoder.encode(name, "UTF-8"));
-
-            String user = sharedPreferences.getString("user", "");
-            sb.append("&user=");
-            sb.append(URLEncoder.encode(user, "UTF-8"));
+            sb.append("id=");
+            sb.append(URLEncoder.encode(id, "UTF-8"));
 
             Log.i("ShoppingListActivity", sb.toString());
 
@@ -337,7 +389,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         return sb.toString();
     }
 
-    private String buildDeleteURL(String name) {
+    private String buildDeleteURL(String id) {
         StringBuilder sb = new StringBuilder(URL);
 
         try {
@@ -347,12 +399,8 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
 
             sb.append("deleteInventoryItem.php?");
 
-            sb.append("name=");
-            sb.append(URLEncoder.encode(name, "UTF-8"));
-
-            String user = sharedPreferences.getString("user", "");
-            sb.append("&user=");
-            sb.append(URLEncoder.encode(user, "UTF-8"));
+            sb.append("id=");
+            sb.append(URLEncoder.encode(id, "UTF-8"));
 
             Log.i("ShoppingListActivity", sb.toString());
 

@@ -99,7 +99,7 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
 
             @Override
             public void onClick(View v) {
-                boolean deleted = mDeleteListener.deleteShopItem(holder.mItem.getName(),
+                boolean deleted = mDeleteListener.deleteShopItem(holder.mItem.getId(), holder.mItem.getName(),
                         holder.mItem.getQuantity(), holder.mItem.getPrice());
 
                 if (deleted) {
@@ -175,6 +175,6 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
 
 
     public interface OnDeleteItem {
-        boolean deleteShopItem(String name, String quantity, String price);
+        boolean deleteShopItem(String id, String name, String quantity, String price);
     }
 }

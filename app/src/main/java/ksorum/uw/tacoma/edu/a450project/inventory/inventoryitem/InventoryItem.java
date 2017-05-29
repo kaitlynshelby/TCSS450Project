@@ -20,6 +20,7 @@ import java.util.List;
 
 public class InventoryItem implements Serializable {
 
+    private String mId;
     private String mItemName;
     private String mQuantity;
     private String mPrice;
@@ -27,15 +28,24 @@ public class InventoryItem implements Serializable {
     private int mColor;
 
 
-    public static final String ITEM_NAME = "name", QUANTITY = "quantity",
+    public static final String ITEM_ID = "id", ITEM_NAME = "name", QUANTITY = "quantity",
             PRICE = "price", EXPIRATION = "expirationdate";
 
-    public InventoryItem(String itemName, String quantity, String price, String expiration) {
+    public InventoryItem(String id, String itemName, String quantity, String price, String expiration) {
+        this.mId = id;
         this.mItemName = itemName;
         this.mQuantity = quantity;
         this.mPrice = price;
         this.mExpiration = expiration;
 
+    }
+
+    public String getId() {
+        return mId;
+    }
+
+    public void setId(String id) {
+        mId = id;
     }
 
     public String getItemName() {
@@ -92,9 +102,9 @@ public class InventoryItem implements Serializable {
 
             int difference = (int) diff;
 
-            if (difference <= 1) {
+            if (difference <= 0) {
                 color = Color.RED;
-            } else if (difference >= 2 && difference <= 3) {
+            } else if (difference > 0 && difference <= 3) {
                 color = Color.YELLOW;
             }
 
@@ -121,7 +131,8 @@ public class InventoryItem implements Serializable {
 
                 for (int i = 0; i < arr.length(); i++) {
                     JSONObject obj = arr.getJSONObject(i);
-                    InventoryItem item = new InventoryItem(obj.getString(InventoryItem.ITEM_NAME), obj.getString(InventoryItem.QUANTITY)
+                    InventoryItem item = new InventoryItem(obj.getString(InventoryItem.ITEM_ID),
+                            obj.getString(InventoryItem.ITEM_NAME), obj.getString(InventoryItem.QUANTITY)
                             , obj.getString(InventoryItem.PRICE), obj.getString(InventoryItem.EXPIRATION));
                     courseList.add(item);
                 }
