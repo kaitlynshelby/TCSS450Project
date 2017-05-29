@@ -23,7 +23,6 @@ import java.net.URL;
 
 import ksorum.uw.tacoma.edu.a450project.R;
 import ksorum.uw.tacoma.edu.a450project.inventory.LandingPageActivity;
-import ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingListActivity;
 
 
 /**

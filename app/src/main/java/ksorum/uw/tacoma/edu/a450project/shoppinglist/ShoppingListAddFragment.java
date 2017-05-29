@@ -72,6 +72,11 @@ public class ShoppingListAddFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        getActivity().findViewById(R.id.sliding_tabs_landing).setVisibility(View.GONE);
+
+        getActivity().setTitle("Add Item");
+
         View v = inflater.inflate(R.layout.fragment_shopping_list_add, container, false);
 
         mNameEditText = (EditText) v.findViewById(R.id.add_shop_item_name);
@@ -82,7 +87,7 @@ public class ShoppingListAddFragment extends Fragment {
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.hide();
 
-        EditText search = (EditText) getActivity().findViewById(R.id.shopSearchView);
+        EditText search = (EditText) getActivity().findViewById(R.id.searchView);
         search.setVisibility(View.GONE);
 
         Button addItemButton = (Button) v.findViewById(R.id.shop_add_item_button);
@@ -104,7 +109,10 @@ public class ShoppingListAddFragment extends Fragment {
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.show();
 
-        EditText search = (EditText) getActivity().findViewById(R.id.shopSearchView);
+        getActivity().findViewById(R.id.sliding_tabs_landing).setVisibility(View.VISIBLE);
+        getActivity().setTitle("What's in My Fridge?");
+
+        EditText search = (EditText) getActivity().findViewById(R.id.searchView);
         search.setVisibility(View.VISIBLE);
     }
 

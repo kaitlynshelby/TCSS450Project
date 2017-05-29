@@ -106,8 +106,6 @@ public class ShoppingListFragment extends Fragment {
         }
     }
 
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -130,6 +128,7 @@ public class ShoppingListFragment extends Fragment {
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void onDetach() {

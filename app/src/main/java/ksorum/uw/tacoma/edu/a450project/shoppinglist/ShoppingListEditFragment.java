@@ -1,4 +1,5 @@
-package ksorum.uw.tacoma.edu.a450project.inventory;
+package ksorum.uw.tacoma.edu.a450project.shoppinglist;
+
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -38,7 +39,7 @@ import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingLi
  * Activities that contain this fragment must implement the
  * {@link OnShoppingListEditInteractionListener} interface
  * to handle interaction events.
- * Use the {@link InventoryEditFragment#newInstance} factory method to
+ * Use the {@link ShoppingListEditFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class ShoppingListEditFragment extends Fragment {
@@ -76,6 +77,12 @@ public class ShoppingListEditFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        getActivity().findViewById(R.id.sliding_tabs_landing).setVisibility(View.GONE);
+
+        getActivity().setTitle("Edit Item");
+
+
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_shopping_list_edit, container, false);
 
@@ -94,7 +101,7 @@ public class ShoppingListEditFragment extends Fragment {
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.hide();
 
-        EditText search = (EditText) getActivity().findViewById(R.id.shopSearchView);
+        EditText search = (EditText) getActivity().findViewById(R.id.searchView);
         search.setVisibility(View.GONE);
 
         Button editButton = (Button) v.findViewById(R.id.shop_edit_item_button);
@@ -173,7 +180,10 @@ public class ShoppingListEditFragment extends Fragment {
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.show();
 
-        EditText search = (EditText) getActivity().findViewById(R.id.shopSearchView);
+        getActivity().findViewById(R.id.sliding_tabs_landing).setVisibility(View.VISIBLE);
+        getActivity().setTitle("What's in My Fridge?");
+
+        EditText search = (EditText) getActivity().findViewById(R.id.searchView);
         search.setVisibility(View.VISIBLE);
     }
 
