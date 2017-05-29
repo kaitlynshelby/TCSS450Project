@@ -1,10 +1,17 @@
 package ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem;
 
+import android.graphics.Color;
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,6 +24,7 @@ public class InventoryItem implements Serializable {
     private String mQuantity;
     private String mPrice;
     private String mExpiration;
+    private int mColor;
 
 
     public static final String ITEM_NAME = "name", QUANTITY = "quantity",
@@ -27,6 +35,7 @@ public class InventoryItem implements Serializable {
         this.mQuantity = quantity;
         this.mPrice = price;
         this.mExpiration = expiration;
+
     }
 
     public String getItemName() {
@@ -60,6 +69,43 @@ public class InventoryItem implements Serializable {
     public void setExpiration(String mExpiration) {
         this.mExpiration = mExpiration;
     }
+
+
+    public int getColor() {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date itemDate;
+        Date compareDate;
+        int color = 0;
+
+        // Today's date
+        Date todaysDate = new Date();
+        DateFormat todaysDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String today = todaysDateFormat.format(todaysDate);
+
+
+        try {
+            itemDate = df.parse(mExpiration);
+            compareDate = df.parse(today);
+
+            long diff = Math.round((itemDate.getTime() - compareDate.getTime()) / (double) 86400000);
+
+
+            int difference = (int) diff;
+
+            if (difference <= 1) {
+                color = Color.RED;
+            } else if (difference >= 2 && difference <= 3) {
+                color = Color.YELLOW;
+            }
+
+        } catch(ParseException e) {
+            e.printStackTrace();
+        }
+
+        return color;
+    }
+
+
 
     /**
      * Parses the json string, returns an error message if unsuccessful.
