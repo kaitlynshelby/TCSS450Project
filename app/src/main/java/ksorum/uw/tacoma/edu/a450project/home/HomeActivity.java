@@ -24,7 +24,6 @@ import java.net.URL;
 import ksorum.uw.tacoma.edu.a450project.R;
 import ksorum.uw.tacoma.edu.a450project.TestTabActivity;
 import ksorum.uw.tacoma.edu.a450project.inventory.LandingPageActivity;
-import ksorum.uw.tacoma.edu.a450project.shoppinglist.MyShoppingListRecyclerViewAdapter;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingListActivity;
 
 
@@ -97,14 +96,13 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
             task.execute(new String[]{url.toString()});
         }
         else {
-            Toast.makeText(this, "No network connection available. Cannot authenticate user",
+            Toast.makeText(this, "Could not authenticate user. Please check your connection and try again.",
                     Toast.LENGTH_SHORT) .show();
             return;
         }
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putBoolean(getString(R.string.LOGGEDIN), true);
-        editor.putString("user", email);
-        editor.commit();
+
+        loginUser(LoginFragment.LOGIN_URL, email);
+
     }
 
     @Override
@@ -117,7 +115,7 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
             task.execute(new String[]{url.toString()});
         }
         else {
-            Toast.makeText(this, "No network connection available. Cannot authenticate user",
+            Toast.makeText(this, "Could not authenticate user. Please check your connection and try again.",
                     Toast.LENGTH_SHORT) .show();
             return;
         }
@@ -194,15 +192,12 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
                     finish();
 
                 } else {
-                    Toast.makeText(getApplicationContext(), "Failed to complete user task: "
-                                    + jsonObject.get("error")
+                    Toast.makeText(getApplicationContext(), "" + jsonObject.get("error")
                             , Toast.LENGTH_LONG)
                             .show();
-                    getSupportFragmentManager().popBackStackImmediate();
                 }
             } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "Please enter valid data " +
-                        e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Could not authenticate user.", Toast.LENGTH_LONG).show();
             }
         }
 
