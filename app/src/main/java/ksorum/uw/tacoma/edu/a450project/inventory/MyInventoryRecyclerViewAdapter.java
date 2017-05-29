@@ -155,7 +155,7 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
                 notifyDataSetChanged();
             }
         });
-        
+
     }
 
 
