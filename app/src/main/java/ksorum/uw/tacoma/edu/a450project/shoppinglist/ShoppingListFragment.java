@@ -248,10 +248,15 @@ public class ShoppingListFragment extends Fragment {
                 return;
             }
 
-            // Everything is good, show the list of courses.
-            if (!shoppingList.isEmpty()) {
-                mRecyclerView.setAdapter(new MyShoppingListRecyclerViewAdapter(getActivity(), shoppingList, mListener));
+            try {
+                // Everything is good, show the list of courses.
+                if (!shoppingList.isEmpty()) {
+                    mRecyclerView.setAdapter(new MyShoppingListRecyclerViewAdapter(getActivity(), shoppingList, mListener));
+                }
+            } catch (NullPointerException e) {
+
             }
+
         }
      }
 }

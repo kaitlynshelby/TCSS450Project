@@ -48,9 +48,10 @@ public class ShoppingListEditFragment extends Fragment {
             = "http://cssgate.insttech.washington.edu/~ksorum/editShoppingItem.php?";
 
 
-    private TextView mNameTextView;
+    private EditText mNameTextView;
     private EditText mPriceEditText;
     private EditText mQuantityEditText;
+    private String mItemId;
 
     private SharedPreferences mSharedPreferences;
 
@@ -89,13 +90,13 @@ public class ShoppingListEditFragment extends Fragment {
         Bundle args = getArguments();
         ShoppingListItem inventoryItem = (ShoppingListItem) args.getSerializable(ShoppingItemDetailsFragment.SHOPPING_ITEM_SELECTED);
 
-        mNameTextView = (TextView) v.findViewById(R.id.edit_shop_item_name);
+        mNameTextView = (EditText) v.findViewById(R.id.edit_shop_item_name);
         mNameTextView.setText(inventoryItem.getName());
         mPriceEditText = (EditText) v.findViewById(R.id.edit_shop_item_price);
         mPriceEditText.setText(inventoryItem.getPrice());
         mQuantityEditText = (EditText) v.findViewById(R.id.edit_shop_item_quantity);
         mQuantityEditText.setText(inventoryItem.getQuantity());
-
+        mItemId = inventoryItem.getId();
 
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
@@ -140,13 +141,16 @@ public class ShoppingListEditFragment extends Fragment {
             sb.append("&quantity=");
             sb.append(URLEncoder.encode(quantity, "UTF-8"));
 
+            sb.append("&id=");
+            sb.append(URLEncoder.encode(mItemId, "UTF-8"));
+
 
             mSharedPreferences = getActivity().getApplicationContext().
                     getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
 
-            String user = mSharedPreferences.getString("user", "");
-            sb.append("&user=");
-            sb.append(URLEncoder.encode(user, "UTF-8"));
+
+
+
 
             Log.i("ShoppingEditFragment", sb.toString());
 

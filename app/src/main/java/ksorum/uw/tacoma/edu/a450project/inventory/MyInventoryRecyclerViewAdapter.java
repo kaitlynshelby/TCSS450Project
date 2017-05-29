@@ -127,6 +127,8 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
                     notifyItemRangeChanged(pos, mValues.size());
                 }
 
+                notifyDataSetChanged();;
+
             }
         });
 

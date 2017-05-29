@@ -7,11 +7,14 @@
               android:layout_margin="40dp"
               tools:context=".shoppinglist.ShoppingListAddFragment">
 
-    <TextView
+
+    <EditText
+        android:id="@+id/edit_shop_item_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:id="@+id/edit_shop_item_name" />
+        android:hint="@string/inventory_item_name_hint"
+        android:backgroundTint="@color/colorSecondary"
+        />
 
     <EditText
         android:layout_width="match_parent"

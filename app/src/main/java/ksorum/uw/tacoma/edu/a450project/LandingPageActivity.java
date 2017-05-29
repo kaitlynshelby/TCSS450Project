@@ -85,10 +85,17 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         mTabLayout = (TabLayout) findViewById(R.id.sliding_tabs_landing);
         mTabLayout.setupWithViewPager(viewPager);
 
-        if (savedInstanceState == null || getSupportFragmentManager().findFragmentById(R.id.list) == null) {
+        if ( (savedInstanceState == null || getSupportFragmentManager().findFragmentById(R.id.list) == null )
+                && mTabLayout.getSelectedTabPosition() == 0) {
             InventoryFragment inventoryFragment = new InventoryFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container_landing, inventoryFragment)
+                    .commit();
+        } else if ( (savedInstanceState == null || getSupportFragmentManager().findFragmentById(R.id.list) == null )
+                && mTabLayout.getSelectedTabPosition() == 1) {
+            ShoppingListFragment shopFragment = new ShoppingListFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container_landing, shopFragment)
                     .commit();
         }
 
@@ -264,8 +271,8 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
                         AddItemTask task2 = new AddItemTask();
                         task2.execute(new String[]{addURL});
                         mDelete = true;
-                        finish();
-                        startActivity(getIntent());
+                        mTabLayout.getTabAt(1).select();
+
                     }
                 })
                 .setNegativeButton("No, just delete", new DialogInterface.OnClickListener() {
@@ -274,8 +281,10 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
                         DeleteItemTask task = new DeleteItemTask();
                         task.execute(new String[]{url});
                         mDelete = true;
-                        finish();
-                        startActivity(getIntent());
+                        InventoryFragment fragment = new InventoryFragment();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container_landing, fragment)
+                                .commit();
                     }
                 })
                 .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
@@ -310,8 +319,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
                         AddItemTask task2 = new AddItemTask();
                         task2.execute(new String[]{addURL});
                         mDelete = true;
-                        finish();
-                        startActivity(getIntent());
+                        mTabLayout.getTabAt(0).select();;
                     }
                 })
                 .setNegativeButton("No, just delete", new DialogInterface.OnClickListener() {
@@ -320,8 +328,10 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
                         DeleteItemTask task = new DeleteItemTask();
                         task.execute(new String[]{url});
                         mDelete = true;
-                        finish();
-                        startActivity(getIntent());
+                        ShoppingListFragment fragment = new ShoppingListFragment();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container_landing, fragment)
+                                .commit();
                     }
                 })
                 .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {

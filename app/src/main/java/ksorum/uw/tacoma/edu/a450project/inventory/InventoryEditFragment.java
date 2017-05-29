@@ -45,10 +45,11 @@ public class InventoryEditFragment extends Fragment {
             = "http://cssgate.insttech.washington.edu/~ksorum/editInventoryItem.php?";
 
 
-    private TextView mNameTextView;
+    private EditText mNameTextView;
     private EditText mPriceEditText;
     private EditText mQuantityEditText;
     private EditText mExpirationEditText;
+    private String mItemId;
 
     private SharedPreferences mSharedPreferences;
 
@@ -86,7 +87,7 @@ public class InventoryEditFragment extends Fragment {
         Bundle args = getArguments();
         InventoryItem inventoryItem = (InventoryItem) args.getSerializable(InventoryItemDetailsFragment.INVENTORY_ITEM_SELECTED);
 
-        mNameTextView = (TextView) v.findViewById(R.id.edit_item_name);
+        mNameTextView = (EditText) v.findViewById(R.id.edit_item_name);
         mNameTextView.setText(inventoryItem.getItemName());
         mPriceEditText = (EditText) v.findViewById(R.id.edit_item_price);
         mPriceEditText.setText(inventoryItem.getPrice());
@@ -94,6 +95,7 @@ public class InventoryEditFragment extends Fragment {
         mQuantityEditText.setText(inventoryItem.getQuantity());
         mExpirationEditText = (EditText) v.findViewById(R.id.edit_item_expiration);
         mExpirationEditText.setText(inventoryItem.getExpiration());
+        mItemId = inventoryItem.getId();
 
 
         FloatingActionButton floatingActionButton = (FloatingActionButton)
@@ -143,12 +145,8 @@ public class InventoryEditFragment extends Fragment {
             sb.append("&expiration=");
             sb.append(URLEncoder.encode(exp, "UTF-8"));
 
-            mSharedPreferences = getActivity().getApplicationContext().
-                    getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
-
-            String user = mSharedPreferences.getString("user", "");
-            sb.append("&user=");
-            sb.append(URLEncoder.encode(user, "UTF-8"));
+            sb.append("&id=");
+            sb.append(URLEncoder.encode(mItemId, "UTF-8"));
 
             Log.i("InventoryEditFragment", sb.toString());
 
