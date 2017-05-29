@@ -5,9 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
-
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,31 +12,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".home.HomeActivity"
             android:label="What&apos;s in My Fridge?"
             android:theme="@style/AppTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".inventory.LandingPageActivity"
-            android:label="Inventory">
-
-        </activity>
-
+            android:label="Inventory" />
         <activity
             android:name=".shoppinglist.ShoppingListActivity"
-            android:label="Shopping List" >
-        </activity>
-
+            android:label="Shopping List" />
         <activity android:name=".TestTabActivity">
 
         </activity>
-
     </application>
 
 </manifest>

@@ -170,6 +170,7 @@ public class InventoryEditFragment extends Fragment {
         mListener = null;
     }
 
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

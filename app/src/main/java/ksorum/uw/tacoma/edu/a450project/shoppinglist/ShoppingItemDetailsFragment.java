@@ -13,7 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import ksorum.uw.tacoma.edu.a450project.R;
-import ksorum.uw.tacoma.edu.a450project.inventory.ShoppingListEditFragment;
+import ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingListEditFragment;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem;
 
 /**

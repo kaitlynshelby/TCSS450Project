@@ -8,6 +8,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -64,11 +67,19 @@ public class InventoryAddFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getActivity().setTitle("Test");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
+        getActivity().findViewById(R.id.sliding_tabs_landing).setVisibility(View.GONE);
+
+        getActivity().setTitle("Add Item");
+
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_inventory_add, container, false);
 
@@ -97,6 +108,7 @@ public class InventoryAddFragment extends Fragment {
     }
 
 
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -115,6 +127,10 @@ public class InventoryAddFragment extends Fragment {
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.show();
+
+        getActivity().findViewById(R.id.sliding_tabs_landing).setVisibility(View.VISIBLE);
+        getActivity().setTitle("Home");
+
 
         EditText search = (EditText) getActivity().findViewById(R.id.searchView);
         search.setVisibility(View.VISIBLE);

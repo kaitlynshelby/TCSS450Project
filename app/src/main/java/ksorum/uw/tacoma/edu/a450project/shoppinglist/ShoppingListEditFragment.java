@@ -1,4 +1,5 @@
-package ksorum.uw.tacoma.edu.a450project.inventory;
+package ksorum.uw.tacoma.edu.a450project.shoppinglist;
+
 
 import android.content.Context;
 import android.content.SharedPreferences;

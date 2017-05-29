@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,8 +28,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import ksorum.uw.tacoma.edu.a450project.CustomFragmentPagerAdapter;
 import ksorum.uw.tacoma.edu.a450project.R;
+import ksorum.uw.tacoma.edu.a450project.TestTabActivity;
 import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
+import ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingListFragment;
+import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem;
 
 /**
  * The landing page activity which opens after a user logs in.
@@ -39,12 +45,17 @@ import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
  */
 public class LandingPageActivity extends AppCompatActivity implements InventoryFragment.OnListFragmentInteractionListener,
         InventoryItemDetailsFragment.OnFragmentInteractionListener, InventoryAddFragment.InventoryAddListener,
-        MyInventoryRecyclerViewAdapter.OnDeleteItem, InventoryEditFragment.OnInventoryEditInteractionListener {
+        MyInventoryRecyclerViewAdapter.OnDeleteItem, ShoppingListFragment.OnShoppingListFragmentInteractionListener,
+        InventoryEditFragment.OnInventoryEditInteractionListener {
+
 
     private static final String URL =
             "http://cssgate.insttech.washington.edu/~ksorum/";
 
     private boolean mDelete;
+
+    private CustomFragmentPagerAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +64,22 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        ViewPager viewPager = (ViewPager)findViewById(R.id.viewpager_landing);
+        adapter = new CustomFragmentPagerAdapter(getSupportFragmentManager(), LandingPageActivity.this);
+        viewPager.setAdapter(adapter);
+
+        setTitle("Home");
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs_landing);
+        tabLayout.setupWithViewPager(viewPager);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 InventoryAddFragment inventoryAddFragment = new InventoryAddFragment();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.inventory_list_container, inventoryAddFragment)
+                        .replace(R.id.fragment_container_landing, inventoryAddFragment)
                         .addToBackStack(null)
                         .commit();
             }
@@ -69,10 +89,9 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         if (savedInstanceState == null || getSupportFragmentManager().findFragmentById(R.id.list) == null) {
             InventoryFragment inventoryFragment = new InventoryFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.inventory_list_container, inventoryFragment)
+                    .add(R.id.fragment_container_landing, inventoryFragment)
                     .commit();
         }
-
     }
 
 
@@ -90,7 +109,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         detailsFragment.setArguments(args);
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.inventory_list_container, detailsFragment)
+                .replace(R.id.fragment_container_landing, detailsFragment)
                 .addToBackStack(null)
                 .commit();
     }
@@ -223,9 +242,12 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
     }
 
     @Override
-    public void editInventoryItem(String url) {
-
+    public void onShoppingListFragmentInteraction(ShoppingListItem item) {
     }
+
+    public void editInventoryItem(String url) {
+    }
+
 
     /**
      * Launches AsyncTask to execute the web service to add an item
