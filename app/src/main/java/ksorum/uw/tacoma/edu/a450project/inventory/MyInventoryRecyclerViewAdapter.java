@@ -69,6 +69,7 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
 
 
 
+
     /**
      * Adapter constructor.
      *
@@ -136,6 +137,7 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
+
             }
 
             @Override
@@ -152,6 +154,24 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
 
         // Color-coding system for expiration dates
 
+        holder.mSearchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String s = editable.toString();
+                filter(s);
+            }
+        });
+        
         String itemExpiration = mValues.get(pos).getExpiration();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date itemDate;

@@ -131,6 +131,7 @@ public class InventoryAddFragment extends Fragment {
         getActivity().findViewById(R.id.sliding_tabs_landing).setVisibility(View.VISIBLE);
         getActivity().setTitle("Home");
 
+
         EditText search = (EditText) getActivity().findViewById(R.id.searchView);
         search.setVisibility(View.VISIBLE);
     }

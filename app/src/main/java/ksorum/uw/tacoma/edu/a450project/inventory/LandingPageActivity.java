@@ -48,6 +48,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         MyInventoryRecyclerViewAdapter.OnDeleteItem, ShoppingListFragment.OnShoppingListFragmentInteractionListener,
         InventoryEditFragment.OnInventoryEditInteractionListener {
 
+
     private static final String URL =
             "http://cssgate.insttech.washington.edu/~ksorum/";
 
@@ -246,7 +247,6 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
 
     public void editInventoryItem(String url) {
     }
-
 
 
     /**
