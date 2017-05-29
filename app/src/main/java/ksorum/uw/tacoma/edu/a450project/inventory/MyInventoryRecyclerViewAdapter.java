@@ -1,16 +1,21 @@
 package ksorum.uw.tacoma.edu.a450project.inventory;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,9 +35,12 @@ import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import static ksorum.uw.tacoma.edu.a450project.R.drawable.delete_icon;
 import static ksorum.uw.tacoma.edu.a450project.R.drawable.waste_bin;
 
 /**
@@ -55,9 +63,12 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
     private static final String URL =
             "http://cssgate.insttech.washington.edu/~ksorum/deleteInventoryItem.php?";
 
-    private SharedPreferences mSharedPreferences;
+    private List<InventoryItem> mValuesCopy;
 
-    private Context mContext;
+    private Activity mContext;
+
+
+
 
     /**
      * Adapter constructor.
@@ -68,7 +79,10 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
     public MyInventoryRecyclerViewAdapter(Context context, List<InventoryItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
-        mContext = context;
+        mContext = (Activity) context;
+
+        mValuesCopy = new ArrayList<InventoryItem>();
+        mValuesCopy.addAll(mValues);
 
         if (context instanceof OnDeleteItem) {
             mDeleteListener = (OnDeleteItem) context;
@@ -119,9 +133,27 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
         });
 
 
+
+        holder.mSearchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String s = editable.toString();
+                filter(s);
+            }
+        });
+
         // Color-coding system for expiration dates
         String itemExpiration = mValues.get(pos).getExpiration();
-        System.out.println("Item's Expiration Date: " + itemExpiration);
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date itemDate;
         Date compareDate;
@@ -131,24 +163,17 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
         DateFormat todaysDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String today = todaysDateFormat.format(todaysDate);
 
-        // TODO: Remove date, only used for testing purposes
-        String date2 = "2017-06-13";
 
         try {
             itemDate = df.parse(itemExpiration);
-            compareDate = df.parse(date2);
-            Log.i("CHECK", "Date parsed and formatted");
+            compareDate = df.parse(today);
 
             long diff = Math.round((itemDate.getTime() - compareDate.getTime()) / (double) 86400000);
 
-            if (diff < 0) {
-                diff *= -1;
-            } else {
-                diff *= 1;
-            }
 
             int difference = (int) diff;
-            System.out.println("Days difference: " + difference);
+
+            Log.i("item", holder.mItem.getItemName());
 
             if (difference <= 1) {
                 holder.mView.setBackgroundColor(Color.RED);
@@ -163,6 +188,20 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
         }
     }
 
+    public void filter(String text) {
+        mValues.clear();
+        if(text.isEmpty()){
+            mValues.addAll(mValuesCopy);
+        } else{
+            text = text.toLowerCase();
+            for(int i = 0; i < mValuesCopy.size(); i++){
+                if(mValuesCopy.get(i).getItemName().toLowerCase().contains(text)){
+                    mValues.add(mValuesCopy.get(i));
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() {
@@ -174,13 +213,17 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
         public final TextView mIdView;
         public final ImageButton mDeleteView;
         public InventoryItem mItem;
+        public final EditText mSearchView;
+
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.item_name);
             mDeleteView = (ImageButton) view.findViewById(R.id.delete_button);
+            mSearchView = (EditText) mContext.findViewById(R.id.searchView);
         }
+
 
         @Override
         public String toString() {
@@ -188,74 +231,6 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
         }
     }
 
-    /**
-     * Launches AsyncTask to execute the web service to delete an item
-     * from the inventory.
-     */
-    private class DeleteItemTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... urls) {
-            String response = "";
-            HttpURLConnection urlConnection = null;
-            for (String url : urls) {
-                try {
-                    java.net.URL urlObject = new URL(url);
-                    urlConnection = (HttpURLConnection) urlObject.openConnection();
-
-                    InputStream content = urlConnection.getInputStream();
-
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s = "";
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
-                    }
-
-                } catch (Exception e) {
-                    response = "Unable to delete course, Reason: "
-                            + e.getMessage();
-                } finally {
-                    if (urlConnection != null)
-                        urlConnection.disconnect();
-                }
-            }
-            return response;
-        }
-
-        /**
-         * It checks to see if there was a problem with the URL(Network) which is when an
-         * exception is caught. It tries to call the parse Method and checks to see if it was successful.
-         * If not, it displays the exception.
-         *
-         * @param result
-         */
-        @Override
-        protected void onPostExecute(String result) {
-            // Something wrong with the network or the URL.
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-                String status = (String) jsonObject.get("result");
-                if (status.equals("success")) {
-                    Toast.makeText(mContext, "Item successfully deleted"
-                            , Toast.LENGTH_LONG)
-                            .show();
-                } else {
-                    Toast.makeText(mContext, "Failed to delete: "
-                                    + jsonObject.get("error")
-                            , Toast.LENGTH_LONG)
-                            .show();
-                }
-            } catch (JSONException e) {
-                Toast.makeText(mContext, "Something wrong with the data" +
-                        e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }
-    }
 
     public interface OnDeleteItem {
         boolean deleteItem(String name, String quantity, String price);

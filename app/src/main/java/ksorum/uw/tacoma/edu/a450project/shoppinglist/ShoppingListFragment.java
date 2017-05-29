@@ -1,6 +1,7 @@
 package ksorum.uw.tacoma.edu.a450project.shoppinglist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -44,6 +46,8 @@ public class ShoppingListFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private SharedPreferences mSharedPreferences;
 
+    private List<ShoppingListItem> mShoppingListItems;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -73,6 +77,7 @@ public class ShoppingListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_shopping_list, container, false);
 
+        setHasOptionsMenu(true);
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -101,10 +106,54 @@ public class ShoppingListFragment extends Fragment {
         }
     }
 
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        if (id == R.id.action_logout) {
+
+        } else if (id == R.id.action_share) {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            String text = shoppingListItemsToString();
+            sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private String shoppingListItemsToString() {
+        StringBuilder sb = new StringBuilder();
+
+        // format: Name xQuantity
+        String name;
+        String quantity;
+
+        for (int i = 0; i < mShoppingListItems.size(); i++) {
+            name = mShoppingListItems.get(i).getName();
+            quantity = mShoppingListItems.get(i).getQuantity();
+            sb.append(name);
+            sb.append(" x");
+            sb.append(quantity);
+            sb.append("\n");
+        }
+
+        return sb.toString();
     }
 
     /**
@@ -131,8 +180,6 @@ public class ShoppingListFragment extends Fragment {
 
         }
         catch(Exception e) {
-            Toast.makeText(v.getContext(), "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
-                    .show();
         }
         return sb.toString();
     }
@@ -186,13 +233,15 @@ public class ShoppingListFragment extends Fragment {
         protected void onPostExecute(String result) {
             // Something wrong with the network or the URL.
             if (result.startsWith("Unable to")) {
-                Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_LONG)
+                Toast.makeText(getActivity().getApplicationContext(), "Unable to retrieve your items." +
+                        " Please check your connection and try again.", Toast.LENGTH_LONG)
                         .show();
                 return;
             }
 
             List<ShoppingListItem> shoppingList = new ArrayList<ShoppingListItem>();
             result = ShoppingListItem.parseListJSON(result, shoppingList);
+            mShoppingListItems = shoppingList;
             // Something wrong with the JSON returned.
             if (result != null) {
                 Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_LONG)

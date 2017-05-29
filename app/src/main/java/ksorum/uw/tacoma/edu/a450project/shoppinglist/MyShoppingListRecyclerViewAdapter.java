@@ -1,16 +1,21 @@
 package ksorum.uw.tacoma.edu.a450project.shoppinglist;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.pm.ActivityInfoCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,14 +24,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ksorum.uw.tacoma.edu.a450project.R;
+import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import static ksorum.uw.tacoma.edu.a450project.R.drawable.waste_bin;
@@ -34,7 +35,6 @@ import static ksorum.uw.tacoma.edu.a450project.R.drawable.waste_bin;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem} and makes a call to the
  * specified {@link ShoppingListFragment.OnShoppingListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MyShoppingListRecyclerViewAdapter.ViewHolder> {
 
@@ -45,15 +45,19 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
 
     private final OnDeleteItem mDeleteListener;
 
-    private SharedPreferences mSharedPreferences;
+    private List<ShoppingListItem> mValuesCopy;
 
-    private FragmentActivity mContext;
 
-    public MyShoppingListRecyclerViewAdapter(FragmentActivity context, List<ShoppingListItem> items,
+    private final Activity mContext;
+
+    public MyShoppingListRecyclerViewAdapter(Context context, List<ShoppingListItem> items,
                                              ShoppingListFragment.OnShoppingListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
-        mContext = context;
+        mContext = (Activity) context;
+
+        mValuesCopy = new ArrayList<ShoppingListItem>();
+        mValuesCopy.addAll(mValues);
 
         if (context instanceof OnDeleteItem) {
             mDeleteListener = (OnDeleteItem) context;
@@ -70,6 +74,7 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
                 .inflate(R.layout.fragment_shopping, parent, false);
         return new ViewHolder(view);
     }
+
 
 
 
@@ -105,6 +110,40 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
 
             }
         });
+
+        holder.mSearchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String s = editable.toString();
+                filter(s);
+            }
+        });
+
+    }
+
+    public void filter(String text) {
+        mValues.clear();
+        if(text.isEmpty()){
+            mValues.addAll(mValuesCopy);
+        } else{
+            text = text.toLowerCase();
+            for(int i = 0; i < mValuesCopy.size(); i++){
+                if(mValuesCopy.get(i).getName().toLowerCase().contains(text)){
+                    mValues.add(mValuesCopy.get(i));
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
 
@@ -118,12 +157,14 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
         public final TextView mIdView;
         public final ImageButton mDeleteView;
         public ShoppingListItem mItem;
+        public final EditText mSearchView;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.shop_item_name);
             mDeleteView = (ImageButton) view.findViewById(R.id.shop_delete_button);
+            mSearchView = (EditText) mContext.findViewById(R.id.shopSearchView);
         }
 
         @Override

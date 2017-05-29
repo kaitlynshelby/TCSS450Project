@@ -95,6 +95,9 @@ public class InventoryEditFragment extends Fragment {
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.hide();
 
+        EditText search = (EditText) getActivity().findViewById(R.id.searchView);
+        search.setVisibility(View.GONE);
+
         Button editButton = (Button) v.findViewById(R.id.edit_item_button);
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,6 +168,18 @@ public class InventoryEditFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        FloatingActionButton floatingActionButton = (FloatingActionButton)
+                getActivity().findViewById(R.id.fab);
+        floatingActionButton.show();
+
+        EditText search = (EditText) getActivity().findViewById(R.id.searchView);
+        search.setVisibility(View.VISIBLE);
     }
 
     private class EditItemTask extends AsyncTask<String, Void, String> {

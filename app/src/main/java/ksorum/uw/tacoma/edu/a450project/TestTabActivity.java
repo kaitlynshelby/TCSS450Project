@@ -43,15 +43,15 @@ public class TestTabActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search_menu, menu);
+        inflater.inflate(R.menu.shop_options_menu, menu);
 
         SearchManager searchManager = (SearchManager)
                 getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.search).getActionView();
+  //      SearchView searchView =
+    //            (SearchView) menu.findItem(R.id.search).getActionView();
 
-        searchView.setSearchableInfo(searchManager.
-                getSearchableInfo(getComponentName()));
+//        searchView.setSearchableInfo(searchManager.
+      //          getSearchableInfo(getComponentName()));
 //        searchView.setSubmitButtonEnabled(true);
 //        searchView.setOnQueryTextListener(this);
 

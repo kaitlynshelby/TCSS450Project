@@ -9,7 +9,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -24,13 +27,15 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 import ksorum.uw.tacoma.edu.a450project.R;
+import ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingListEditFragment;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem;
 
 public class ShoppingListActivity extends AppCompatActivity implements
         ShoppingListFragment.OnShoppingListFragmentInteractionListener,
         ShoppingListAddFragment.ShoppingListAddListener,
         ShoppingItemDetailsFragment.ShoppingDetailsFragmentInteractionListener,
-        MyShoppingListRecyclerViewAdapter.OnDeleteItem {
+        MyShoppingListRecyclerViewAdapter.OnDeleteItem,
+        ShoppingListEditFragment.OnShoppingListEditInteractionListener {
 
     private static final String URL =
             "http://cssgate.insttech.washington.edu/~ksorum/";
@@ -41,6 +46,8 @@ public class ShoppingListActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_list);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.shop_toolbar);
+        setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +82,15 @@ public class ShoppingListActivity extends AppCompatActivity implements
                 .addToBackStack(null)
                 .commit();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.shop_options_menu, menu);
+        return true;
+    }
+
 
     /**
      * Adds an item to the database.
@@ -194,6 +210,10 @@ public class ShoppingListActivity extends AppCompatActivity implements
         return sb.toString();
     }
 
+    @Override
+    public void editShoppingItem(String url) {
+
+    }
 
 
     /**
@@ -249,18 +269,16 @@ public class ShoppingListActivity extends AppCompatActivity implements
                 JSONObject jsonObject = new JSONObject(result);
                 String status = (String) jsonObject.get("result");
                 if (status.equals("success")) {
-                    Toast.makeText(getApplicationContext(), "Item successfully deleted"
+                    Toast.makeText(getApplicationContext(), "Item deleted from list"
                             , Toast.LENGTH_LONG)
                             .show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Failed to delete: "
-                                    + jsonObject.get("error")
+                    Toast.makeText(getApplicationContext(), "Failed to delete item. Check your connection and try again. "
                             , Toast.LENGTH_LONG)
                             .show();
                 }
             } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "Something wrong with the data" +
-                        e.getMessage(), Toast.LENGTH_LONG).show();
+
             }
         }
     }
@@ -318,19 +336,16 @@ public class ShoppingListActivity extends AppCompatActivity implements
                 JSONObject jsonObject = new JSONObject(result);
                 String status = (String) jsonObject.get("result");
                 if (status.equals("success")) {
-                    Toast.makeText(getApplicationContext(), "Item successfully added!"
+                    Toast.makeText(getApplicationContext(), "Item added to list"
                             , Toast.LENGTH_LONG)
                             .show();
                     getSupportFragmentManager().popBackStackImmediate();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Failed to add: "
-                                    + jsonObject.get("error")
+                    Toast.makeText(getApplicationContext(), "Failed to add item. Check your connection and try again."
                             , Toast.LENGTH_LONG)
                             .show();
                 }
             } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "Something wrong with the data" +
-                        e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
     }

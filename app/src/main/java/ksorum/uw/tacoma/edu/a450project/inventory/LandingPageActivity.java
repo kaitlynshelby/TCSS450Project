@@ -3,8 +3,6 @@ package ksorum.uw.tacoma.edu.a450project.inventory;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,11 +12,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -48,7 +45,9 @@ import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingLi
  */
 public class LandingPageActivity extends AppCompatActivity implements InventoryFragment.OnListFragmentInteractionListener,
         InventoryItemDetailsFragment.OnFragmentInteractionListener, InventoryAddFragment.InventoryAddListener,
-        MyInventoryRecyclerViewAdapter.OnDeleteItem, ShoppingListFragment.OnShoppingListFragmentInteractionListener {
+        MyInventoryRecyclerViewAdapter.OnDeleteItem, ShoppingListFragment.OnShoppingListFragmentInteractionListener,
+        InventoryEditFragment.OnInventoryEditInteractionListener {
+
 
     private static final String URL =
             "http://cssgate.insttech.washington.edu/~ksorum/";
@@ -93,7 +92,6 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
                     .add(R.id.fragment_container_landing, inventoryFragment)
                     .commit();
         }
-
     }
 
 
@@ -121,6 +119,14 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.inventory_menu, menu);
+        return true;
+    }
+
 
     /**
      * Adds an item to the database.
@@ -237,13 +243,15 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
 
     @Override
     public void onShoppingListFragmentInteraction(ShoppingListItem item) {
-
     }
 
-    /**
-     * Launches AsyncTask to execute the web service to add an item
-     * to the inventory.
-     */
+    public void editInventoryItem(String url) {
+    }
+
+        /**
+         * Launches AsyncTask to execute the web service to add an item
+         * to the inventory.
+         */
     public class DeleteItemTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -293,18 +301,16 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
                 JSONObject jsonObject = new JSONObject(result);
                 String status = (String) jsonObject.get("result");
                 if (status.equals("success")) {
-                    Toast.makeText(getApplicationContext(), "Item successfully deleted"
+                    Toast.makeText(getApplicationContext(), "Item deleted from list"
                             , Toast.LENGTH_LONG)
                             .show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Failed to delete: "
-                                    + jsonObject.get("error")
+                    Toast.makeText(getApplicationContext(), "Failed to delete item. Check your connection and try again."
                             , Toast.LENGTH_LONG)
                             .show();
                 }
             } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "Something wrong with the data" +
-                        e.getMessage(), Toast.LENGTH_LONG).show();
+
             }
         }
     }
@@ -362,23 +368,18 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
                 JSONObject jsonObject = new JSONObject(result);
                 String status = (String) jsonObject.get("result");
                 if (status.equals("success")) {
-                    Toast.makeText(getApplicationContext(), "Item successfully added!"
+                    Toast.makeText(getApplicationContext(), "Item added to list"
                             , Toast.LENGTH_LONG)
                             .show();
                     getSupportFragmentManager().popBackStackImmediate();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Failed to add: "
-                                    + jsonObject.get("error")
+                    Toast.makeText(getApplicationContext(), "Item failed to add. Check your connection and try again."
                             , Toast.LENGTH_LONG)
                             .show();
                 }
             } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "Something wrong with the data" +
-                        e.getMessage(), Toast.LENGTH_LONG).show();
+
             }
         }
     }
-
-
-
 }

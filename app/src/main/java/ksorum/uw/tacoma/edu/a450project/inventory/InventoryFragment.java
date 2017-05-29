@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -69,6 +68,7 @@ public class InventoryFragment extends Fragment {
     public static InventoryFragment newInstance(int columnCount) {
         InventoryFragment fragment = new InventoryFragment();
         Bundle args = new Bundle();
+        args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
     }
@@ -99,7 +99,7 @@ public class InventoryFragment extends Fragment {
         }
 
         DownloadItemsTask task = new DownloadItemsTask();
-        String url = buildCourseURL(view);
+        String url = buildURL(view);
         task.execute(new String[]{url});
 
 
@@ -132,7 +132,7 @@ public class InventoryFragment extends Fragment {
      * @param v the View object
      * @return the url to be used by the webservice
      */
-    private String buildCourseURL(View v) {
+    private String buildURL(View v) {
 
         StringBuilder sb = new StringBuilder(ITEM_URL);
 
@@ -151,8 +151,7 @@ public class InventoryFragment extends Fragment {
 
         }
         catch(Exception e) {
-            Toast.makeText(v.getContext(), "Something wrong with the url" + e.getMessage(), Toast.LENGTH_LONG)
-                    .show();
+
         }
         return sb.toString();
     }
@@ -214,7 +213,8 @@ public class InventoryFragment extends Fragment {
         protected void onPostExecute(String result) {
             // Something wrong with the network or the URL.
             if (result.startsWith("Unable to")) {
-                Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_LONG)
+                Toast.makeText(getActivity().getApplicationContext(), "Unable to retrieve your items." +
+                        " Please check your connection and try again.", Toast.LENGTH_LONG)
                         .show();
                 return;
             }
