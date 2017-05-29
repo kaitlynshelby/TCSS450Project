@@ -1,16 +1,21 @@
 package ksorum.uw.tacoma.edu.a450project.inventory;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +35,8 @@ import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -53,6 +60,12 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
 
     private final OnDeleteItem mDeleteListener;
 
+    private List<InventoryItem> mValuesCopy;
+
+    private Activity mContext;
+
+
+
 
     /**
      * Adapter constructor.
@@ -63,6 +76,10 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
     public MyInventoryRecyclerViewAdapter(Context context, List<InventoryItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
+        mContext = (Activity) context;
+
+        mValuesCopy = new ArrayList<InventoryItem>();
+        mValuesCopy.addAll(mValues);
 
         if (context instanceof OnDeleteItem) {
             mDeleteListener = (OnDeleteItem) context;
@@ -111,9 +128,27 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
 
             }
         });
+
+
+        holder.mSearchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String s = editable.toString();
+                filter(s);
+            }
+        });
         
         String itemExpiration = mValues.get(pos).getExpiration();
-        System.out.println("Item's Expiration Date: " + itemExpiration);
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date itemDate;
         Date compareDate;
@@ -127,13 +162,13 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
         try {
             itemDate = df.parse(itemExpiration);
             compareDate = df.parse(today);
-            Log.i("CHECK", "Date parsed and formatted");
 
             long diff = Math.round((itemDate.getTime() - compareDate.getTime()) / (double) 86400000);
 
 
             int difference = (int) diff;
-            System.out.println("Days difference: " + difference);
+
+            Log.i("item", holder.mItem.getItemName());
 
             if (difference <= 1) {
                 holder.mView.setBackgroundColor(Color.RED);
@@ -150,6 +185,21 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
 
 
 
+    public void filter(String text) {
+        mValues.clear();
+        if(text.isEmpty()){
+            mValues.addAll(mValuesCopy);
+        } else{
+            text = text.toLowerCase();
+            for(int i = 0; i < mValuesCopy.size(); i++){
+                if(mValuesCopy.get(i).getItemName().toLowerCase().contains(text)){
+                    mValues.add(mValuesCopy.get(i));
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return mValues.size();
@@ -160,13 +210,17 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
         public final TextView mIdView;
         public final ImageButton mDeleteView;
         public InventoryItem mItem;
+        public final EditText mSearchView;
+
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.item_name);
             mDeleteView = (ImageButton) view.findViewById(R.id.delete_button);
+            mSearchView = (EditText) mContext.findViewById(R.id.searchView);
         }
+
 
         @Override
         public String toString() {

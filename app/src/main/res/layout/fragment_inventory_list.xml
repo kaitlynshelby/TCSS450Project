@@ -4,9 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list"
+    android:layout_marginTop="40dp"
     android:name="ksorum.uw.tacoma.edu.a450project.inventory.InventoryFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
     tools:context="ksorum.uw.tacoma.edu.a450project.inventory.InventoryFragment"
-    tools:listitem="@layout/fragment_inventory" />
+    tools:listitem="@layout/fragment_inventory">
+
+</android.support.v7.widget.RecyclerView>

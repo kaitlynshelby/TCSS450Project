@@ -81,6 +81,9 @@ public class InventoryAddFragment extends Fragment {
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.hide();
 
+        EditText search = (EditText) getActivity().findViewById(R.id.searchView);
+        search.setVisibility(View.GONE);
+
         Button addCourseButton = (Button) v.findViewById(R.id.add_item_button);
         addCourseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +115,9 @@ public class InventoryAddFragment extends Fragment {
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.show();
+
+        EditText search = (EditText) getActivity().findViewById(R.id.searchView);
+        search.setVisibility(View.VISIBLE);
     }
 
     @Override
