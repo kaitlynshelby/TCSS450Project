@@ -18,9 +18,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:orientation="horizontal"
-        android:layout_gravity="bottom"
-
-        >
+        android:layout_gravity="bottom">
 
         <Button
             style="?android:attr/buttonBarButtonStyle"
