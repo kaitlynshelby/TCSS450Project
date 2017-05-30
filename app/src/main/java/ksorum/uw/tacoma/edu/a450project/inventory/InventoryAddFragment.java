@@ -29,8 +29,8 @@ import ksorum.uw.tacoma.edu.a450project.R;
  */
 public class InventoryAddFragment extends Fragment {
 
+    /** The listener to add an item to the inventory */
     private InventoryAddListener mListener;
-
     /** Name of new item */
     private EditText mItemNameEditText;
     /** Quantity of new item */

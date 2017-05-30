@@ -49,22 +49,20 @@ import static ksorum.uw.tacoma.edu.a450project.R.drawable.waste_bin;
  */
 public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInventoryRecyclerViewAdapter.ViewHolder> {
 
-    /**
-     * The list of inventory items
-     */
+    /** The list of inventory items */
     private final List<InventoryItem> mValues;
-    /**
-     * Fragment listener in the list
-     */
+
+    /** Fragment listener in the list */
     private final OnListFragmentInteractionListener mListener;
 
+    /** Listener to delete items from the inventory */
     private final OnDeleteItem mDeleteListener;
 
+    /** Copy of inventory items in the list */
     private List<InventoryItem> mValuesCopy;
 
+    /** Context of application */
     private Activity mContext;
-
-
 
 
     /**
@@ -132,6 +130,8 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
             }
         });
 
+
+        // Color-coding expiration date system
         int color = holder.mItem.getColor();
         if (color != 0) {
             holder.mView.setBackgroundColor(color);
@@ -162,7 +162,11 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
     }
 
 
-
+    /**
+     * Filters out items while the user types in the search bar.
+     * @param holder holder of the view
+     * @param text text typed into search bar
+     */
     public void filter(ViewHolder holder, String text) {
         int color;
         mValues.clear();
@@ -184,6 +188,9 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
         return mValues.size();
     }
 
+    /**
+     * Initializes the views of an inventory item row in a list.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
@@ -208,6 +215,9 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
     }
 
 
+    /**
+     * Interface to delete an item from the inventory.
+     */
     public interface OnDeleteItem {
         boolean deleteInventoryItem(String id, String name, String quantity, String price);
     }

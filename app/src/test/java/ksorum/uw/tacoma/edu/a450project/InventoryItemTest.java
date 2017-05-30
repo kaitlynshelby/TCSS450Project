@@ -15,12 +15,16 @@ import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
 import static junit.framework.Assert.assertEquals;
 
 /**
- * Created by Jasmine D on 5/30/2017.
+ * JUnit testing for the InventoryItem class.
+ *
+ * @author Jasmine Dacones
  */
-
 public class InventoryItemTest {
 
 
+    /**
+     * Tests the list row color for an item that is already expired.
+     */
     @Test
     public void testGetColor_RedExpireColor() {
 
@@ -33,6 +37,9 @@ public class InventoryItemTest {
         assertEquals(Color.RED, item3.getColor());
     }
 
+    /**
+     * Tests the list row color for an item that within 2-3 days of its expiration date.
+     */
     @Test
     public void testGetColor_YellowExpireColor() {
 
@@ -53,6 +60,9 @@ public class InventoryItemTest {
 
     }
 
+    /**
+     * Tests the list row color for an item that is more than 3 days away from its expiration date.
+     */
     @Test
     public void testGetColor_TransparentExpireColor() {
 

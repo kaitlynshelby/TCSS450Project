@@ -27,14 +27,18 @@ import ksorum.uw.tacoma.edu.a450project.R;
  */
 public class SignUpFragment extends Fragment {
 
+    /** URL for location of adding a new user to the database*/
     private final static String COURSE_ADD_URL
             = "http://cssgate.insttech.washington.edu/~ksorum/adduser.php?";
 
-
+    /** Field to enter in user email address */
     private EditText mUserEmail;
+    /** Field to enter in user password */
     private EditText mUserPassword;
+    /** Field to reenter user password */
     private EditText mUserConfirmPassword;
 
+    /** Listener to add a new user to the database */
     private OnAddUser mListener;
 
     public SignUpFragment() {
