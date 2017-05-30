@@ -89,6 +89,14 @@ public class ShoppingItemsDB {
         return list;
     }
 
+    /**
+     * Delete all the data from the SHOPPING_ITEMS_TABLE
+     */
+    public void deleteItems() {
+        mSQLiteDatabase.delete(SHOPPING_ITEMS_TABLE, null, null);
+    }
+
+
 
 
     class ShoppingItemsDBHelper extends SQLiteOpenHelper {

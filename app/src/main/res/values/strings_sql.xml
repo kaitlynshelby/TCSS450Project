@@ -2,7 +2,7 @@
 <resources>
 
     <string name="CREATE_INVENTORY_ITEMS_SQL">
-        CREATE TABLE IF NOT EXISTS InventoryItems (id INT PRIMARY KEY, name TEXT,
+        CREATE TABLE IF NOT EXISTS InventoryItems (id INT, name TEXT PRIMARY KEY,
             quantity INT, price TEXT, expirationdate DATE)
     </string>
 
@@ -11,7 +11,7 @@
     </string>
 
     <string name="CREATE_SHOPPING_ITEMS_SQL">
-        CREATE TABLE IF NOT EXISTS ShoppingItems (id INT PRIMARY KEY, name TEXT,
+        CREATE TABLE IF NOT EXISTS ShoppingItems (id INT, name TEXT PRIMARY KEY,
             quantity INT, price TEXT)
     </string>
 
