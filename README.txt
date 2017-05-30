@@ -25,10 +25,13 @@ NOT IMPLEMENTED
 -------------------------------------------------------------------------------
 
 3) Device Storage
+- Uses SharedPreferences to keep user logged in until they choose to log out.
+- Uses SQLite to locally store both the inventory and the shopping lists items along iwth their details.
 
 -------------------------------------------------------------------------------
 
 4) Web Services
+- Used web services to allow items to be retrieved from the database, added to the database, updated, and deleted. 
 
 -------------------------------------------------------------------------------
 
@@ -38,10 +41,12 @@ NOT IMPLEMENTED
 -------------------------------------------------------------------------------
 
 6) Sign-in
+- Implemented sign-in using custom accounts
 
 -------------------------------------------------------------------------------
 
 7) Graphics
+- Created a logo and a launcher icon
 
 -------------------------------------------------------------------------------
 
