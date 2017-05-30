@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="CREATE_INVENTORY_ITEMS_SQL">
+        CREATE TABLE IF NOT EXISTS InventoryItems (id INT PRIMARY KEY, name TEXT,
+            quantity INT, price TEXT, expirationdate DATE)
+    </string>
+
+    <string name="DROP_INVENTORY_ITEMS_SQL">
+         DROP TABLE IF EXISTS InventoryItems
+    </string>
+
+    <string name="CREATE_SHOPPING_ITEMS_SQL">
+        CREATE TABLE IF NOT EXISTS ShoppingItems (id INT PRIMARY KEY, name TEXT,
+            quantity INT, price TEXT)
+    </string>
+
+    <string name="DROP_SHOPPING_ITEMS_SQL">
+         DROP TABLE IF EXISTS ShoppingItems
+    </string>
+
+
+</resources>

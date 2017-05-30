@@ -69,7 +69,6 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
     private CustomFragmentPagerAdapter adapter;
 
     private TabLayout mTabLayout;
-    private List<ShoppingListItem> mShoppingListItems;
 
 
     @Override
@@ -95,7 +94,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container_landing, inventoryFragment)
                     .commit();
-        } else if ( (savedInstanceState == null || getSupportFragmentManager().findFragmentById(R.id.list) == null )
+        } else if ( (savedInstanceState == null || getSupportFragmentManager().findFragmentById(R.id.shop_list) == null )
                 && mTabLayout.getSelectedTabPosition() == 1) {
             ShoppingListFragment shopFragment = new ShoppingListFragment();
             getSupportFragmentManager().beginTransaction()
@@ -112,7 +111,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
                             .replace(R.id.fragment_container_landing, inventoryFragment)
                             .commit();
 
-                } else {
+                } else if (mTabLayout.getSelectedTabPosition() == 1){
                     ShoppingListFragment shopFragment = new ShoppingListFragment();
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragment_container_landing, shopFragment)
@@ -143,7 +142,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
                             .replace(R.id.fragment_container_landing, inventoryAddFragment)
                             .addToBackStack(null)
                             .commit();
-                } else {
+                } else if (mTabLayout.getSelectedTabPosition() == 1) {
                     ShoppingListAddFragment shoppingAddFragment = new ShoppingListAddFragment();
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragment_container_landing, shoppingAddFragment)
@@ -219,32 +218,6 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
     }
 
 
-    /**
-     * Build the url which will be used by the webservice.
-     *
-     * @return the url to be used by the webservice
-     */
-    private String buildShoppingListDownloadURL() {
-
-        StringBuilder sb = new StringBuilder(ShoppingListFragment.LIST_URL);
-
-        try {
-
-            SharedPreferences sharedPreferences = getApplicationContext().
-                    getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
-
-            String user = sharedPreferences.getString("user", "");
-
-            sb.append("&user=");
-            sb.append(URLEncoder.encode(user, "UTF-8"));
-
-            Log.i("ShoppingListFragment", sb.toString());
-
-        }
-        catch(Exception e) {
-        }
-        return sb.toString();
-    }
 
 
 
@@ -634,58 +607,4 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
             }
         }
     }
-
-    public class DownloadShoppingItemsTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-            String response = "";
-            HttpURLConnection urlConnection = null;
-            for (String url : urls) {
-                try {
-                    URL urlObject = new URL(url);
-                    urlConnection = (HttpURLConnection)
-                            urlObject.openConnection();
-
-                    InputStream content = urlConnection.getInputStream();
-
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s = "";
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
-                    }
-
-                } catch (Exception e) {
-                    response = "Unable to download the list of courses, Reason: "
-                            + e.getMessage();
-                }
-                finally {
-                    if (urlConnection != null)
-                        urlConnection.disconnect();
-                }
-            }
-
-            Log.i("doinbackground", "about to exit");
-            return response;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            // Something wrong with the network or the URL.
-            if (result.startsWith("Unable to")) {
-                Toast.makeText(getApplicationContext(), "Unable to retrieve your shopping list." +
-                        " Please check your connection and try again.", Toast.LENGTH_LONG)
-                        .show();
-                return;
-            }
-
-            mShoppingListItems = new ArrayList<ShoppingListItem>();
-            result = ShoppingListItem.parseListJSON(result, mShoppingListItems);
-
-
-            String s = mShoppingListItems.size() + "";
-            Log.i("shoppinglistitems size", s);
-
-        }
-    }
-
 }

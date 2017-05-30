@@ -3,17 +3,15 @@ package ksorum.uw.tacoma.edu.a450project.shoppinglist;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ksorum.uw.tacoma.edu.a450project.R;
-import ksorum.uw.tacoma.edu.a450project.home.HomeActivity;
+import ksorum.uw.tacoma.edu.a450project.data.ShoppingItemsDB;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem;
 
 /**
@@ -40,14 +38,13 @@ import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingLi
  */
 public class ShoppingListFragment extends Fragment {
 
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount = 1;
     private OnShoppingListFragmentInteractionListener mListener;
     public static final String LIST_URL
             = "http://cssgate.insttech.washington.edu/~ksorum/shoppinglist.php?cmd=items";
     private RecyclerView mRecyclerView;
     private SharedPreferences mSharedPreferences;
 
+    private ShoppingItemsDB mShoppingItemsDB;
     private List<ShoppingListItem> mShoppingListItems;
 
     /**
@@ -60,18 +57,8 @@ public class ShoppingListFragment extends Fragment {
     public static ShoppingListFragment newInstance(int columnCount) {
         ShoppingListFragment fragment = new ShoppingListFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
@@ -84,15 +71,31 @@ public class ShoppingListFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             mRecyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            DownloadShoppingItemsTask task = new DownloadShoppingItemsTask();
-            String url = buildURL(view);
-            task.execute(new String[]{url});
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         }
+
+            ConnectivityManager connMgr = (ConnectivityManager)
+                    getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isConnected()) {
+                DownloadShoppingItemsTask task = new DownloadShoppingItemsTask();
+                String url = buildShoppingListGetURL(view);
+                task.execute(new String[]{url});
+                Log.i("executed task", "");
+            }
+            else {
+                Toast.makeText(view.getContext(),
+                        "No network connection available. Displaying locally stored data",
+                        Toast.LENGTH_SHORT).show();
+                if (mShoppingItemsDB == null) {
+                    mShoppingItemsDB = new ShoppingItemsDB(getActivity());
+                }
+                if (mShoppingListItems == null) {
+                    mShoppingListItems = mShoppingItemsDB.getItems();
+                }
+            }
+
+
         return view;
     }
 
@@ -159,7 +162,7 @@ public class ShoppingListFragment extends Fragment {
      * @param v the View object
      * @return the url to be used by the webservice
      */
-    private String buildURL(View v) {
+    private String buildShoppingListGetURL(View v) {
 
         StringBuilder sb = new StringBuilder(LIST_URL);
 
@@ -195,7 +198,8 @@ public class ShoppingListFragment extends Fragment {
         void onShoppingListFragmentInteraction(ShoppingListItem item);
     }
 
-    public class DownloadShoppingItemsTask extends AsyncTask<String, Void, String> {
+    private class DownloadShoppingItemsTask extends AsyncTask<String, Void, String> {
+
         @Override
         protected String doInBackground(String... urls) {
             String response = "";
@@ -236,9 +240,9 @@ public class ShoppingListFragment extends Fragment {
                 return;
             }
 
-            List<ShoppingListItem> shoppingList = new ArrayList<ShoppingListItem>();
-            result = ShoppingListItem.parseListJSON(result, shoppingList);
-            mShoppingListItems = shoppingList;
+            mShoppingListItems = new ArrayList<ShoppingListItem>();
+            result = ShoppingListItem.parseListJSON(result, mShoppingListItems);
+            Log.i("OnPostExecute", mShoppingListItems.get(0).getName());
             // Something wrong with the JSON returned.
             if (result != null) {
                 Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_LONG)
@@ -248,8 +252,24 @@ public class ShoppingListFragment extends Fragment {
 
             try {
                 // Everything is good, show the list of courses.
-                if (!shoppingList.isEmpty()) {
-                    mRecyclerView.setAdapter(new MyShoppingListRecyclerViewAdapter(getActivity(), shoppingList, mListener));
+                if (!mShoppingListItems.isEmpty()) {
+
+                    if (mShoppingItemsDB == null) {
+                        mShoppingItemsDB = new ShoppingItemsDB(getActivity());
+                    }
+
+                    // Also, add to the local database
+                    for (int i=0; i<mShoppingListItems.size(); i++) {
+                        ShoppingListItem item = mShoppingListItems.get(i);
+                        Log.i("insert to db", item.getName());
+                        mShoppingItemsDB.insertShoppingItem(item.getId(),
+                                item.getName(),
+                                item.getQuantity(),
+                                item.getPrice());
+                    }
+
+                    mRecyclerView.setAdapter(new MyShoppingListRecyclerViewAdapter(getActivity(),
+                            mShoppingListItems, mListener));
                 }
             } catch (NullPointerException e) {
 
