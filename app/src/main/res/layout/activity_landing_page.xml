@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/inventory_fragment_container"
-    tools:context="ksorum.uw.tacoma.edu.a450project.inventory.LandingPageActivity">
+    tools:context="ksorum.uw.tacoma.edu.a450project.LandingPageActivity">
 
 
     <android.support.design.widget.AppBarLayout

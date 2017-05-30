@@ -117,7 +117,8 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
 
             @Override
             public void onClick(View v) {
-                boolean deleted = mDeleteListener.deleteInventoryItem(holder.mItem.getItemName(),
+                boolean deleted = mDeleteListener.deleteInventoryItem(holder.mItem.getId(),
+                        holder.mItem.getItemName(),
                         holder.mItem.getQuantity(), holder.mItem.getPrice());
 
                 if (deleted) {
@@ -125,6 +126,8 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
                     notifyItemRemoved(pos);
                     notifyItemRangeChanged(pos, mValues.size());
                 }
+
+                notifyDataSetChanged();;
 
             }
         });
@@ -206,7 +209,7 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
 
 
     public interface OnDeleteItem {
-        boolean deleteInventoryItem(String name, String quantity, String price);
+        boolean deleteInventoryItem(String id, String name, String quantity, String price);
     }
 
 }

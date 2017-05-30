@@ -1,11 +1,13 @@
 package ksorum.uw.tacoma.edu.a450project.shoppinglist;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.pm.ActivityInfoCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ksorum.uw.tacoma.edu.a450project.R;
+import ksorum.uw.tacoma.edu.a450project.inventory.InventoryFragment;
 import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem;
 
@@ -99,14 +102,18 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
 
             @Override
             public void onClick(View v) {
-                boolean deleted = mDeleteListener.deleteShopItem(holder.mItem.getName(),
+                boolean deleted = mDeleteListener.deleteShopItem(holder.mItem.getId(), holder.mItem.getName(),
                         holder.mItem.getQuantity(), holder.mItem.getPrice());
 
                 if (deleted) {
                     mValues.remove(pos);
                     notifyItemRemoved(pos);
                     notifyItemRangeChanged(pos, mValues.size());
+
                 }
+
+
+
 
             }
         });
@@ -175,6 +182,6 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
 
 
     public interface OnDeleteItem {
-        boolean deleteShopItem(String name, String quantity, String price);
+        boolean deleteShopItem(String id, String name, String quantity, String price);
     }
 }
