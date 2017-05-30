@@ -8,12 +8,16 @@
               android:background="@color/colorPrimary"
               tools:context="ksorum.uw.tacoma.edu.a450project.home.SignUpFragment">
 
-    <ImageView
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/title"
-        android:contentDescription="@string/title"
-        android:layout_marginTop="70dp"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="@string/signup"
+        android:textColor="@color/colorBg"
+        android:layout_marginTop="80dp"
+        android:textSize="50sp"/>
 
 
     <EditText

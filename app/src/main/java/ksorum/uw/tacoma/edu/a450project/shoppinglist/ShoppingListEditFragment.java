@@ -3,6 +3,8 @@ package ksorum.uw.tacoma.edu.a450project.shoppinglist;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -109,11 +111,20 @@ public class ShoppingListEditFragment extends Fragment {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = buildEditURL(v);
-                mListener.editShoppingItem(url);
-                EditItemTask task = new EditItemTask();
-                task.execute(new String[] {url});
 
+                ConnectivityManager connMgr = (ConnectivityManager)
+                        getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    String url = buildEditURL(v);
+                    EditItemTask task = new EditItemTask();
+                    task.execute(new String[] {url});
+                }
+                else {
+                    Toast.makeText(getActivity(),
+                            "Cannot edit item without a network connection.",
+                            Toast.LENGTH_SHORT).show();
+                }
 
             }
         });

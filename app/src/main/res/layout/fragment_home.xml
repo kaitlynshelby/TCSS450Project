@@ -6,12 +6,12 @@
              android:layout_width="match_parent"
              android:orientation="vertical"
              android:fitsSystemWindows="true"
-             android:background="@color/colorPrimary"
+             android:background="@color/colorSecondary"
              tools:context="ksorum.uw.tacoma.edu.a450project.home.HomeActivity">
 
 
     <LinearLayout
-        android:background="@color/colorPrimary"
+        android:background="@color/colorSecondary"
         android:layout_width="match_parent"
         android:layout_height="84dp"
         android:layout_marginBottom="5dp"
@@ -54,11 +54,12 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_width="387dp"
+        android:layout_height="334dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="90dp"
         android:contentDescription="@string/title"
-        android:src="@drawable/title_logo"/>
+        android:src="@drawable/logo"/>
 
 
 </FrameLayout>

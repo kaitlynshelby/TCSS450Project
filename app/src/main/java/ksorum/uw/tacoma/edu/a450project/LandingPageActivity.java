@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -228,8 +230,18 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
      */
     @Override
     public void addItem(String url) {
-        AddItemTask task = new AddItemTask();
-        task.execute(new String[]{url.toString()});
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            AddItemTask task = new AddItemTask();
+            task.execute(new String[]{url.toString()});
+        }
+        else {
+            Toast.makeText(this,
+                    "Cannot add item without a network connection.",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -240,44 +252,55 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         final String quantity = quan;
         final String price = itemPrice;
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String message = "You are about to delete " + name + ". Would you like to add this item to your Shopping List?";
-        builder.setMessage(message)
-                .setPositiveButton("Yes, add to Shopping List", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        String deleteURL = buildDeleteURL(itemId);
-                        DeleteItemTask task1 = new DeleteItemTask();
-                        task1.execute(new String[]{deleteURL});
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            String message = "You are about to delete " + name + ". Would you like to add this item to your Shopping List?";
+            builder.setMessage(message)
+                    .setPositiveButton("Yes, add to Shopping List", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            String deleteURL = buildDeleteURL(itemId);
+                            DeleteItemTask task1 = new DeleteItemTask();
+                            task1.execute(new String[]{deleteURL});
 
-                        String addURL = buildAddURL(name, price, quantity);
-                        AddItemTask task2 = new AddItemTask();
-                        task2.execute(new String[]{addURL});
-                        mDelete = true;
-                        mTabLayout.getTabAt(1).select();
+                            String addURL = buildAddURL(name, price, quantity);
+                            AddItemTask task2 = new AddItemTask();
+                            task2.execute(new String[]{addURL});
+                            mDelete = true;
+                            mTabLayout.getTabAt(1).select();
 
-                    }
-                })
-                .setNegativeButton("No, just delete", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        String url = buildDeleteURL(itemId);
-                        DeleteItemTask task = new DeleteItemTask();
-                        task.execute(new String[]{url});
-                        mDelete = true;
-                        InventoryFragment fragment = new InventoryFragment();
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_container_landing, fragment)
-                                .commit();
-                    }
-                })
-                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                    }
-                });
+                        }
+                    })
+                    .setNegativeButton("No, just delete", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            String url = buildDeleteURL(itemId);
+                            DeleteItemTask task = new DeleteItemTask();
+                            task.execute(new String[]{url});
+                            mDelete = true;
+                            InventoryFragment fragment = new InventoryFragment();
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fragment_container_landing, fragment)
+                                    .commit();
+                        }
+                    })
+                    .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    });
 
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+        else {
+            Toast.makeText(this,
+                    "Cannot delete item without a network connection.",
+                    Toast.LENGTH_SHORT).show();
+        }
         return mDelete;
+
     }
 
     @Override
@@ -288,42 +311,53 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         final String quantity = quan;
         final String price = itemPrice;
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String message = "You are about to delete " + name + ". Would you like to add this item to your Inventory?";
-        builder.setMessage(message)
-                .setPositiveButton("Yes, add to Inventory", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        String deleteURL = buildShopDeleteURL(itemId);
-                        DeleteItemTask task1 = new DeleteItemTask();
-                        task1.execute(new String[]{deleteURL});
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            String message = "You are about to delete " + name + ". Would you like to add this item to your Inventory?";
+            builder.setMessage(message)
+                    .setPositiveButton("Yes, add to Inventory", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            String deleteURL = buildShopDeleteURL(itemId);
+                            DeleteItemTask task1 = new DeleteItemTask();
+                            task1.execute(new String[]{deleteURL});
 
-                        String addURL = buildShopAddURL(name, price, quantity);
-                        AddItemTask task2 = new AddItemTask();
-                        task2.execute(new String[]{addURL});
-                        mDelete = true;
-                        mTabLayout.getTabAt(0).select();;
-                    }
-                })
-                .setNegativeButton("No, just delete", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        String url = buildShopDeleteURL(itemId);
-                        DeleteItemTask task = new DeleteItemTask();
-                        task.execute(new String[]{url});
-                        mDelete = true;
-                        ShoppingListFragment fragment = new ShoppingListFragment();
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_container_landing, fragment)
-                                .commit();
-                    }
-                })
-                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                    }
-                });
+                            String addURL = buildShopAddURL(name, price, quantity);
+                            AddItemTask task2 = new AddItemTask();
+                            task2.execute(new String[]{addURL});
+                            mDelete = true;
+                            mTabLayout.getTabAt(0).select();;
+                        }
+                    })
+                    .setNegativeButton("No, just delete", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            String url = buildShopDeleteURL(itemId);
+                            DeleteItemTask task = new DeleteItemTask();
+                            task.execute(new String[]{url});
+                            mDelete = true;
+                            ShoppingListFragment fragment = new ShoppingListFragment();
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fragment_container_landing, fragment)
+                                    .commit();
+                        }
+                    })
+                    .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    });
 
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+        else {
+            Toast.makeText(this,
+                    "Cannot delete item without a network connection.",
+                    Toast.LENGTH_SHORT).show();
+        }
+
         return mDelete;
     }
 
@@ -458,8 +492,18 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
      */
     @Override
     public void addShoppingItem(String url) {
-        AddItemTask task = new AddItemTask();
-        task.execute(new String[]{url.toString()});
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            AddItemTask task = new AddItemTask();
+            task.execute(new String[]{url.toString()});
+        }
+        else {
+            Toast.makeText(this,
+                    "Cannot add item without a network connection.",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
