@@ -571,11 +571,11 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
                 String status = (String) jsonObject.get("result");
                 if (status.equals("success")) {
                     Toast.makeText(getApplicationContext(), "Item deleted from list"
-                            , Toast.LENGTH_LONG)
+                            , Toast.LENGTH_SHORT)
                             .show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Failed to delete item. Check your connection and try again."
-                            , Toast.LENGTH_LONG)
+                            , Toast.LENGTH_SHORT)
                             .show();
                 }
             } catch (JSONException e) {
@@ -638,16 +638,18 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
                 String status = (String) jsonObject.get("result");
                 if (status.equals("success")) {
                     Toast.makeText(getApplicationContext(), "Item added to list"
-                            , Toast.LENGTH_LONG)
+                            , Toast.LENGTH_SHORT)
                             .show();
                     getSupportFragmentManager().popBackStackImmediate();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Item failed to add. Check your connection and try again."
-                            , Toast.LENGTH_LONG)
+                    Toast.makeText(getApplicationContext(), "Failed to add item. Please enter valid data."
+                            , Toast.LENGTH_SHORT)
                             .show();
                 }
             } catch (JSONException e) {
-
+                Toast.makeText(getApplicationContext(), "Failed to add item. Please enter valid data."
+                        , Toast.LENGTH_SHORT)
+                        .show();
             }
         }
     }

@@ -13,6 +13,8 @@ import ksorum.uw.tacoma.edu.a450project.R;
 import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
 
 /**
+ * 
+ *
  * Created by Kaitlyn on 5/29/2017.
  */
 
@@ -33,6 +35,7 @@ public class InventoryItemsDB {
 
     /**
      * Inserts the course into the local sqlite table. Returns true if successful, false otherwise.
+     *
      * @param id
      * @param name
      * @param quantity
@@ -58,8 +61,9 @@ public class InventoryItemsDB {
     }
 
     /**
-    * Returns the list of items from the local InventoryItems table.
-    * @return list
+     * Returns the list of items from the local InventoryItems table.
+     *
+     * @return list
      */
     public List<InventoryItem> getItems() {
 
@@ -78,7 +82,7 @@ public class InventoryItemsDB {
         );
         c.moveToFirst();
         List<InventoryItem> list = new ArrayList<InventoryItem>();
-        for (int i=0; i<c.getCount(); i++) {
+        for (int i = 0; i < c.getCount(); i++) {
             String id = c.getString(0);
             String name = c.getString(1);
             String quantity = c.getString(2);
@@ -98,8 +102,6 @@ public class InventoryItemsDB {
     public void deleteItems() {
         mSQLiteDatabase.delete(INVENTORY_ITEMS_TABLE, null, null);
     }
-
-
 
 
     class InventoryItemsDBHelper extends SQLiteOpenHelper {

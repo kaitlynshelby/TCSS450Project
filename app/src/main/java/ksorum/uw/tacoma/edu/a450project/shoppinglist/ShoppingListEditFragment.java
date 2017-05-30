@@ -252,18 +252,18 @@ public class ShoppingListEditFragment extends Fragment {
                 String status = (String) jsonObject.get("result");
                 if (status.equals("success")) {
                     Toast.makeText(getActivity(), "Item was edited"
-                            , Toast.LENGTH_LONG)
+                            , Toast.LENGTH_SHORT)
                             .show();
                     getActivity().getSupportFragmentManager().popBackStack(null,
                             FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 } else {
                     Toast.makeText(getActivity(), "Failed to edit item. Check your connection and try again."
-                            , Toast.LENGTH_LONG)
+                            , Toast.LENGTH_SHORT)
                             .show();
                 }
             } catch (JSONException e) {
                 Toast.makeText(getActivity(), "Failed to edit item. Please enter valid data."
-                        , Toast.LENGTH_LONG)
+                        , Toast.LENGTH_SHORT)
                         .show();
             }
         }
