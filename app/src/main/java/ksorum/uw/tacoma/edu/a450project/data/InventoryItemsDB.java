@@ -42,6 +42,7 @@ public class InventoryItemsDB {
 
     /**
      * Inserts the course into the local sqlite table. Returns true if successful, false otherwise.
+     *
      * @param id id of inventory item
      * @param name name of inventory item
      * @param quantity quantity of inventory item
@@ -90,7 +91,7 @@ public class InventoryItemsDB {
         );
         c.moveToFirst();
         List<InventoryItem> list = new ArrayList<InventoryItem>();
-        for (int i=0; i<c.getCount(); i++) {
+        for (int i = 0; i < c.getCount(); i++) {
             String id = c.getString(0);
             String name = c.getString(1);
             String quantity = c.getString(2);

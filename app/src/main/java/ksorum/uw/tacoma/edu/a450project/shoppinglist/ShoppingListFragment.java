@@ -251,7 +251,7 @@ public class ShoppingListFragment extends Fragment {
             // Something wrong with the network or the URL.
             if (result.startsWith("Unable to")) {
                 Toast.makeText(getActivity().getApplicationContext(), "Unable to retrieve your items." +
-                        " Please check your connection and try again.", Toast.LENGTH_LONG)
+                        " Please check your connection and try again.", Toast.LENGTH_SHORT)
                         .show();
                 return;
             }
@@ -260,7 +260,7 @@ public class ShoppingListFragment extends Fragment {
             result = ShoppingListItem.parseListJSON(result, mShoppingListItems);
             // Something wrong with the JSON returned.
             if (result != null) {
-                Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_LONG)
+                Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT)
                         .show();
                 return;
             }
