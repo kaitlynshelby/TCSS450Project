@@ -28,6 +28,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 import ksorum.uw.tacoma.edu.a450project.home.HomeActivity;
 import ksorum.uw.tacoma.edu.a450project.inventory.InventoryAddFragment;
@@ -67,6 +69,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
     private CustomFragmentPagerAdapter adapter;
 
     private TabLayout mTabLayout;
+    private List<ShoppingListItem> mShoppingListItems;
 
 
     @Override
@@ -81,6 +84,7 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
         viewPager.setAdapter(adapter);
 
         setTitle("What's in My Fridge?");
+
 
         mTabLayout = (TabLayout) findViewById(R.id.sliding_tabs_landing);
         mTabLayout.setupWithViewPager(viewPager);
@@ -183,7 +187,11 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.options_menu, menu);
+        if (mTabLayout.getSelectedTabPosition() == 1) {
+            getMenuInflater().inflate(R.menu.shop_options_menu, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.inventory_options_menu, menu);
+        }
         return true;
     }
 
@@ -206,36 +214,37 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
             Intent i = new Intent(this, HomeActivity.class);
             startActivity(i);
             finish();
-        } else if (id == R.id.action_share) {
-           /* Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            String text = shoppingListItemsToString();
-            sendIntent.putExtra(Intent.EXTRA_TEXT, text);
-            sendIntent.setType("text/plain");
-            startActivity(sendIntent);*/
         }
-
         return super.onOptionsItemSelected(item);
     }
 
- /*   private String shoppingListItemsToString() {
-        StringBuilder sb = new StringBuilder();
 
-        // format: Name xQuantity
-        String name;
-        String quantity;
+    /**
+     * Build the url which will be used by the webservice.
+     *
+     * @return the url to be used by the webservice
+     */
+    private String buildShoppingListDownloadURL() {
 
-        for (int i = 0; i < mShoppingListItems.size(); i++) {
-            name = mShoppingListItems.get(i).getName();
-            quantity = mShoppingListItems.get(i).getQuantity();
-            sb.append(name);
-            sb.append(" x");
-            sb.append(quantity);
-            sb.append("\n");
+        StringBuilder sb = new StringBuilder(ShoppingListFragment.LIST_URL);
+
+        try {
+
+            SharedPreferences sharedPreferences = getApplicationContext().
+                    getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
+
+            String user = sharedPreferences.getString("user", "");
+
+            sb.append("&user=");
+            sb.append(URLEncoder.encode(user, "UTF-8"));
+
+            Log.i("ShoppingListFragment", sb.toString());
+
         }
-
+        catch(Exception e) {
+        }
         return sb.toString();
-    } */
+    }
 
 
 
@@ -625,4 +634,58 @@ public class LandingPageActivity extends AppCompatActivity implements InventoryF
             }
         }
     }
+
+    public class DownloadShoppingItemsTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for (String url : urls) {
+                try {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpURLConnection)
+                            urlObject.openConnection();
+
+                    InputStream content = urlConnection.getInputStream();
+
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+
+                } catch (Exception e) {
+                    response = "Unable to download the list of courses, Reason: "
+                            + e.getMessage();
+                }
+                finally {
+                    if (urlConnection != null)
+                        urlConnection.disconnect();
+                }
+            }
+
+            Log.i("doinbackground", "about to exit");
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // Something wrong with the network or the URL.
+            if (result.startsWith("Unable to")) {
+                Toast.makeText(getApplicationContext(), "Unable to retrieve your shopping list." +
+                        " Please check your connection and try again.", Toast.LENGTH_LONG)
+                        .show();
+                return;
+            }
+
+            mShoppingListItems = new ArrayList<ShoppingListItem>();
+            result = ShoppingListItem.parseListJSON(result, mShoppingListItems);
+
+
+            String s = mShoppingListItems.size() + "";
+            Log.i("shoppinglistitems size", s);
+
+        }
+    }
+
 }

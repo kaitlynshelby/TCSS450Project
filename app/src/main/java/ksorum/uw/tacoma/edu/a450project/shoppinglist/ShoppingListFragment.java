@@ -12,6 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +43,7 @@ public class ShoppingListFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnShoppingListFragmentInteractionListener mListener;
-    private static final String LIST_URL
+    public static final String LIST_URL
             = "http://cssgate.insttech.washington.edu/~ksorum/shoppinglist.php?cmd=items";
     private RecyclerView mRecyclerView;
     private SharedPreferences mSharedPreferences;
@@ -106,18 +108,14 @@ public class ShoppingListFragment extends Fragment {
         }
     }
 
- /*   @Override
+
+   @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
 
 
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        if (id == R.id.action_logout) {
-
-        } else if (id == R.id.action_share) {
+        if (id == R.id.action_share) {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             String text = shoppingListItemsToString();
@@ -128,7 +126,7 @@ public class ShoppingListFragment extends Fragment {
 
         return super.onOptionsItemSelected(item);
     }
-*/
+
 
     @Override
     public void onDetach() {
@@ -136,7 +134,7 @@ public class ShoppingListFragment extends Fragment {
         mListener = null;
     }
 
-   /* private String shoppingListItemsToString() {
+    private String shoppingListItemsToString() {
         StringBuilder sb = new StringBuilder();
 
         // format: Name xQuantity
@@ -154,7 +152,7 @@ public class ShoppingListFragment extends Fragment {
 
         return sb.toString();
     }
-*/
+
     /**
      * Build the url which will be used by the webservice.
      *
