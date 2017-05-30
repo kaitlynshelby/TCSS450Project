@@ -92,6 +92,13 @@ public class InventoryItemsDB {
         return list;
     }
 
+    /**
+     * Delete all the data from the INVENTORY_ITEMS_TABLE
+     */
+    public void deleteItems() {
+        mSQLiteDatabase.delete(INVENTORY_ITEMS_TABLE, null, null);
+    }
+
 
 
 

@@ -93,6 +93,8 @@ public class ShoppingListFragment extends Fragment {
                 if (mShoppingListItems == null) {
                     mShoppingListItems = mShoppingItemsDB.getItems();
                 }
+                mRecyclerView.setAdapter(new MyShoppingListRecyclerViewAdapter(getActivity(),
+                        mShoppingListItems, mListener));
             }
 
 
@@ -258,10 +260,14 @@ public class ShoppingListFragment extends Fragment {
                         mShoppingItemsDB = new ShoppingItemsDB(getActivity());
                     }
 
+                    // Delete old data so that you can refresh the local
+                    // database with the network data.
+                    mShoppingItemsDB.deleteItems();
+
+
                     // Also, add to the local database
                     for (int i=0; i<mShoppingListItems.size(); i++) {
                         ShoppingListItem item = mShoppingListItems.get(i);
-                        Log.i("insert to db", item.getName());
                         mShoppingItemsDB.insertShoppingItem(item.getId(),
                                 item.getName(),
                                 item.getQuantity(),

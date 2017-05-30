@@ -109,6 +109,8 @@ public class InventoryFragment extends Fragment {
             if (mInventoryItemList == null) {
                 mInventoryItemList = mInventoryItemsDB.getItems();
             }
+            mRecyclerView.setAdapter(new MyInventoryRecyclerViewAdapter(getActivity(),
+                    mInventoryItemList, mListener));
         }
 
             return view;
@@ -244,6 +246,11 @@ public class InventoryFragment extends Fragment {
                     if (mInventoryItemsDB == null) {
                         mInventoryItemsDB = new InventoryItemsDB(getActivity());
                     }
+
+                    // Delete old data so that you can refresh the local
+                    // database with the network data.
+                    mInventoryItemsDB.deleteItems();
+
 
                     // Also, add to the local database
                     for (int i=0; i<mInventoryItemList.size(); i++) {
