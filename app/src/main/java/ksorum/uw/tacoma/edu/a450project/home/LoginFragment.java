@@ -29,14 +29,16 @@ import ksorum.uw.tacoma.edu.a450project.R;
  */
 public class LoginFragment extends Fragment {
 
+    /** URL for location of user login credentials */
     public final static String LOGIN_URL
             = "http://cssgate.insttech.washington.edu/~ksorum/login.php?";
 
+    /** Field to enter in user email address */
     private EditText mUserEmail;
+    /** Field to enter in user password */
     private EditText mUserPassword;
-
+    /** Listener to log user into their account */
     private OnLoginUser mListener;
-    private SharedPreferences mSharedPreferences;
 
     public LoginFragment() {
         // Required empty public constructor

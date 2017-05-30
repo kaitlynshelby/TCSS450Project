@@ -53,10 +53,16 @@ public class InventoryFragment extends Fragment {
     private static final String ITEM_URL
             = "http://cssgate.insttech.washington.edu/~ksorum/inventorylist.php?cmd=inventoryitems";
 
+    /** The user's email address */
     private String mUserEmail;
+
+    /** Used to save information on user login */
     private SharedPreferences mSharedPreferences;
 
+    /** Saves the current inventory items into internal storage */
     private InventoryItemsDB mInventoryItemsDB;
+
+    /** List of inventory items */
     private List<InventoryItem> mInventoryItemList;
 
     /**
@@ -273,6 +279,4 @@ public class InventoryFragment extends Fragment {
 
         }
     }
-
-
 }

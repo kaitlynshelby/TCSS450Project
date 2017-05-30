@@ -39,8 +39,10 @@ public class ShoppingListAddFragment extends Fragment {
     /** Price of new item */
     private EditText mPriceEditText;
 
+    /** Listener to add an item to the shopping list */
     private ShoppingListAddListener mListener;
 
+    /** Saves shopping list item information */
     private SharedPreferences mSharedPreferences;
 
     public ShoppingListAddFragment() {

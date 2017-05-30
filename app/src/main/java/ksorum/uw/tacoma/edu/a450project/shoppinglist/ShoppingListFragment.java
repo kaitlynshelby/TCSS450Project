@@ -38,13 +38,18 @@ import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingLi
  */
 public class ShoppingListFragment extends Fragment {
 
+    /** Listener for the shopping list */
     private OnShoppingListFragmentInteractionListener mListener;
+    /** Location of the shopping list items */
     public static final String LIST_URL
             = "http://cssgate.insttech.washington.edu/~ksorum/shoppinglist.php?cmd=items";
+    /** Recycler view for the shopping list */
     private RecyclerView mRecyclerView;
+    /** Saves information of shopping list items */
     private SharedPreferences mSharedPreferences;
-
+    /** Saves information of shopping list items to internal storage */
     private ShoppingItemsDB mShoppingItemsDB;
+    /** List of shopping list items */
     private List<ShoppingListItem> mShoppingListItems;
 
     /**
@@ -54,6 +59,11 @@ public class ShoppingListFragment extends Fragment {
     public ShoppingListFragment() {
     }
 
+    /**
+     * Creates an instance of ShoppingListFragment
+     * @param columnCount number of columns to use
+     * @return an instance of ShoppingListFragment
+     */
     public static ShoppingListFragment newInstance(int columnCount) {
         ShoppingListFragment fragment = new ShoppingListFragment();
         Bundle args = new Bundle();
@@ -139,6 +149,10 @@ public class ShoppingListFragment extends Fragment {
         mListener = null;
     }
 
+    /**
+     * Returns String of all shopping list items.
+     * @return String of all shopping list items.
+     */
     private String shoppingListItemsToString() {
         StringBuilder sb = new StringBuilder();
 
@@ -244,7 +258,6 @@ public class ShoppingListFragment extends Fragment {
 
             mShoppingListItems = new ArrayList<ShoppingListItem>();
             result = ShoppingListItem.parseListJSON(result, mShoppingListItems);
-            Log.i("OnPostExecute", mShoppingListItems.get(0).getName());
             // Something wrong with the JSON returned.
             if (result != null) {
                 Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT)
