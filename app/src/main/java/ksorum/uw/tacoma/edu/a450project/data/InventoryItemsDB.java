@@ -13,7 +13,7 @@ import ksorum.uw.tacoma.edu.a450project.R;
 import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
 
 /**
- * 
+ *
  *
  * Created by Kaitlyn on 5/29/2017.
  */
