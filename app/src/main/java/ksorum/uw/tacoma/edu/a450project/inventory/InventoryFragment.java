@@ -2,6 +2,8 @@ package ksorum.uw.tacoma.edu.a450project.inventory;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import ksorum.uw.tacoma.edu.a450project.R;
+import ksorum.uw.tacoma.edu.a450project.data.InventoryItemsDB;
 import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
 
 import java.io.BufferedReader;
@@ -53,6 +56,9 @@ public class InventoryFragment extends Fragment {
     private String mUserEmail;
     private SharedPreferences mSharedPreferences;
 
+    private InventoryItemsDB mInventoryItemsDB;
+    private List<InventoryItem> mInventoryItemList;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -68,19 +74,10 @@ public class InventoryFragment extends Fragment {
     public static InventoryFragment newInstance(int columnCount) {
         InventoryFragment fragment = new InventoryFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -91,19 +88,30 @@ public class InventoryFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             mRecyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        }
+
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            DownloadItemsTask task = new DownloadItemsTask();
+            String url = buildInventoryGetURL(view);
+            task.execute(new String[]{url});
+        }
+        else {
+            Toast.makeText(view.getContext(),
+                    "No network connection available. Displaying locally stored data",
+                    Toast.LENGTH_SHORT).show();
+            if (mInventoryItemsDB == null) {
+                mInventoryItemsDB = new InventoryItemsDB(getActivity());
+            }
+            if (mInventoryItemList == null) {
+                mInventoryItemList = mInventoryItemsDB.getItems();
             }
         }
 
-        DownloadItemsTask task = new DownloadItemsTask();
-        String url = buildURL(view);
-        task.execute(new String[]{url});
-
-
-        return view;
+            return view;
     }
 
 
@@ -132,7 +140,7 @@ public class InventoryFragment extends Fragment {
      * @param v the View object
      * @return the url to be used by the webservice
      */
-    private String buildURL(View v) {
+    private String buildInventoryGetURL(View v) {
 
         StringBuilder sb = new StringBuilder(ITEM_URL);
 
@@ -174,6 +182,8 @@ public class InventoryFragment extends Fragment {
      * Launches the web services to display the inventory items.
      */
     private class DownloadItemsTask extends AsyncTask<String, Void, String> {
+
+
         @Override
         protected String doInBackground(String... urls) {
             String response = "";
@@ -219,8 +229,8 @@ public class InventoryFragment extends Fragment {
                 return;
             }
 
-            List<InventoryItem> itemList = new ArrayList<InventoryItem>();
-            result = InventoryItem.parseCourseJSON(result, itemList);
+            mInventoryItemList = new ArrayList<InventoryItem>();
+            result = InventoryItem.parseCourseJSON(result, mInventoryItemList);
             // Something wrong with the JSON returned.
             if (result != null) {
                 Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_LONG)
@@ -228,11 +238,27 @@ public class InventoryFragment extends Fragment {
                 return;
             }
 
-
             try {
-                if (!itemList.isEmpty()) {
+                if (!mInventoryItemList.isEmpty()) {
+
+                    if (mInventoryItemsDB == null) {
+                        mInventoryItemsDB = new InventoryItemsDB(getActivity());
+                    }
+
+                    // Also, add to the local database
+                    for (int i=0; i<mInventoryItemList.size(); i++) {
+                        InventoryItem item = mInventoryItemList.get(i);
+                        mInventoryItemsDB.insertInventoryItem(item.getId(),
+                                item.getItemName(),
+                                item.getQuantity(),
+                                item.getPrice(),
+                                item.getExpiration());
+                    }
+
+
                     getActivity().findViewById(R.id.searchView);
-                    mRecyclerView.setAdapter(new MyInventoryRecyclerViewAdapter(getActivity(), itemList, mListener));
+                    mRecyclerView.setAdapter(new MyInventoryRecyclerViewAdapter(getActivity(),
+                            mInventoryItemList, mListener));
                 }
             } catch (NullPointerException e){
 
