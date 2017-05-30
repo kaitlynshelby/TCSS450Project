@@ -29,19 +29,24 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNot.not;
 
 /**
- * Created by Jasmine D on 5/29/2017.
+ * Espresso testing for the InventoryAddFragment class.
+ *
+ * @author Jasmine Dacones
  */
-
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class InventoryAddFragmentTest {
 
+    /** List of item names. To be used to when randomly generating a new inventory item */
     public ArrayList<String> nItemNames = new ArrayList<String>();
 
+    /** List of item prices. To be used to when randomly generating a new inventory item */
     public List<String> mPrices = new ArrayList<String>();
 
+    /** List of expiration dates. To be used to when randomly generating a new inventory item */
     public List<String> mExpire = new ArrayList<String>();
 
+    /** Random object created*/
     Random random = new Random();
 
 
@@ -95,6 +100,9 @@ public class InventoryAddFragmentTest {
     }
 
 
+    /**
+     * Tests adding a new item to the inventory.
+     */
     @Test
     public void testAddItem() {
         onView(withId(R.id.fab))

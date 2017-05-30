@@ -50,13 +50,19 @@ public class ShoppingListEditFragment extends Fragment {
             = "http://cssgate.insttech.washington.edu/~ksorum/editShoppingItem.php?";
 
 
+    /** Field to enter in name of shopping list item */
     private EditText mNameTextView;
+    /** Field to enter in price of shopping list item */
     private EditText mPriceEditText;
+    /** Field to enter in quantity of shopping list item */
     private EditText mQuantityEditText;
+    /** ID of shopping list item */
     private String mItemId;
 
+    /** Saves shopping list item information */
     private SharedPreferences mSharedPreferences;
 
+    /** Listener for the shopping list */
     private OnShoppingListEditInteractionListener mListener;
 
     public ShoppingListEditFragment() {
@@ -132,6 +138,11 @@ public class ShoppingListEditFragment extends Fragment {
         return v;
     }
 
+    /** Builds the URL to edit a shopping list item's information.
+     *
+     * @param v the view of the fragment
+     * @return the string of the URL
+     */
     private String buildEditURL(View v) {
 
         StringBuilder sb = new StringBuilder(ITEM_EDIT_URL);
@@ -202,6 +213,9 @@ public class ShoppingListEditFragment extends Fragment {
         search.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Launches the web services to edit a shopping list item's information.
+     */
     private class EditItemTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -242,7 +256,7 @@ public class ShoppingListEditFragment extends Fragment {
          * exception is caught. It tries to call the parse Method and checks to see if it was successful.
          * If not, it displays the exception.
          *
-         * @param result
+         * @param result result of the URL passed in
          */
         @Override
         protected void onPostExecute(String result) {

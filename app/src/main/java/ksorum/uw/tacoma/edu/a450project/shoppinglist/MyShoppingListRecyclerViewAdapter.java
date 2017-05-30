@@ -46,13 +46,21 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
     /** Fragment listener in the list */
     private final ShoppingListFragment.OnShoppingListFragmentInteractionListener mListener;
 
+    /** Listener to delete item from shopping list */
     private final OnDeleteItem mDeleteListener;
 
+    /** Copy of shopping list items in list */
     private List<ShoppingListItem> mValuesCopy;
 
-
+    /** Context of application */
     private final Activity mContext;
 
+    /**
+     * Constructor of RecyclerView for the shopping list
+     * @param context context of application
+     * @param items list of shopping list items
+     * @param listener listener for shopping list fragment
+     */
     public MyShoppingListRecyclerViewAdapter(Context context, List<ShoppingListItem> items,
                                              ShoppingListFragment.OnShoppingListFragmentInteractionListener listener) {
         mValues = items;
@@ -138,6 +146,10 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
 
     }
 
+    /**
+     * Filters out items while the user types in the search bar.
+     * @param text text typed into search bar
+     */
     public void filter(String text) {
         mValues.clear();
         if(text.isEmpty()){
@@ -159,6 +171,9 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
         return mValues.size();
     }
 
+    /**
+     * Initializes the views of an shopping list item row in a list.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
@@ -181,6 +196,9 @@ public class MyShoppingListRecyclerViewAdapter extends RecyclerView.Adapter<MySh
     }
 
 
+    /**
+     * Interface to delete an item from the shopping list.
+     */
     public interface OnDeleteItem {
         boolean deleteShopItem(String id, String name, String quantity, String price);
     }

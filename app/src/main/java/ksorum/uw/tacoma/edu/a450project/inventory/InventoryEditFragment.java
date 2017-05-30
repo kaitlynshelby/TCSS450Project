@@ -43,18 +43,22 @@ import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
  */
 public class InventoryEditFragment extends Fragment {
 
+    /** URL of the location to edit an item in the inventory */
     private final static String ITEM_EDIT_URL
             = "http://cssgate.insttech.washington.edu/~ksorum/editInventoryItem.php?";
 
-
+    /** Edit name field */
     private EditText mNameTextView;
+    /** Edit price field */
     private EditText mPriceEditText;
+    /** Edit quantity field */
     private EditText mQuantityEditText;
+    /** Edit expiration date field */
     private EditText mExpirationEditText;
+    /** The ID of the item */
     private String mItemId;
 
-    private SharedPreferences mSharedPreferences;
-
+    /** Listener to edit an item's information */
     private OnInventoryEditInteractionListener mListener;
 
     public InventoryEditFragment() {
@@ -131,6 +135,13 @@ public class InventoryEditFragment extends Fragment {
         return v;
     }
 
+
+    /**
+     * Reads the user input of an item and updates its information.
+     * @param v the view of the fragment
+     *
+     * @return the string of the URL
+     */
     private String buildEditURL(View v) {
 
         StringBuilder sb = new StringBuilder(ITEM_EDIT_URL);
@@ -198,6 +209,9 @@ public class InventoryEditFragment extends Fragment {
         search.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Launches the web services to update an item's information.
+     */
     private class EditItemTask extends AsyncTask<String, Void, String> {
 
         @Override
