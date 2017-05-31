@@ -2,7 +2,6 @@ package ksorum.uw.tacoma.edu.a450project.shoppinglist;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.net.URLEncoder;
 
@@ -28,22 +26,35 @@ import ksorum.uw.tacoma.edu.a450project.R;
  */
 public class ShoppingListAddFragment extends Fragment {
 
-    /** URL of the location to add an item to the inventory */
+    /**
+     * URL of the location to add an item to the inventory
+     */
     private final static String SHOPPING_ITEM_ADD_URL
             = "http://cssgate.insttech.washington.edu/~ksorum/addShoppingItem.php?";
 
-    /** Name of new item */
+    /**
+     * Name of new item
+     */
     private EditText mNameEditText;
-    /** Quantity of new item */
+    /**
+     * Quantity of new item
+     */
     private EditText mQuantityEditText;
-    /** Price of new item */
+    /**
+     * Price of new item
+     */
     private EditText mPriceEditText;
 
-    /** Listener to add an item to the shopping list */
+    /**
+     * Listener to add an item to the shopping list
+     */
     private ShoppingListAddListener mListener;
 
-    /** Saves shopping list item information */
+    /**
+     * Saves shopping list item information
+     */
     private SharedPreferences mSharedPreferences;
+
 
     public ShoppingListAddFragment() {
         // Required empty public constructor
@@ -73,7 +84,6 @@ public class ShoppingListAddFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         getActivity().findViewById(R.id.sliding_tabs_landing).setVisibility(View.GONE);
 
@@ -148,13 +158,11 @@ public class ShoppingListAddFragment extends Fragment {
 
             Log.i("ShoppingListAddFragment", sb.toString());
 
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
 
         }
         return sb.toString();
     }
-
 
 
     @Override

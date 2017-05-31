@@ -1,23 +1,19 @@
 package ksorum.uw.tacoma.edu.a450project.inventory;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -34,7 +30,8 @@ import ksorum.uw.tacoma.edu.a450project.R;
 import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment to edit inventory items.
+ *
  * Activities that contain this fragment must implement the
  * {@link OnInventoryEditInteractionListener} interface
  * to handle interaction events.
@@ -43,22 +40,36 @@ import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
  */
 public class InventoryEditFragment extends Fragment {
 
-    /** URL of the location to edit an item in the inventory */
+    /**
+     * URL of the location to edit an item in the inventory
+     */
     private final static String ITEM_EDIT_URL
             = "http://cssgate.insttech.washington.edu/~ksorum/editInventoryItem.php?";
 
-    /** Edit name field */
+    /**
+     * Edit name field
+     */
     private EditText mNameTextView;
-    /** Edit price field */
+    /**
+     * Edit price field
+     */
     private EditText mPriceEditText;
-    /** Edit quantity field */
+    /**
+     * Edit quantity field
+     */
     private EditText mQuantityEditText;
-    /** Edit expiration date field */
+    /**
+     * Edit expiration date field
+     */
     private EditText mExpirationEditText;
-    /** The ID of the item */
+    /**
+     * The ID of the item
+     */
     private String mItemId;
 
-    /** Listener to edit an item's information */
+    /**
+     * Listener to edit an item's information
+     */
     private OnInventoryEditInteractionListener mListener;
 
     public InventoryEditFragment() {
@@ -93,6 +104,7 @@ public class InventoryEditFragment extends Fragment {
         Bundle args = getArguments();
         InventoryItem inventoryItem = (InventoryItem) args.getSerializable(InventoryItemDetailsFragment.INVENTORY_ITEM_SELECTED);
 
+        // Set the current item details in the text fields for easy editing
         mNameTextView = (EditText) v.findViewById(R.id.edit_item_name);
         mNameTextView.setText(inventoryItem.getItemName());
         mPriceEditText = (EditText) v.findViewById(R.id.edit_item_price);
@@ -121,9 +133,8 @@ public class InventoryEditFragment extends Fragment {
                 if (networkInfo != null && networkInfo.isConnected()) {
                     String url = buildEditURL(v);
                     EditItemTask task = new EditItemTask();
-                    task.execute(new String[] {url});
-                }
-                else {
+                    task.execute(new String[]{url});
+                } else {
                     Toast.makeText(getActivity(),
                             "Cannot edit item without a network connection.",
                             Toast.LENGTH_SHORT).show();
@@ -138,8 +149,8 @@ public class InventoryEditFragment extends Fragment {
 
     /**
      * Reads the user input of an item and updates its information.
-     * @param v the view of the fragment
      *
+     * @param v the view of the fragment
      * @return the string of the URL
      */
     private String buildEditURL(View v) {
@@ -171,8 +182,7 @@ public class InventoryEditFragment extends Fragment {
 
             Log.i("InventoryEditFragment", sb.toString());
 
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
         }
         return sb.toString();
     }
@@ -195,6 +205,9 @@ public class InventoryEditFragment extends Fragment {
     }
 
 
+    /**
+     * Shows all view elements that were hidden in OnCreateView
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
