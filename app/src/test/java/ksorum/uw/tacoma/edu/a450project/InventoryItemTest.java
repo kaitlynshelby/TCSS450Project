@@ -21,6 +21,52 @@ import static junit.framework.Assert.assertEquals;
  */
 public class InventoryItemTest {
 
+    /**
+     * Tests inventory item creation.
+     */
+    @Test
+    public void testConstructor() {
+        InventoryItem item4 = new InventoryItem("6", "Soda", "20", "11.00", "2017-07-01");
+        assertEquals("Soda", item4.getItemName());
+        assertEquals("6", item4.getId());
+        assertEquals("20", item4.getQuantity());
+        assertEquals("11.00", item4.getPrice());
+        assertEquals("2017-07-01", item4.getExpiration());
+    }
+
+    /**
+     * Tests for an empty item name field.
+     */
+    @Test(expected=IllegalArgumentException.class)
+    public void testBadConstructor_InvalidItemName() {
+        new InventoryItem("7", "", "2", "11.00", "2017-07-01");
+    }
+
+    /**
+     * Tests for a negative quantity field.
+     */
+    @Test(expected=IllegalArgumentException.class)
+    public void testBadConstructor_InvalidQuantity_QuantityLessThanZero() {
+        new InventoryItem("8", "Crepes", "-1", "11.25", "2017-07-04");
+    }
+
+    /**
+     * Tests for an empty quantity field..
+     */
+    @Test(expected=IllegalArgumentException.class)
+    public void testBadConstructor_InvalidQuantity_EmptyField() {
+        new InventoryItem("9", "Cheese", "", "1.50", "2017-06-25");
+    }
+
+    /**
+     * Tests for an empty price field.
+     */
+    @Test(expected=IllegalArgumentException.class)
+    public void testBadConstructor_InvalidPrice_EmptyField() {
+        new InventoryItem("10", "Watermelon", "3", "", "2017-06-25");
+    }
+
+
 
     /**
      * Tests the list row color for an item that is already expired.
@@ -83,9 +129,6 @@ public class InventoryItemTest {
 
     }
 
-    @Test
-    public void nullItem() {
-        InventoryItem item5 = new InventoryItem("5", "Cherries", "1", "7.25", "");
-    }
+
 
 }

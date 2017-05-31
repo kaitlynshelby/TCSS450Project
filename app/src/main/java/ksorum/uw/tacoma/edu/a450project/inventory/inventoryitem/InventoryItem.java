@@ -48,11 +48,34 @@ public class InventoryItem implements Serializable {
      * @param expiration expiration of inventory item
      */
     public InventoryItem(String id, String itemName, String quantity, String price, String expiration) {
+
         this.mId = id;
-        this.mItemName = itemName;
-        this.mQuantity = quantity;
-        this.mPrice = price;
-        this.mExpiration = expiration;
+
+        if (itemName.length() != 0) {
+            this.mItemName = itemName;
+        } else {
+            throw new IllegalArgumentException("Invalid item name");
+        }
+
+        if (isValidQuantity(quantity)) {
+            this.mQuantity = quantity;
+        } else {
+            throw new IllegalArgumentException("Invalid quantity");
+        }
+
+        if (price.length() != 0) {
+            this.mPrice = price;
+        } else {
+            throw new IllegalArgumentException("Invalid price");
+        }
+
+        if (expiration.length() != 0) {
+            this.mExpiration = expiration;
+        } else {
+            throw new IllegalArgumentException("Invalid price");
+        }
+
+
 
     }
 
@@ -134,6 +157,15 @@ public class InventoryItem implements Serializable {
      */
     public void setExpiration(String mExpiration) {
         this.mExpiration = mExpiration;
+    }
+
+
+    public boolean isValidQuantity(String quantity) {
+        if (Integer.parseInt(quantity) > 0 && quantity.length() != 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

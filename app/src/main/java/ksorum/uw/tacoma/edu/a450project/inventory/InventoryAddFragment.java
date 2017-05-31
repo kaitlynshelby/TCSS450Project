@@ -40,6 +40,7 @@ public class InventoryAddFragment extends Fragment {
     /** Expiration of new item */
     private EditText mItemExpirationEditText;
 
+    /** Saves information on the inventory item */
     private SharedPreferences mSharedPreferences;
 
     /** URL of the location to add an item to the inventory */
