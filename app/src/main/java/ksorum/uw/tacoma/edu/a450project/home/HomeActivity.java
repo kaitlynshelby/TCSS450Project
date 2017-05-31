@@ -35,7 +35,9 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
         SignUpFragment.OnAddUser,
         MainFragment.OnMainFragmentInteractionListener {
 
-    /** Used to save information on user login */
+    /**
+     * Used to save information on user login
+     */
     private SharedPreferences mSharedPreferences;
 
     @Override
@@ -87,7 +89,8 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
 
     /**
      * Adds a new user to the database.
-     * @param url url to parse
+     *
+     * @param url   url to parse
      * @param email user's email address
      */
     @Override
@@ -98,10 +101,9 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
         if (networkInfo != null && networkInfo.isConnected()) {
             UserTask task = new UserTask();
             task.execute(new String[]{url.toString()});
-        }
-        else {
+        } else {
             Toast.makeText(this, "Could not authenticate user. Please check your connection and try again.",
-                    Toast.LENGTH_SHORT) .show();
+                    Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -111,7 +113,8 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
 
     /**
      * Logs a user into their account.
-     * @param url url to parse
+     *
+     * @param url   url to parse
      * @param email user's email address
      */
     @Override
@@ -122,10 +125,9 @@ public class HomeActivity extends AppCompatActivity implements LoginFragment.OnL
         if (networkInfo != null && networkInfo.isConnected()) {
             UserTask task = new UserTask();
             task.execute(new String[]{url.toString()});
-        }
-        else {
+        } else {
             Toast.makeText(this, "Could not authenticate user. Please check your connection and try again.",
-                    Toast.LENGTH_SHORT) .show();
+                    Toast.LENGTH_SHORT).show();
             return;
         }
 

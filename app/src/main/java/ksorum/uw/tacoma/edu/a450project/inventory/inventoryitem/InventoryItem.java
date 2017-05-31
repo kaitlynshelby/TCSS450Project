@@ -21,30 +21,42 @@ import java.util.List;
  */
 public class InventoryItem implements Serializable {
 
-    /** ID of item */
+    /**
+     * ID of item
+     */
     private String mId;
-    /** Name of item */
+    /**
+     * Name of item
+     */
     private String mItemName;
-    /** Quantity of item */
+    /**
+     * Quantity of item
+     */
     private String mQuantity;
-    /** Price of item */
+    /**
+     * Price of item
+     */
     private String mPrice;
-    /** Expiration date of item */
+    /**
+     * Expiration date of item
+     */
     private String mExpiration;
-    /** Expiration color-coding of item */
-    private int mColor;
 
 
-    /** String names for JSON parser */
+
+    /**
+     * String names for JSON parser
+     */
     public static final String ITEM_ID = "id", ITEM_NAME = "name", QUANTITY = "quantity",
             PRICE = "price", EXPIRATION = "expirationdate";
 
     /**
      * Constructor to create a new inventory item
-     * @param id id of inventory item
-     * @param itemName name of inventory item
-     * @param quantity quantity of inventory item
-     * @param price price of inventory item
+     *
+     * @param id         id of inventory item
+     * @param itemName   name of inventory item
+     * @param quantity   quantity of inventory item
+     * @param price      price of inventory item
      * @param expiration expiration of inventory item
      */
     public InventoryItem(String id, String itemName, String quantity, String price, String expiration) {
@@ -58,6 +70,7 @@ public class InventoryItem implements Serializable {
 
     /**
      * Returns ID of inventory item.
+     *
      * @return ID of inventory item.
      */
     public String getId() {
@@ -66,6 +79,7 @@ public class InventoryItem implements Serializable {
 
     /**
      * Sets ID of inventory item.
+     *
      * @param id ID of inventory item.
      */
     public void setId(String id) {
@@ -74,6 +88,7 @@ public class InventoryItem implements Serializable {
 
     /**
      * Returns name of inventory item.
+     *
      * @return name of inventory item.
      */
     public String getItemName() {
@@ -82,6 +97,7 @@ public class InventoryItem implements Serializable {
 
     /**
      * Sets name of inventory item.
+     *
      * @param mItemName name of inventory item.
      */
     public void setItemName(String mItemName) {
@@ -90,6 +106,7 @@ public class InventoryItem implements Serializable {
 
     /**
      * Returns quantity of inventory item.
+     *
      * @return quantity of inventory item.
      */
     public String getQuantity() {
@@ -98,6 +115,7 @@ public class InventoryItem implements Serializable {
 
     /**
      * Sets quantity of inventory item.
+     *
      * @param mQuantity quantity of inventory item.
      */
     public void setQuantity(String mQuantity) {
@@ -106,6 +124,7 @@ public class InventoryItem implements Serializable {
 
     /**
      * Returns price of inventory item.
+     *
      * @return price of inventory item.
      */
     public String getPrice() {
@@ -114,6 +133,7 @@ public class InventoryItem implements Serializable {
 
     /**
      * Returns price of inventory item.
+     *
      * @param mPrice price of inventory item.
      */
     public void setPrice(String mPrice) {
@@ -122,6 +142,7 @@ public class InventoryItem implements Serializable {
 
     /**
      * Returns expiration date of inventory item.
+     *
      * @return expiration date of inventory item.
      */
     public String getExpiration() {
@@ -130,6 +151,7 @@ public class InventoryItem implements Serializable {
 
     /**
      * Returns expirationDate of inventory item.
+     *
      * @param mExpiration expiration date of inventory item.
      */
     public void setExpiration(String mExpiration) {
@@ -139,6 +161,7 @@ public class InventoryItem implements Serializable {
 
     /**
      * Returns color of list row depending on item's expiration date.
+     *
      * @return color of list row depending on item's expiration date.
      */
     public int getColor() {
@@ -162,13 +185,14 @@ public class InventoryItem implements Serializable {
 
             int difference = (int) diff;
 
+            // color red if past expiration date and yellow if within 3 days of expiration date
             if (difference <= 0) {
                 color = Color.RED;
             } else if (difference > 0 && difference <= 3) {
                 color = Color.YELLOW;
             }
 
-        } catch(ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 
@@ -176,10 +200,10 @@ public class InventoryItem implements Serializable {
     }
 
 
-
     /**
      * Parses the json string, returns an error message if unsuccessful.
      * Returns course list if success.
+     *
      * @param courseJSON
      * @return reason or null if successful.
      */
@@ -197,7 +221,7 @@ public class InventoryItem implements Serializable {
                     courseList.add(item);
                 }
             } catch (JSONException e) {
-                reason =  "Use the round button to add some items!";
+                reason = "Use the round button to add some items!";
             }
 
         }

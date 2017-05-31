@@ -15,12 +15,13 @@ import ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingListFragment;
  */
 public class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 2;
-    private String tabTitles[] = new String[] { "Inventory", "Shopping List" };
+    private String tabTitles[] = new String[]{"Inventory", "Shopping List"};
     private Context context;
 
     /**
      * Constructor for a CustomFragmentPagerAdapter
-     * @param fm fragment manager for TabLayout
+     *
+     * @param fm      fragment manager for TabLayout
      * @param context context of the application
      */
     public CustomFragmentPagerAdapter(FragmentManager fm, Context context) {

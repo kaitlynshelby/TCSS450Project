@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,19 +24,31 @@ import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
  */
 public class InventoryItemDetailsFragment extends Fragment {
 
-    /** Inventory item selected */
+    /**
+     * Inventory item selected
+     */
     public final static String INVENTORY_ITEM_SELECTED = "inventory_item_selected";
 
-    /** Item name */
+    /**
+     * Item name
+     */
     private TextView mItemNameTextView;
-    /** Item quantity */
+    /**
+     * Item quantity
+     */
     private TextView mItemQuantityTextView;
-    /** Item price */
+    /**
+     * Item price
+     */
     private TextView mItemPriceTextView;
-    /** Item expiration */
+    /**
+     * Item expiration
+     */
     private TextView mItemExpirationTextView;
 
-    /** Fragment listener */
+    /**
+     * Fragment listener
+     */
     private OnFragmentInteractionListener mListener;
 
     // Required empty public constructor
@@ -47,7 +58,7 @@ public class InventoryItemDetailsFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-
+     *
      * @return A new instance of fragment InventoryItemDetailsFragment.
      */
     public static InventoryItemDetailsFragment newInstance() {
@@ -58,11 +69,6 @@ public class InventoryItemDetailsFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -70,7 +76,6 @@ public class InventoryItemDetailsFragment extends Fragment {
 
         getActivity().findViewById(R.id.sliding_tabs_landing).setVisibility(View.GONE);
 
-        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_inventory_item_details, container, false);
 
         mItemNameTextView = (TextView) v.findViewById(R.id.name_info);
@@ -107,9 +112,9 @@ public class InventoryItemDetailsFragment extends Fragment {
     }
 
 
-
     /**
      * Updates the fragment with details of the item that is clicked on.
+     *
      * @param item the item that is clicked on in the inventory list
      */
     public void updateView(InventoryItem item) {
@@ -127,9 +132,6 @@ public class InventoryItemDetailsFragment extends Fragment {
         super.onStart();
 
         // During startup, check if there are arguments passed to the fragment.
-        // onStart is a good place to do this because the layout has already been
-        // applied to the fragment at this point so we can safely call the method
-        // below that sets the article text.
         Bundle args = getArguments();
         if (args != null) {
             // Set article based on argument passed in

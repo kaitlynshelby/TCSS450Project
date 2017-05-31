@@ -7,7 +7,6 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,10 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
-import ksorum.uw.tacoma.edu.a450project.R;
-import ksorum.uw.tacoma.edu.a450project.data.InventoryItemsDB;
-import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -29,6 +24,10 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import ksorum.uw.tacoma.edu.a450project.R;
+import ksorum.uw.tacoma.edu.a450project.data.InventoryItemsDB;
+import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
+
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -37,32 +36,50 @@ import java.util.List;
  */
 public class InventoryFragment extends Fragment {
 
-    /** Number of columns */
+    /**
+     * Number of columns
+     */
     private static final String ARG_COLUMN_COUNT = "column-count";
 
-    /** Number of columns */
+    /**
+     * Number of columns
+     */
     private int mColumnCount = 1;
 
-    /** Listener for list items */
+    /**
+     * Listener for list items
+     */
     private OnListFragmentInteractionListener mListener;
 
-    /** The recycler view of the items */
+    /**
+     * The recycler view of the items
+     */
     private RecyclerView mRecyclerView;
 
-    /** URL for location of inventory items */
+    /**
+     * URL for location of inventory items
+     */
     private static final String ITEM_URL
             = "http://cssgate.insttech.washington.edu/~ksorum/inventorylist.php?cmd=inventoryitems";
 
-    /** The user's email address */
+    /**
+     * The user's email address
+     */
     private String mUserEmail;
 
-    /** Used to save information on user login */
+    /**
+     * Used to save information on user login
+     */
     private SharedPreferences mSharedPreferences;
 
-    /** Saves the current inventory items into internal storage */
+    /**
+     * Saves the current inventory items into internal storage
+     */
     private InventoryItemsDB mInventoryItemsDB;
 
-    /** List of inventory items */
+    /**
+     * List of inventory items
+     */
     private List<InventoryItem> mInventoryItemList;
 
     /**
@@ -74,6 +91,7 @@ public class InventoryFragment extends Fragment {
 
     /**
      * Creates a new instance of the inventory fragment.
+     *
      * @param columnCount number of columns for the list
      * @return a new instance of the inventory fragment.
      */
@@ -104,8 +122,7 @@ public class InventoryFragment extends Fragment {
             DownloadItemsTask task = new DownloadItemsTask();
             String url = buildInventoryGetURL(view);
             task.execute(new String[]{url});
-        }
-        else {
+        } else {
             Toast.makeText(view.getContext(),
                     "No network connection available. Displaying locally stored data",
                     Toast.LENGTH_SHORT).show();
@@ -119,7 +136,7 @@ public class InventoryFragment extends Fragment {
                     mInventoryItemList, mListener));
         }
 
-            return view;
+        return view;
     }
 
 
@@ -133,7 +150,6 @@ public class InventoryFragment extends Fragment {
                     + " must implement OnListFragmentInteractionListener");
         }
     }
-
 
 
     @Override
@@ -165,8 +181,7 @@ public class InventoryFragment extends Fragment {
 
             Log.i("InventoryFragment", sb.toString());
 
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
 
         }
         return sb.toString();
@@ -187,7 +202,7 @@ public class InventoryFragment extends Fragment {
     }
 
     /**
-     * Launches the web services to display the inventory items.
+     * Launches the web services to display the inventory items and add them to the local database.
      */
     private class DownloadItemsTask extends AsyncTask<String, Void, String> {
 
@@ -259,7 +274,7 @@ public class InventoryFragment extends Fragment {
 
 
                     // Also, add to the local database
-                    for (int i=0; i<mInventoryItemList.size(); i++) {
+                    for (int i = 0; i < mInventoryItemList.size(); i++) {
                         InventoryItem item = mInventoryItemList.get(i);
                         mInventoryItemsDB.insertInventoryItem(item.getId(),
                                 item.getItemName(),
@@ -273,7 +288,7 @@ public class InventoryFragment extends Fragment {
                     mRecyclerView.setAdapter(new MyInventoryRecyclerViewAdapter(getActivity(),
                             mInventoryItemList, mListener));
                 }
-            } catch (NullPointerException e){
+            } catch (NullPointerException e) {
 
             }
 

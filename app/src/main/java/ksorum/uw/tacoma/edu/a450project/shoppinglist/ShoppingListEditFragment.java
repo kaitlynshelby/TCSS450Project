@@ -5,20 +5,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -32,12 +29,11 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 import ksorum.uw.tacoma.edu.a450project.R;
-import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
-import ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingItemDetailsFragment;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment to edit a shopping list item.
+ * <p>
  * Activities that contain this fragment must implement the
  * {@link OnShoppingListEditInteractionListener} interface
  * to handle interaction events.
@@ -46,23 +42,38 @@ import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingLi
  */
 public class ShoppingListEditFragment extends Fragment {
 
+    /**
+     * The base URL to use for the edit webservice.
+     */
     private final static String ITEM_EDIT_URL
             = "http://cssgate.insttech.washington.edu/~ksorum/editShoppingItem.php?";
 
 
-    /** Field to enter in name of shopping list item */
+    /**
+     * Field to enter in name of shopping list item
+     */
     private EditText mNameTextView;
-    /** Field to enter in price of shopping list item */
+    /**
+     * Field to enter in price of shopping list item
+     */
     private EditText mPriceEditText;
-    /** Field to enter in quantity of shopping list item */
+    /**
+     * Field to enter in quantity of shopping list item
+     */
     private EditText mQuantityEditText;
-    /** ID of shopping list item */
+    /**
+     * ID of shopping list item
+     */
     private String mItemId;
 
-    /** Saves shopping list item information */
+    /**
+     * Saves shopping list item information
+     */
     private SharedPreferences mSharedPreferences;
 
-    /** Listener for the shopping list */
+    /**
+     * Listener for the shopping list
+     */
     private OnShoppingListEditInteractionListener mListener;
 
     public ShoppingListEditFragment() {
@@ -91,8 +102,6 @@ public class ShoppingListEditFragment extends Fragment {
 
         getActivity().setTitle("Edit Item");
 
-
-        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_shopping_list_edit, container, false);
 
         Bundle args = getArguments();
@@ -124,9 +133,8 @@ public class ShoppingListEditFragment extends Fragment {
                 if (networkInfo != null && networkInfo.isConnected()) {
                     String url = buildEditURL(v);
                     EditItemTask task = new EditItemTask();
-                    task.execute(new String[] {url});
-                }
-                else {
+                    task.execute(new String[]{url});
+                } else {
                     Toast.makeText(getActivity(),
                             "Cannot edit item without a network connection.",
                             Toast.LENGTH_SHORT).show();
@@ -138,7 +146,8 @@ public class ShoppingListEditFragment extends Fragment {
         return v;
     }
 
-    /** Builds the URL to edit a shopping list item's information.
+    /**
+     * Builds the URL to edit a shopping list item's information.
      *
      * @param v the view of the fragment
      * @return the string of the URL
@@ -171,13 +180,9 @@ public class ShoppingListEditFragment extends Fragment {
                     getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
 
 
-
-
-
             Log.i("ShoppingEditFragment", sb.toString());
 
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
         }
         return sb.toString();
     }

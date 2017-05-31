@@ -5,12 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,20 +25,35 @@ import ksorum.uw.tacoma.edu.a450project.R;
  */
 public class InventoryAddFragment extends Fragment {
 
-    /** The listener to add an item to the inventory */
+    /**
+     * The listener to add an item to the inventory
+     */
     private InventoryAddListener mListener;
-    /** Name of new item */
+    /**
+     * Name of new item
+     */
     private EditText mItemNameEditText;
-    /** Quantity of new item */
+    /**
+     * Quantity of new item
+     */
     private EditText mItemQuantityEditText;
-    /** Price of new item */
+    /**
+     * Price of new item
+     */
     private EditText mItemPriceEditText;
-    /** Expiration of new item */
+    /**
+     * Expiration of new item
+     */
     private EditText mItemExpirationEditText;
 
+    /**
+     * The shared preferences file
+     */
     private SharedPreferences mSharedPreferences;
 
-    /** URL of the location to add an item to the inventory */
+    /**
+     * URL of the location to add an item to the inventory
+     */
     private final static String INVENTORY_ITEM_ADD_URL
             = "http://cssgate.insttech.washington.edu/~ksorum/addInventoryItem.php?";
 
@@ -64,18 +75,12 @@ public class InventoryAddFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        getActivity().setTitle("Test");
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
+        // Hide the tabs
         getActivity().findViewById(R.id.sliding_tabs_landing).setVisibility(View.GONE);
 
         getActivity().setTitle("Add Item");
@@ -88,10 +93,12 @@ public class InventoryAddFragment extends Fragment {
         mItemPriceEditText = (EditText) v.findViewById(R.id.add_item_price);
         mItemExpirationEditText = (EditText) v.findViewById(R.id.add_item_expiration);
 
+        // Hide the FAB
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.hide();
 
+        // Hide the search bar
         EditText search = (EditText) getActivity().findViewById(R.id.searchView);
         search.setVisibility(View.GONE);
 
@@ -99,14 +106,13 @@ public class InventoryAddFragment extends Fragment {
         addCourseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = buildCourseURL(v);
+                String url = buildAddURL(v);
                 mListener.addItem(url);
             }
         });
 
         return v;
     }
-
 
 
     @Override
@@ -120,7 +126,9 @@ public class InventoryAddFragment extends Fragment {
         }
     }
 
-
+    /**
+     * Shows the view items that were hidden in OnCreateView
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -143,7 +151,6 @@ public class InventoryAddFragment extends Fragment {
     }
 
 
-
     /**
      * Interface for adding an item to the inventory.
      */
@@ -153,11 +160,11 @@ public class InventoryAddFragment extends Fragment {
 
     /**
      * Reads the user input of an item and adds to a database.
-     * @param v the view of the fragment
      *
+     * @param v the view of the fragment
      * @return the string of the URL
      */
-    private String buildCourseURL(View v) {
+    private String buildAddURL(View v) {
 
         StringBuilder sb = new StringBuilder(INVENTORY_ITEM_ADD_URL);
 
@@ -191,8 +198,7 @@ public class InventoryAddFragment extends Fragment {
 
             Log.i("InventoryAddFragment", sb.toString());
 
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
 
         }
         return sb.toString();

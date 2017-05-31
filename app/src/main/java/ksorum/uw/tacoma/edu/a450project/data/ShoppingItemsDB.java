@@ -19,19 +19,30 @@ import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingLi
  */
 public class ShoppingItemsDB {
 
-    /** Database version number */
+    /**
+     * Database version number
+     */
     public static final int DB_VERSION = 1;
-    /** Name of database*/
+    /**
+     * Name of database
+     */
     public static final String DB_NAME = "ShoppingItems.db";
-    /** Name of inventory items database table */
+    /**
+     * Name of inventory items database table
+     */
     private static final String SHOPPING_ITEMS_TABLE = "ShoppingItems";
-    /** Helper for the shopping list items database */
+    /**
+     * Helper for the shopping list items database
+     */
     private ShoppingItemsDBHelper mShoppingItemsDBHelper;
-    /** SQLite database */
+    /**
+     * SQLite database
+     */
     private SQLiteDatabase mSQLiteDatabase;
 
     /**
      * Constructor for the shopping list items internal storage database.
+     *
      * @param context context of the application
      */
     public ShoppingItemsDB(Context context) {
@@ -42,10 +53,11 @@ public class ShoppingItemsDB {
 
     /**
      * Inserts the course into the local sqlite table. Returns true if successful, false otherwise.
-     * @param id id of shopping list item
-     * @param name name of shopping list item
+     *
+     * @param id       id of shopping list item
+     * @param name     name of shopping list item
      * @param quantity quantity of shopping list items
-     * @param price price of shopping list items
+     * @param price    price of shopping list items
      * @return true or false
      */
     public boolean insertShoppingItem(String id, String
@@ -66,6 +78,7 @@ public class ShoppingItemsDB {
 
     /**
      * Returns the list of items from the local ShoppingItems table.
+     *
      * @return the list of items from the local ShoppingItems table.
      */
     public List<ShoppingListItem> getItems() {
@@ -85,7 +98,7 @@ public class ShoppingItemsDB {
         );
         c.moveToFirst();
         List<ShoppingListItem> list = new ArrayList<ShoppingListItem>();
-        for (int i=0; i<c.getCount(); i++) {
+        for (int i = 0; i < c.getCount(); i++) {
             String id = c.getString(0);
             String name = c.getString(1);
             String quantity = c.getString(2);
@@ -106,22 +119,26 @@ public class ShoppingItemsDB {
     }
 
 
-
     /**
      * Helper class for the internal storage.
      */
     class ShoppingItemsDBHelper extends SQLiteOpenHelper {
 
-        /** Creates Shopping List Items table */
+        /**
+         * Creates Shopping List Items table
+         */
         private final String CREATE_SHOPPING_ITEMS_SQL;
 
-        /** Drops Shopping List table in the database */
+        /**
+         * Drops Shopping List table in the database
+         */
         private final String DROP_SHOPPING_ITEMS_SQL;
 
         /**
          * Constructor for a new ShoppingItems helper
+         *
          * @param context context of the application
-         * @param name name of the database
+         * @param name    name of the database
          * @param factory factory
          * @param version database version number
          */

@@ -19,19 +19,30 @@ import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
  */
 public class InventoryItemsDB {
 
-    /** Database version number */
+    /**
+     * Database version number
+     */
     public static final int DB_VERSION = 1;
-    /** Name of database*/
+    /**
+     * Name of database
+     */
     public static final String DB_NAME = "InventoryItems.db";
-    /** Name of inventory items database table */
+    /**
+     * Name of inventory items database table
+     */
     private static final String INVENTORY_ITEMS_TABLE = "InventoryItems";
-    /** Helper for the inventory items database */
+    /**
+     * Helper for the inventory items database
+     */
     private InventoryItemsDBHelper mInventoryItemsDBHelper;
-    /** SQLite database */
+    /**
+     * SQLite database
+     */
     private SQLiteDatabase mSQLiteDatabase;
 
     /**
      * Constructor for the inventory items internal storage database.
+     *
      * @param context context of the application
      */
     public InventoryItemsDB(Context context) {
@@ -43,10 +54,10 @@ public class InventoryItemsDB {
     /**
      * Inserts the course into the local sqlite table. Returns true if successful, false otherwise.
      *
-     * @param id id of inventory item
-     * @param name name of inventory item
-     * @param quantity quantity of inventory item
-     * @param price price of inventory item
+     * @param id             id of inventory item
+     * @param name           name of inventory item
+     * @param quantity       quantity of inventory item
+     * @param price          price of inventory item
      * @param expirationdate expiration date of inventory item
      * @return true or false
      */
@@ -71,8 +82,9 @@ public class InventoryItemsDB {
     }
 
     /**
-    * Returns the list of items from the local InventoryItems table.
-    * @return list of items from the local InvenotryItems table.
+     * Returns the list of items from the local InventoryItems table.
+     *
+     * @return list of items from the local InvenotryItems table.
      */
     public List<InventoryItem> getItems() {
 
@@ -118,16 +130,21 @@ public class InventoryItemsDB {
      */
     class InventoryItemsDBHelper extends SQLiteOpenHelper {
 
-        /** Creates Inventory Items table */
+        /**
+         * Creates Inventory Items table
+         */
         private final String CREATE_INVENTORY_ITEMS_SQL;
 
-        /** Drops Inventory table in the database */
+        /**
+         * Drops Inventory table in the database
+         */
         private final String DROP_INVENTORY_ITEMS_SQL;
 
         /**
          * Constructor for a new InventoryItems helper
+         *
          * @param context context of the application
-         * @param name name of the database
+         * @param name    name of the database
          * @param factory factory
          * @param version database version number
          */

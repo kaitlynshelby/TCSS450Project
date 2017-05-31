@@ -7,8 +7,6 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.List;
 
-import ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingListFragment;
-
 /**
  * Creates a new Shopping List item.
  *
@@ -16,25 +14,36 @@ import ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingListFragment;
  */
 public class ShoppingListItem implements Serializable {
 
-    /** ID of shopping list item */
+    /**
+     * ID of shopping list item
+     */
     private String mId;
-    /** Name of shopping list item */
+    /**
+     * Name of shopping list item
+     */
     private String mName;
-    /** Quantity of shopping list item */
+    /**
+     * Quantity of shopping list item
+     */
     private String mQuantity;
-    /** Price of shopping list item */
+    /**
+     * Price of shopping list item
+     */
     private String mPrice;
 
-    /** String names for JSON parser */
+    /**
+     * String names for JSON parser
+     */
     public static final String ITEM_ID = "id", ITEM_NAME = "name", QUANTITY = "quantity",
             PRICE = "price";
 
     /**
      * Constructor to create a new Shopping List item.
-     * @param id id of shopping list item
-     * @param name name of shopping list item
+     *
+     * @param id       id of shopping list item
+     * @param name     name of shopping list item
      * @param quantity quantity of shopping list item
-     * @param price price of shopping list item
+     * @param price    price of shopping list item
      */
     public ShoppingListItem(String id, String name, String quantity, String price) {
         this.mId = id;
@@ -45,6 +54,7 @@ public class ShoppingListItem implements Serializable {
 
     /**
      * Returns ID of shopping list item.
+     *
      * @return ID of shopping list item.
      */
     public String getId() {
@@ -53,6 +63,7 @@ public class ShoppingListItem implements Serializable {
 
     /**
      * Sets ID of shopping list item.
+     *
      * @param id ID of shopping list item.
      */
     public void setId(String id) {
@@ -61,6 +72,7 @@ public class ShoppingListItem implements Serializable {
 
     /**
      * Returns name of shopping list item.
+     *
      * @return name of shopping list item.
      */
     public String getName() {
@@ -69,6 +81,7 @@ public class ShoppingListItem implements Serializable {
 
     /**
      * Sets name of shopping list item.
+     *
      * @param mItemName name of shopping list item.
      */
     public void setName(String mItemName) {
@@ -77,6 +90,7 @@ public class ShoppingListItem implements Serializable {
 
     /**
      * Returns quantity of shopping list item.
+     *
      * @return quantity of shopping list item.
      */
     public String getQuantity() {
@@ -85,6 +99,7 @@ public class ShoppingListItem implements Serializable {
 
     /**
      * Sets quantity of shopping list item.
+     *
      * @param mQuantity quantity of shopping list item.
      */
     public void setQuantity(String mQuantity) {
@@ -93,6 +108,7 @@ public class ShoppingListItem implements Serializable {
 
     /**
      * Returns price of shopping list item.
+     *
      * @return price of shopping list item.
      */
     public String getPrice() {
@@ -101,6 +117,7 @@ public class ShoppingListItem implements Serializable {
 
     /**
      * Sets price of shopping list item.
+     *
      * @param mPrice price of shopping list item.
      */
     public void setPrice(String mPrice) {
@@ -111,6 +128,7 @@ public class ShoppingListItem implements Serializable {
     /**
      * Parses the json string, returns an error message if unsuccessful.
      * Returns course list if success.
+     *
      * @param shoppingListJSON
      * @return reason or null if successful.
      */
@@ -128,7 +146,7 @@ public class ShoppingListItem implements Serializable {
                     shoppingList.add(item);
                 }
             } catch (JSONException e) {
-                reason =  "Use the round button to add some items!";
+                reason = "Use the round button to add some items!";
             }
 
         }
