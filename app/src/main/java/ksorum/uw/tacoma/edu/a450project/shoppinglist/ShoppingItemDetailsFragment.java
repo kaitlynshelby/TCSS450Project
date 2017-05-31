@@ -13,11 +13,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import ksorum.uw.tacoma.edu.a450project.R;
-import ksorum.uw.tacoma.edu.a450project.shoppinglist.ShoppingListEditFragment;
 import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingListItem;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment to display shopping list item details
+ * <p>
  * Activities that contain this fragment must implement the
  * {@link ShoppingDetailsFragmentInteractionListener} interface
  * to handle interaction events.
@@ -26,20 +26,32 @@ import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingLi
  */
 public class ShoppingItemDetailsFragment extends Fragment {
 
-    /** Shopping item selected */
+    /**
+     * Shopping item selected
+     */
     public final static String SHOPPING_ITEM_SELECTED = "shopping_item_selected";
 
-    /** Item name */
+    /**
+     * Item name
+     */
     private TextView mNameTextView;
-    /** Item quantity */
+    /**
+     * Item quantity
+     */
     private TextView mQuantityTextView;
-    /** Item price */
+    /**
+     * Item price
+     */
     private TextView mPriceTextView;
-    /** Item expiration */
+    /**
+     * Item expiration
+     */
     private ShoppingDetailsFragmentInteractionListener mListener;
 
+    /**
+     * Required empty public constructor
+     */
     public ShoppingItemDetailsFragment() {
-        // Required empty public constructor
     }
 
     /**
@@ -56,11 +68,6 @@ public class ShoppingItemDetailsFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -68,7 +75,6 @@ public class ShoppingItemDetailsFragment extends Fragment {
 
         getActivity().findViewById(R.id.sliding_tabs_landing).setVisibility(View.GONE);
 
-        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_shopping_item_details, container, false);
 
         mNameTextView = (TextView) v.findViewById(R.id.shop_name_info);
@@ -106,6 +112,7 @@ public class ShoppingItemDetailsFragment extends Fragment {
 
     /**
      * Updates the fragment with details of the item that is clicked on.
+     *
      * @param item the item that is clicked on in the inventory list
      */
     public void updateView(ShoppingListItem item) {
@@ -121,9 +128,6 @@ public class ShoppingItemDetailsFragment extends Fragment {
         super.onStart();
 
         // During startup, check if there are arguments passed to the fragment.
-        // onStart is a good place to do this because the layout has already been
-        // applied to the fragment at this point so we can safely call the method
-        // below that sets the article text.
         Bundle args = getArguments();
         if (args != null) {
             // Set article based on argument passed in

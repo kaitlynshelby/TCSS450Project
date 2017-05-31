@@ -38,13 +38,30 @@ import ksorum.uw.tacoma.edu.a450project.shoppinglist.shoppinglistitem.ShoppingLi
  */
 public class ShoppingListFragment extends Fragment {
 
+    /**
+     * Listener for the shopping list
+     */
     private OnShoppingListFragmentInteractionListener mListener;
+    /**
+     * Location of the shopping list items
+     */
     public static final String LIST_URL
             = "http://cssgate.insttech.washington.edu/~ksorum/shoppinglist.php?cmd=items";
+    /**
+     * Recycler view for the shopping list
+     */
     private RecyclerView mRecyclerView;
+    /**
+     * Saves information of shopping list items
+     */
     private SharedPreferences mSharedPreferences;
-
+    /**
+     * Saves information of shopping list items to internal storage
+     */
     private ShoppingItemsDB mShoppingItemsDB;
+    /**
+     * List of shopping list items
+     */
     private List<ShoppingListItem> mShoppingListItems;
 
     /**
@@ -54,6 +71,12 @@ public class ShoppingListFragment extends Fragment {
     public ShoppingListFragment() {
     }
 
+    /**
+     * Creates an instance of ShoppingListFragment
+     *
+     * @param columnCount number of columns to use
+     * @return an instance of ShoppingListFragment
+     */
     public static ShoppingListFragment newInstance(int columnCount) {
         ShoppingListFragment fragment = new ShoppingListFragment();
         Bundle args = new Bundle();
@@ -74,28 +97,29 @@ public class ShoppingListFragment extends Fragment {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         }
 
-            ConnectivityManager connMgr = (ConnectivityManager)
-                    getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-            if (networkInfo != null && networkInfo.isConnected()) {
-                DownloadShoppingItemsTask task = new DownloadShoppingItemsTask();
-                String url = buildShoppingListGetURL(view);
-                task.execute(new String[]{url});
-                Log.i("executed task", "");
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            DownloadShoppingItemsTask task = new DownloadShoppingItemsTask();
+            String url = buildShoppingListGetURL(view);
+            task.execute(new String[]{url});
+            Log.i("executed task", "");
+        } else {
+            Toast.makeText(view.getContext(),
+                    "No network connection available. Displaying locally stored data",
+                    Toast.LENGTH_SHORT).show();
+
+            // display local data
+            if (mShoppingItemsDB == null) {
+                mShoppingItemsDB = new ShoppingItemsDB(getActivity());
             }
-            else {
-                Toast.makeText(view.getContext(),
-                        "No network connection available. Displaying locally stored data",
-                        Toast.LENGTH_SHORT).show();
-                if (mShoppingItemsDB == null) {
-                    mShoppingItemsDB = new ShoppingItemsDB(getActivity());
-                }
-                if (mShoppingListItems == null) {
-                    mShoppingListItems = mShoppingItemsDB.getItems();
-                }
-                mRecyclerView.setAdapter(new MyShoppingListRecyclerViewAdapter(getActivity(),
-                        mShoppingListItems, mListener));
+            if (mShoppingListItems == null) {
+                mShoppingListItems = mShoppingItemsDB.getItems();
             }
+            mRecyclerView.setAdapter(new MyShoppingListRecyclerViewAdapter(getActivity(),
+                    mShoppingListItems, mListener));
+        }
 
 
         return view;
@@ -114,12 +138,12 @@ public class ShoppingListFragment extends Fragment {
     }
 
 
-   @Override
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
 
-
+        // share shopping list
         if (id == R.id.action_share) {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
@@ -139,6 +163,11 @@ public class ShoppingListFragment extends Fragment {
         mListener = null;
     }
 
+    /**
+     * Returns String of all shopping list items formatted for sharing.
+     *
+     * @return String of all shopping list items.
+     */
     private String shoppingListItemsToString() {
         StringBuilder sb = new StringBuilder();
 
@@ -180,8 +209,7 @@ public class ShoppingListFragment extends Fragment {
 
             Log.i("ShoppingListFragment", sb.toString());
 
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
         }
         return sb.toString();
     }
@@ -200,6 +228,10 @@ public class ShoppingListFragment extends Fragment {
         void onShoppingListFragmentInteraction(ShoppingListItem item);
     }
 
+
+    /**
+     * Async task to launch webservice to get shopping list items from the server.
+     */
     private class DownloadShoppingItemsTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -223,8 +255,7 @@ public class ShoppingListFragment extends Fragment {
                 } catch (Exception e) {
                     response = "Unable to download the list of courses, Reason: "
                             + e.getMessage();
-                }
-                finally {
+                } finally {
                     if (urlConnection != null)
                         urlConnection.disconnect();
                 }
@@ -232,6 +263,12 @@ public class ShoppingListFragment extends Fragment {
             return response;
         }
 
+        /**
+         * Gets shopping list items from server, adds them to the local database, and sets recycler
+         * view adapter with either retrieved or local items.
+         *
+         * @param result The JSON returned by the webservice.
+         */
         @Override
         protected void onPostExecute(String result) {
             // Something wrong with the network or the URL.
@@ -244,7 +281,6 @@ public class ShoppingListFragment extends Fragment {
 
             mShoppingListItems = new ArrayList<ShoppingListItem>();
             result = ShoppingListItem.parseListJSON(result, mShoppingListItems);
-            Log.i("OnPostExecute", mShoppingListItems.get(0).getName());
             // Something wrong with the JSON returned.
             if (result != null) {
                 Toast.makeText(getActivity().getApplicationContext(), result, Toast.LENGTH_SHORT)
@@ -266,7 +302,7 @@ public class ShoppingListFragment extends Fragment {
 
 
                     // Also, add to the local database
-                    for (int i=0; i<mShoppingListItems.size(); i++) {
+                    for (int i = 0; i < mShoppingListItems.size(); i++) {
                         ShoppingListItem item = mShoppingListItems.get(i);
                         mShoppingItemsDB.insertShoppingItem(item.getId(),
                                 item.getName(),
@@ -282,5 +318,5 @@ public class ShoppingListFragment extends Fragment {
             }
 
         }
-     }
+    }
 }

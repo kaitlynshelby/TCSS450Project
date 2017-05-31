@@ -2,48 +2,29 @@ package ksorum.uw.tacoma.edu.a450project.inventory;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.media.Image;
-import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.ArrayList;
+import java.util.List;
 
 import ksorum.uw.tacoma.edu.a450project.R;
 import ksorum.uw.tacoma.edu.a450project.inventory.InventoryFragment.OnListFragmentInteractionListener;
 import ksorum.uw.tacoma.edu.a450project.inventory.inventoryitem.InventoryItem;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
-import static ksorum.uw.tacoma.edu.a450project.R.drawable.delete_icon;
 import static ksorum.uw.tacoma.edu.a450project.R.drawable.waste_bin;
 
 /**
+ * RecyclerView.Adapter for InventoryFragment
+ * <p>
  * {@link RecyclerView.Adapter} that can display a {@link InventoryItem} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  */
@@ -53,18 +34,26 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
      * The list of inventory items
      */
     private final List<InventoryItem> mValues;
+
     /**
      * Fragment listener in the list
      */
     private final OnListFragmentInteractionListener mListener;
 
+    /**
+     * Listener to delete items from the inventory
+     */
     private final OnDeleteItem mDeleteListener;
 
+    /**
+     * Copy of inventory items in the list
+     */
     private List<InventoryItem> mValuesCopy;
 
+    /**
+     * Context of application
+     */
     private Activity mContext;
-
-
 
 
     /**
@@ -127,11 +116,14 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
                     notifyItemRangeChanged(pos, mValues.size());
                 }
 
-                notifyDataSetChanged();;
+                notifyDataSetChanged();
+                ;
 
             }
         });
 
+
+        // Color-coding expiration date system
         int color = holder.mItem.getColor();
         if (color != 0) {
             holder.mView.setBackgroundColor(color);
@@ -147,31 +139,40 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
 
             }
 
+
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
                 String s = charSequence.toString();
-                filter(holder, s);
+                filter(s);
             }
 
+            /**
+             * Listens for changes in the search bar to filter list as necessary
+             * @param editable the search bar text
+             */
             @Override
             public void afterTextChanged(Editable editable) {
-                notifyDataSetChanged();
+                String s = editable.toString();
+                filter(s);
             }
         });
 
     }
 
 
-
-    public void filter(ViewHolder holder, String text) {
-        int color;
+    /**
+     * Filters out items while the user types in the search bar.
+     *
+     * @param text text typed into search bar
+     */
+    public void filter(String text) {
         mValues.clear();
-        if(text.isEmpty()){
+        if (text.isEmpty()) {
             mValues.addAll(mValuesCopy);
-        } else{
+        } else {
             text = text.toLowerCase();
-            for(int i = 0; i < mValuesCopy.size(); i++){
-                if(mValuesCopy.get(i).getItemName().toLowerCase().contains(text)){
+            for (int i = 0; i < mValuesCopy.size(); i++) {
+                if (mValuesCopy.get(i).getItemName().toLowerCase().contains(text)) {
                     mValues.add(mValuesCopy.get(i));
                 }
             }
@@ -184,6 +185,9 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
         return mValues.size();
     }
 
+    /**
+     * Initializes the views of an inventory item row in a list.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
@@ -208,6 +212,9 @@ public class MyInventoryRecyclerViewAdapter extends RecyclerView.Adapter<MyInven
     }
 
 
+    /**
+     * Interface to delete an item from the inventory.
+     */
     public interface OnDeleteItem {
         boolean deleteInventoryItem(String id, String name, String quantity, String price);
     }

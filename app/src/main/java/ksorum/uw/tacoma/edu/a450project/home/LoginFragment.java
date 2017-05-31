@@ -1,7 +1,6 @@
 package ksorum.uw.tacoma.edu.a450project.home;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,26 +16,34 @@ import ksorum.uw.tacoma.edu.a450project.R;
 
 
 /**
- *
  * A fragment which allows a user to log in to the app.
- *
+ * <p>
  * Activities that contain this fragment must implement the
  * {@link LoginFragment.OnLoginUser} interface
  * to handle interaction events.
  * Use the {@link LoginFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
  */
 public class LoginFragment extends Fragment {
 
+    /**
+     * URL for location of user login credentials
+     */
     public final static String LOGIN_URL
             = "http://cssgate.insttech.washington.edu/~ksorum/login.php?";
 
+    /**
+     * Field to enter in user email address
+     */
     private EditText mUserEmail;
+    /**
+     * Field to enter in user password
+     */
     private EditText mUserPassword;
-
+    /**
+     * Listener to log user into their account
+     */
     private OnLoginUser mListener;
-    private SharedPreferences mSharedPreferences;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -126,11 +133,9 @@ public class LoginFragment extends Fragment {
             sb.append(URLEncoder.encode(password, "UTF-8"));
 
 
-
             Log.i("SignUpFragment", sb.toString());
 
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
 
         }
         return sb.toString();
@@ -141,7 +146,6 @@ public class LoginFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     *
      */
     public interface OnLoginUser {
         void loginUser(String url, String email);
